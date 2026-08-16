@@ -1,0 +1,18 @@
+title: "Rhyzarca: The Epistemic Ledger"
+email: "jerrychien1031@gmail.com"
+description: >-
+  記錄認知曲率、判斷演進與系統架構。在 AGI 時代為人類判斷記帳。
+baseurl: "" # 綁定自訂網域 blog.rhyzarca.com 時保持為空
+url: "https://blog.rhyzarca.com"
+
+# GitHub Pages 內建主題與外掛
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Markdown 渲染引擎與語法高亮
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
