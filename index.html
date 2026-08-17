@@ -5,7 +5,7 @@ title: "首頁"
 
 <link rel="stylesheet" href="/assets/css/custom.css">
 
-<!-- Hero 區塊 -->
+<!-- Hero 簡介區塊 -->
 <div class="hero-banner">
   <div class="hero-title">Rhyzarca</div>
   <div class="hero-tagline">個人認知的基礎設施層 —— 所有個人 AI 都要來查閱的那座圖書館。</div>
@@ -43,24 +43,7 @@ title: "首頁"
   </a>
 </div>
 
-<!-- 創世/精選文章區塊 (自動動態抓取第一篇文章) -->
-{% assign featured_post = site.posts.first %}
-{% if featured_post %}
-<div class="featured-card">
-  <div class="featured-badge">📌 創世導讀 / FEATURED ENTRY</div>
-  <div class="featured-title">
-    <a href="{{ featured_post.url }}">{{ featured_post.title }}</a>
-  </div>
-  <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0.8rem;">
-    推論能力商品化的時代，統計平均的最優解無法拯救具體的人。本文剖析個人化決策的三大支柱（環境約束、價值觀取捨、認知演進軌跡），並闡釋為何需要一座由本人自持的認知圖書館。
-  </p>
-  <div style="font-size: 0.82rem; color: #64748b;">
-    {{ featured_post.date | date: "%Y-%m-%d" }} ・ 收錄於 <code>{{ featured_post.categories.first | default: "insights" }}</code>
-  </div>
-</div>
-{% endif %}
-
-<!-- 最新發布列表 (自動動態迴圈) -->
+<!-- 最新文章列表（唯一入口來源） -->
 <div class="section-heading">⏱️ 最新發布 (Timeline)</div>
 <ul class="post-list">
   {% for post in site.posts %}
