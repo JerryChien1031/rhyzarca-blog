@@ -1,10 +1,11 @@
+
 ```markdown
 ---
 layout: post
 title: "當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源"
 date: 2026-08-17 10:00:00 +0800
 categories: [insights]
-tags: [認知記錄, 個人認知管理, AGI, 決策系統, 資料產權, 知識基礎設施]
+tags: [認知記錄, 個人認知管理, AGI, 決策系統]
 ---
 
 這幾年，人工智慧的發展跨越了一道不可逆的奇點。
