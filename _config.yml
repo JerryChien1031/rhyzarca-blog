@@ -4,13 +4,17 @@ description: "認知記錄系統 —— 提供AI查閱決策演進的圖書館�
 url: "https://blog.rhyzarca.com"
 email: "jerrychien1031@gmail.com"
 
-# 永久連結格式（支援分類路徑）
+# 強制建置所有文章（避免 GitHub Pages 時區判定為未來發布而略過）
+future: true
+unpublished: false
+
+# 網址結構 (Pretty permalink)
 permalink: /:categories/:year/:month/:day/:title/
 
-# 導覽列顯示頁面
+# 導覽列
 header_pages:
   - categories.md
 
-# Markdown 解析設定
+# Markdown 解析
 markdown: kramdown
 highlighter: rouge
