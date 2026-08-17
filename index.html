@@ -1,0 +1,88 @@
+---
+layout: default
+title: "首頁"
+---
+
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+<!-- Hero 區塊 -->
+<div class="hero-banner">
+  <div class="hero-title">Rhyzarca</div>
+  <div class="hero-tagline">個人認知的基礎設施層 —— 所有個人 AI 都要來查閱的那座圖書館。</div>
+  <div class="hero-quote">
+    當 AGI 的推論能力迅速商品化，決定決策品質的不再是模型有多聰明，而是系統能否精確掌握你所處的<strong>環境約束</strong>、<strong>價值觀取捨</strong>與<strong>認知演進軌跡</strong>。
+  </div>
+</div>
+
+<!-- 五大主題分類導航 -->
+<div class="section-heading">🗂️ 認知領域分類</div>
+<div class="category-grid">
+  <a href="/categories#insights" class="category-card">
+    <div class="category-card-title">💡 心得記錄</div>
+    <p class="category-card-desc">認知原點、價值觀推演、個人認知管理（PCM）哲學與趨勢觀察。</p>
+  </a>
+
+  <a href="/categories#build-log" class="category-card">
+    <div class="category-card-title">🛠️ 實作日誌</div>
+    <p class="category-card-desc">Rhyzarca 系統架構、推論演算法、MCP 工具整合與試錯記錄。</p>
+  </a>
+
+  <a href="/categories#life-and-trails" class="category-card">
+    <div class="category-card-title">🌲 生活點滴</div>
+    <p class="category-card-desc">登山步道、旅遊見聞與生活隨筆，記錄肉身在實體空間的具身體驗。</p>
+  </a>
+
+  <a href="/categories#speculations" class="category-card">
+    <div class="category-card-title">🌌 科學猜想</div>
+    <p class="category-card-desc">與 AI 探討宇宙本質、量子推論、時間維度與意識起源的思辨對話。</p>
+  </a>
+
+  <a href="/categories#uncategorized" class="category-card">
+    <div class="category-card-title">📦 其他</div>
+    <p class="category-card-desc">未分類的靈感碎片、實驗性短文與跨領域的臨時雜感。</p>
+  </a>
+</div>
+
+<!-- 創世文章精選區塊 -->
+<div class="featured-card">
+  <div class="featured-badge">📌 創世導讀 / FEATURED</div>
+  <div class="featured-title">
+    <a href="/insights/2026/08/17/why-rhyzarca-origin-and-value/">
+      當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源
+    </a>
+  </div>
+  <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0.8rem;">
+    推論能力商品化的時代，統計平均的最優解無法拯救具體的人。本文剖析個人化決策的三大支柱（環境約束、價值觀取捨、認知演進軌跡），並闡釋為何需要一座由本人自持的認知圖書館。
+  </p>
+  <div style="font-size: 0.82rem; color: #64748b;">
+    2026-08-17 ・ 收錄於 <code>心得記錄 (insights)</code>
+  </div>
+</div>
+
+<!-- 最新文章時間軸 -->
+<div class="section-heading">⏱️ 最新發布 (Timeline)</div>
+<ul class="post-list">
+  {% for post in site.posts %}
+    <li class="post-item">
+      <div class="post-meta">
+        <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        {% if post.categories.first %}
+          <span class="post-category-tag">{{ post.categories.first }}</span>
+        {% endif %}
+      </div>
+      <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% else %}
+    <li style="color: #64748b;">尚無發布文章。</li>
+  {% endfor %}
+</ul>
+
+<!-- 頁尾契約 -->
+<div class="site-contract">
+  <p style="margin-bottom: 0.4rem;">
+    <strong>三條房規</strong>：永不刪除，只加註記。資料的地契，在使用者手上。方向，是開源。
+  </p>
+  <p style="margin-bottom: 0;">
+    <strong>日誌契約</strong>：本站為公開開發日誌與個人思考記錄。做到哪寫到哪，日後若想法改觀，在原文加註更新，不回頭塗銷。
+  </p>
+</div>
