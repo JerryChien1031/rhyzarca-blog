@@ -1,6 +1,6 @@
 # Rhyzarca Blog: The Epistemic Ledger
 
-> **個人認知的基礎設施層 —— 所有個人 AI 都要來查閱的那座圖書館。**
+> **認知記錄系統 —— 提供AI查閱決策演進的圖書館。**
 
 [![GitHub Pages](https://img.shields.io/badge/Hosted%20with-GitHub%20Pages-blue.svg)](https://blog.rhyzarca.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
