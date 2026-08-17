@@ -16,32 +16,102 @@ permalink: /categories/
   <a href="#uncategorized" class="post-category-tag" style="text-decoration: none; padding: 6px 12px; font-size: 0.9rem;">📦 其他</a>
 </div>
 
-{% assign categories = "insights,build-log,life-and-trails,speculations,uncategorized" | split: "," %}
+<!-- 💡 心得記錄 -->
+<div id="insights" style="margin-top: 2.5rem; scroll-margin-top: 2rem;">
+  <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+    💡 心得記錄 (Insights)
+  </h2>
+  <ul class="post-list">
+    {% assign insight_posts = site.posts | where_exp: "item", "item.categories contains 'insights'" %}
+    {% for post in insight_posts %}
+      <li class="post-item">
+        <div class="post-meta">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+    {% else %}
+      <li class="post-item" style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</li>
+    {% endfor %}
+  </ul>
+</div>
 
-{% for cat in categories %}
-  <div id="{{ cat }}" style="margin-top: 3rem; scroll-margin-top: 2rem;">
-    <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
-      {% case cat %}
-        {% when "insights" %}💡 心得記錄 (Insights)
-        {% when "build-log" %}🛠️ 實作日誌 (Build Log)
-        {% when "life-and-trails" %}🌲 生活點滴 (Life & Trails)
-        {% when "speculations" %}🌌 科學猜想 (Speculations)
-        {% else %}📦 其他 (Uncategorized)
-      {% endcase %}
-    </h2>
+<!-- 🛠️ 實作日誌 -->
+<div id="build-log" style="margin-top: 2.5rem; scroll-margin-top: 2rem;">
+  <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+    🛠️ 實作日誌 (Build Log)
+  </h2>
+  <ul class="post-list">
+    {% assign build_posts = site.posts | where_exp: "item", "item.categories contains 'build-log'" %}
+    {% for post in build_posts %}
+      <li class="post-item">
+        <div class="post-meta">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+    {% else %}
+      <li class="post-item" style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</li>
+    {% endfor %}
+  </ul>
+</div>
 
-    <ul class="post-list">
-      {% assign posts_in_cat = site.categories[cat] %}
-      {% for post in posts_in_cat %}
-        <li class="post-item">
-          <div class="post-meta">
-            <span>{{ post.date | date: "%Y-%m-%d" }}</span>
-          </div>
-          <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
-        </li>
-      {% else %}
-        <p style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</p>
-      {% endfor %}
-    </ul>
-  </div>
-{% endfor %}
+<!-- 🌲 生活點滴 -->
+<div id="life-and-trails" style="margin-top: 2.5rem; scroll-margin-top: 2rem;">
+  <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+    🌲 生活點滴 (Life & Trails)
+  </h2>
+  <ul class="post-list">
+    {% assign life_posts = site.posts | where_exp: "item", "item.categories contains 'life-and-trails'" %}
+    {% for post in life_posts %}
+      <li class="post-item">
+        <div class="post-meta">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+    {% else %}
+      <li class="post-item" style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- 🌌 科學猜想 -->
+<div id="speculations" style="margin-top: 2.5rem; scroll-margin-top: 2rem;">
+  <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+    🌌 科學猜想 (Speculations)
+  </h2>
+  <ul class="post-list">
+    {% assign spec_posts = site.posts | where_exp: "item", "item.categories contains 'speculations'" %}
+    {% for post in spec_posts %}
+      <li class="post-item">
+        <div class="post-meta">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+    {% else %}
+      <li class="post-item" style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<!-- 📦 其他 -->
+<div id="uncategorized" style="margin-top: 2.5rem; scroll-margin-top: 2rem;">
+  <h2 style="font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+    📦 其他 (Uncategorized)
+  </h2>
+  <ul class="post-list">
+    {% assign other_posts = site.posts | where_exp: "item", "item.categories contains 'uncategorized'" %}
+    {% for post in other_posts %}
+      <li class="post-item">
+        <div class="post-meta">
+          <span>{{ post.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
+      </li>
+    {% else %}
+      <li class="post-item" style="color: #64748b; font-size: 0.9rem;">目前此分類尚無文章。</li>
+    {% endfor %}
+  </ul>
+</div>
