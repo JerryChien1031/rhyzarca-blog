@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "分類總覽"
+title: "文章分類總覽"
 permalink: /categories/
 ---
 
@@ -22,8 +22,7 @@ permalink: /categories/
     💡 心得記錄 (Insights)
   </h2>
   <ul class="post-list">
-    {% assign insight_posts = site.posts | where_exp: "item", "item.categories contains 'insights'" %}
-    {% for post in insight_posts %}
+    {% for post in site.categories.insights %}
       <li class="post-item">
         <div class="post-meta">
           <span>{{ post.date | date: "%Y-%m-%d" }}</span>
@@ -42,8 +41,7 @@ permalink: /categories/
     🛠️ 實作日誌 (Build Log)
   </h2>
   <ul class="post-list">
-    {% assign build_posts = site.posts | where_exp: "item", "item.categories contains 'build-log'" %}
-    {% for post in build_posts %}
+    {% for post in site.categories.build-log %}
       <li class="post-item">
         <div class="post-meta">
           <span>{{ post.date | date: "%Y-%m-%d" }}</span>
@@ -62,8 +60,7 @@ permalink: /categories/
     🌲 生活點滴 (Life & Trails)
   </h2>
   <ul class="post-list">
-    {% assign life_posts = site.posts | where_exp: "item", "item.categories contains 'life-and-trails'" %}
-    {% for post in life_posts %}
+    {% for post in site.categories.life-and-trails %}
       <li class="post-item">
         <div class="post-meta">
           <span>{{ post.date | date: "%Y-%m-%d" }}</span>
@@ -82,8 +79,7 @@ permalink: /categories/
     🌌 科學猜想 (Speculations)
   </h2>
   <ul class="post-list">
-    {% assign spec_posts = site.posts | where_exp: "item", "item.categories contains 'speculations'" %}
-    {% for post in spec_posts %}
+    {% for post in site.categories.speculations %}
       <li class="post-item">
         <div class="post-meta">
           <span>{{ post.date | date: "%Y-%m-%d" }}</span>
@@ -102,8 +98,7 @@ permalink: /categories/
     📦 其他 (Uncategorized)
   </h2>
   <ul class="post-list">
-    {% assign other_posts = site.posts | where_exp: "item", "item.categories contains 'uncategorized'" %}
-    {% for post in other_posts %}
+    {% for post in site.categories.uncategorized %}
       <li class="post-item">
         <div class="post-meta">
           <span>{{ post.date | date: "%Y-%m-%d" }}</span>
