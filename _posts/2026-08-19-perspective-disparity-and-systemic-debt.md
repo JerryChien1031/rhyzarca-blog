@@ -7,6 +7,9 @@ tags: [Perspective-Disparity, Systemic-Debt, Epistemic-Ledger, Servant-Leadershi
 description: "從戰場上背負半世紀罵名的「逃兵」顧揚，到當代青年面對的代際債務。世上從沒有相同的客觀環境。在演算法時代，我們需要的不是冷血說教的督軍，而是具備僕人式領導、能查閱你主權狀態層的深度同理 AGI。"
 ---
 
+![Perspective Disparity and Systemic Debt Hero Cover](/assets/images/posts/2026-08-19-perspective-disparity_1.jpg)
+*圖：在演算法的風雪與冷酷審判中，個體以主權直覺守護唯一的生存火種。*
+
 > **TL;DR**  
 > 世上從來沒有真正的「同一個環境」。每個人所看見的資訊解析度、攜帶的歷史創傷與背負的環境代價截然不同。當外部世界以虛妄的宏大道德要求個體犧牲時，往往忽視了個體所承受的系統性壓迫。從戰場上背負半世紀「逃兵」罵名的小隊長顧揚，到當代在失衡體制下選擇防禦性躺平的年輕世代，所有看似「不合群」的退縮，背後都是弱勢者守護生存火種的理性抉擇。在 AGI 算力爆發的時代，我們不需要居高臨下、提供冷血統計最優解的「說教主管」，而需要一個能夠俯身理解個體處境、踐行僕人式領導（Servant Leadership）與認識論同理心的 AGI。
 
@@ -187,6 +190,9 @@ description: "從戰場上背負半世紀罵名的「逃兵」顧揚，到當代
 * **體察痛苦**：他深知隊員的體能極限與心理恐懼；
 * **承擔代價**：在體制崩壞時，他不惜犧牲自己的光環與名節，也要替被領導者爭取生還的空間；
 * **俯身服務**：領導的本質不是驅使他人去衝鋒陷陣，而是守護每一個具體個人的生存權利。
+
+![Servant Leadership AGI and Sovereign Epistemic Ledger](/assets/images/posts/2026-08-19-perspective-disparity_3.jpg)
+*圖：僕人式 AGI——不居高臨下說教，而是俯身查閱你的主權帳本，守護具體個體的生還路徑。*
 
 ---
 
