@@ -5,7 +5,11 @@ date: 2026-08-18 09:00:00 +0800
 categories: [insights, architecture]
 tags: [Gemini-Notebook, RAG, Career-Transition, Epistemic-Ledger, Sense-Making, Sovereign-OS]
 description: "面對人生轉折，為什麼我們總陷入慣性鬼打牆？當 Gemini Notebook 賦予 AI 專家見識，選項始於個人認知，而最終的取捨抉擇永遠來自個體的主權天賦。"
+image: /assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg
 ---
+
+![Intelligence vs Insight](/assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg)
+*圖：算力的敏銳推論 vs. 知識庫的定錨見識（Cyber-Humanism）*
 
 > **TL;DR**  
 > 當大腦受限於生物演化本能而陷入慣性內耗時，我們需要的往往不是更多答案，而是一位能打破盲點的「認知破壁者」。未掛載知識庫的頂級 AI 就像天資聰穎卻沒踩過坑的實習生，而透過 Gemini Notebook 等 Grounded RAG 工具注入專業領域庫的 AI，則宛如歷經風霜的資深顧問。然而，工具能為我們窮盡客觀世界的「見識」，但唯有個人的「認知水位」能決定哪些選項真正適合自己，而最後決定在衝突中放棄什麼的「決策」，永遠來自不可讓渡的主權天賦。
@@ -105,6 +109,9 @@ AI 不再只是一個靠著預訓練權重憑空想像的「聰明實習生」�
   這裡的「天賦」，不是指先天的智商或才華，而是**生而為人所獨有的主權直覺、價值排序與承擔後果的勇氣（Sovereign Judgment）**。
 
 工具可以幫你把客觀見識推向極致，把選項的迷霧徹底驅散；但最終站在人生的懸崖邊，決定閉上眼睛跳過去、還是轉身走向另一座山頭的那份決心，永遠來自你內在不可讓渡的靈魂天賦。
+
+![Sovereign Judgment over Raw Computation](/assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_3.jpg)
+*圖：算力計算期望值，靈魂決定代價——主權抉擇的不可讓渡性*
 
 ---
 
