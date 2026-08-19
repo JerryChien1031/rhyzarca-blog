@@ -7,6 +7,9 @@ tags: [Epistemic-Ledger, Governance-Sandbox, AGI-Constitution, Side-Effect-Budge
 description: "推論能力正在商品化，決定未來的不是 AGI 的能力上限，而是約束它的制度形狀。從純量目標的三重死刑、可觀測性分立，到全息治理沙盒與人類 20 瓦濕件的道德定錨——一部人機共生的文明憲章。"
 ---
 
+![AGI Constitutional Governance and Sovereign State Layer](/assets/images/posts/2026-08-20-constitution-delegates-and-governance-sandboxes_1.jpg)
+*圖：數位憲法與主權狀態層——當 AGI 成為認知巨人，決定文明高度的是約束算力的制度憲章與代價會計。*
+
 > **TL;DR**  
 > 「每個人都在做當下正確的決定」，這句話向後看是同理的起點，向前看是系統性巨債的引擎。當 AGI 接管了生產力勞動，成為知識與認知的巨人，決定未來文明高度的不再是「模型有多聰明」，而是「憑什麼授權它去做」。未來 AGI 的終極輪廓不是一顆追求極限效率的超級大腦，而是一部由制度約束描繪出的數位憲法。透過多維代價會計、提議與裁決分立、不可塗銷的主權帳本、全息治理模擬沙盒，以及人類 20 瓦濕件大腦的道德否決權，人機共生將告別拿現實肉身試錯政策的時代，走向以系統韌性為核心的共生社會。
 
@@ -125,6 +128,9 @@ AGI 負責耗能的百萬種路徑推演與副作用量化；人類則以約 20 
 #### 3. 全息沙盒的認識論盲區：地圖永遠不等於疆域
 * **過濾默會知識（Tacit Knowledge）**：任何數位孿生都必須進行特徵提取，無法被數值化的在地文化、微妙情感與邊緣群體痛感，極易在參數化中被視為雜訊過濾。
 * **世界模型的意識形態固化**：誰有權定義沙盒的底層損失函數與韌性指標？必須警惕披著「客觀模擬」外衣的主流偏見規訓。
+
+![The Governance Sandbox and the Moral Pruner](/assets/images/posts/2026-08-20-constitution-delegates-and-governance-sandboxes_3.jpg)
+*圖：全息治理沙盒與道德剪枝——機器窮舉百萬路徑，人類以 20 瓦濕件直覺行使一票否決。*
 
 ---
 
