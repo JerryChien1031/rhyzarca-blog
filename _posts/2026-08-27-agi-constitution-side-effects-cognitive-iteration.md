@@ -7,6 +7,9 @@ tags: [AGI-Constitution, Epistemic-Ledger, Governance-Sandbox, Side-Effect-Budge
 description: "當推論邊際成本趨近於零，資訊落差的套利宣告終結。未來的社會不再追求單一利益最大化，而是建立在熱力學基建、全息治理沙盒與人類 20 瓦濕件約束之上的數位憲政體制。"
 ---
 
+![The AGI Constitution and Thermodynamic Foundation](/assets/images/posts/2026-08-27-agi-constitution-side-effects-cognitive-iteration_1.jpg)
+*圖：資訊套利終結與數位憲政——當推論算力如洪流般廉價，決定文明高度的是熱力學底座與約束算力的制度河道。*
+
 > **TL;DR**  
 > 當 AGI 讓推論與編譯的邊際成本趨近於零，過去倚賴「資訊落差」的套利模式正式死亡。在這裡，「共產」被重新定義：共的不是齊頭式的平庸，而是無條件的物質地板與期滿後的公共經驗池；不共的，是創新者在專利窗口期內的專屬調度紅利。決定未來文明高度的，不再是 AGI 模型有多聰明，而是約束它的體制河道——一套由多維代價會計、提議與裁決分立、全息沙盒與主權帳本共同構成的數位憲法。
 
@@ -254,6 +257,9 @@ AGI 可以消耗數兆瓦特的恆星能源，在後台窮舉十億種資源分�
 *   **Goodhart 自反性**：代價會計必須永遠維持不可通約的光譜；任何試圖將沙盒「韌性指數」折算為單一分數的企圖，都將引發指標崩解與系統性災難。
 
 *(界限聲明：本體制第一層所仰賴的「戴森群」與「馮·諾伊曼自複製機群」，目前仍屬思想實驗之前提，遠超當前技術地平線。制度設計必須走在技術爆發之前，但不可將科幻預設為當下的現實。)*
+
+![The 20-Watt Wetware and the Midnight Veto](/assets/images/posts/2026-08-27-agi-constitution-side-effects-cognitive-iteration_3.jpg)
+*圖：深夜自省與 20 瓦濕件的否決——當演算法為你鋪好最安逸的坦途，你是否還擁有拒絕完美的道德肌肉？*
 
 ---
 
