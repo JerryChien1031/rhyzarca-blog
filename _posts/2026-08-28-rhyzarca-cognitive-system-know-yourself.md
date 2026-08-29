@@ -7,6 +7,9 @@ tags: [AGI-Civilization, Sovereign-OS, Loop-Engineering, Model-Agnostic, First-P
 description: "當推論算力與專業知識成為水電般的廉價基礎設施，個人真正的護城河不再是「你有多聰明」，而是「這些智慧究竟如何屬於你」。本文解構 Rhyzarca 的四層架構，看它如何透過算力與狀態的解耦，成為 AGI 文明中不可被剝奪的數位地契。"
 ---
 
+![The Swappable Nervous System and the Sovereign Spine](/assets/images/posts/2026-08-28-rhyzarca-cognitive-system-know-yourself_1.jpg)
+*圖：空殼算力與主權脊椎——AGI 只是隨時可拔線抽換的神經插座，唯有自持的狀態底座才是不可被剝奪的靈魂地契。*
+
 > **TL;DR**  
 > 假設未來每個人都配有全知全能的 AGI 代理人，當「聰明」變得像自來水一樣廉價，個人之間的差異還剩下什麼？如果你的偏好、記憶與對話全被綁死在單一商業 AI 雲端中，一旦模型換代或平台倒閉，你還是你嗎？AGI 解決的是「世界知道什麼」；而 **Rhyzarca 解決的是「這些智慧究竟如何屬於我」**。未來的競爭，不再是人工智慧所有權的競爭，而是「個人認知主權」的防禦戰。這是一個將神壇上的 AGI 貶為「可替換神經系統」，把決策權柄還給人類的工程藍圖。
 
@@ -171,6 +174,9 @@ Rhyzarca 的架構狠狠戳破了這個幻覺。它宣告：**AGI 文明真正�
     透過標準化的 MCP（Model Context Protocol）協定，你掌握了 AGI 的「感官授權開關」。無論是掛載外部的雲端搜尋，還是讀取你本地的私人硬碟，工具的接入與卸載完全由你的意志決定。AI 只能在你劃定的沙盒疆域內感知世界。
 *   **Storage Sovereign（資料絕不被綁架）**：
     這是整座防禦工事的最後一道底線。你一生的認知軌跡、價值取捨與認識論帳本，永遠只存在於由你自己（Local-First）上鎖自持的保險箱中[cite: 5]。AGI 必須低頭走進你的圖書館來為你服務，而你的靈魂地契，絕對不會上傳並消散在別人的伺服器裡。
+
+![Know Thyself and the Sovereign Boundary](/assets/images/posts/2026-08-28-rhyzarca-cognitive-system-know-yourself_2.jpg)
+*圖：認識你自己——在演算法淹沒一切的時代，守住主權國界，成為自己生命歷史唯一的作者。*
 
 ---
 
