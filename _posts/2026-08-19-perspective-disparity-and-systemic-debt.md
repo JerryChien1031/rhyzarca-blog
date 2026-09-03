@@ -1,11 +1,23 @@
 ---
-layout: post
-title: "視角差異與社會債務：為什麼在演算法時代，我們需要 AGI 僕人式領導的深度同理？"
+blogger_post_id: '2207283641181873736'
+categories:
+- insights
+- architecture
 date: 2026-08-19 10:00:00 +0800
-categories: [insights, architecture]
-tags: [Perspective-Disparity, Systemic-Debt, Epistemic-Ledger, Servant-Leadership, AGI-Empathy, Sovereign-OS, Digital-Scribe, Breakpoint-Accountability]
-description: "「每個人都在做當下正確的決定」——這句話向後看是同理的起點，向前看是系統性債務的引擎。從末班車的一格裁切畫面，到房產金融鏈對未來的無痛提款；從古代史官起居注到 AGI 僕人式領導的斷點對帳，我們如何站在思想巨人的肩膀上，看清這個世界與我們自己？"
+description: 「每個人都在做當下正確的決定」——這句話向後看是同理的起點，向前看是系統性債務的引擎。從末班車的一格裁切畫面，到房產金融鏈對未來的無痛提款；從古代史官起居注到
+  AGI 僕人式領導的斷點對帳，我們如何站在思想巨人的肩膀上，看清這個世界與我們自己？
 image: /assets/images/posts/2026-08-19-perspective-disparity_1.jpg
+layout: post
+tags:
+- Perspective-Disparity
+- Systemic-Debt
+- Epistemic-Ledger
+- Servant-Leadership
+- AGI-Empathy
+- Sovereign-OS
+- Digital-Scribe
+- Breakpoint-Accountability
+title: 視角差異與社會債務：為什麼在演算法時代，我們需要 AGI 僕人式領導的深度同理？
 ---
 
 ![Perspective Disparity & Digital Scribe](/assets/images/posts/2026-08-19-perspective-disparity_1.jpg)
@@ -169,4 +181,3 @@ AGI 絕非只是一把更順手、更便利的生產力工具。**它是人類�
   * **Claim**: AGI 的文明價值在於結合上帝視角與僕人領導；其深度同理依賴自持的過往認知史（Rhyzarca），其社會解弊依賴決策時點的斷點問責。史官記帳之目的在於顯影真實以降低社會變革阻力，而非發動道德懲罰。
   * **Epistemic State**: `Tentative Framework (Active Verification)`
   * **Dependencies**: Servant Leadership (Greenleaf); Historical Scribe Axiology; Breakpoint Ledger Protocol.
-

@@ -1,9 +1,15 @@
 ---
-layout: post
-title: "認知總帳：為什麼 AGI 時代最稀缺的不是知識，而是認知軌跡"
+blogger_post_id: '5543664938342122398'
+categories:
+- Epistemology
+- Architecture
 date: 2026-08-16 14:00:00 +0800
-categories: [Epistemology, Architecture]
-tags: [Rhyzarca, AGI, Cognitive-Curvature]
+layout: post
+tags:
+- Rhyzarca
+- AGI
+- Cognitive-Curvature
+title: 認知總帳：為什麼 AGI 時代最稀缺的不是知識，而是認知軌跡
 ---
 
 當 AGI 成為如電力一般的基礎設施時，客觀知識將不再稀缺。

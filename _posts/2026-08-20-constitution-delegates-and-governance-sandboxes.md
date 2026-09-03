@@ -1,10 +1,21 @@
 ---
-layout: post
-title: "當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？"
+blogger_post_id: '6028406612788388487'
+categories:
+- insights
+- architecture
 date: 2026-08-20 10:00:00 +0800
-categories: [insights, architecture]
-tags: [Epistemic-Ledger, Governance-Sandbox, AGI-Constitution, Side-Effect-Budgeting, Servant-Leadership, Sovereign-OS, Antifragility]
-description: "推論能力正在商品化，決定未來的不是 AGI 的能力上限，而是約束它的制度形狀。從純量目標的三重死刑、可觀測性分立，到全息治理沙盒與人類 20 瓦濕件的道德定錨——一部人機共生的文明憲章。"
+description: 推論能力正在商品化，決定未來的不是 AGI 的能力上限，而是約束它的制度形狀。從純量目標的三重死刑、可觀測性分立，到全息治理沙盒與人類 20
+  瓦濕件的道德定錨——一部人機共生的文明憲章。
+layout: post
+tags:
+- Epistemic-Ledger
+- Governance-Sandbox
+- AGI-Constitution
+- Side-Effect-Budgeting
+- Servant-Leadership
+- Sovereign-OS
+- Antifragility
+title: 當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？
 ---
 
 ![AGI Constitutional Governance and Sovereign State Layer](/assets/images/posts/2026-08-20-constitution-delegates-and-governance-sandboxes_1.jpg)
@@ -156,4 +167,3 @@ AGI 負責耗能的百萬種路徑推演與副作用量化；人類則以約 20 
 * **Claim**: 未來 AGI 的架構輪廓不由模型參數量決定，而由「信任如何被生產與約束」決定；其核心形態是由多維代價會計、提議與裁決分立、自持主權帳本、全息治理模擬沙盒與人類濕件道德剪枝所構成的數位憲法體系。
 * **Epistemic State**: `High Conviction (Systemic Synthesis)`
 * **Dependencies**: Goodhart's Law; Arrow's Impossibility Theorem; Ergodicity Economics; Kalman Control Duality; North-Weingast Institutional Economics; Hume's Guillotine; Ostrom Polycentric Governance; Multi-Agent Computational Social Science.
-

@@ -1,11 +1,20 @@
 ---
-layout: post
-title: "聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦"
+blogger_post_id: '1417675867966245296'
+categories:
+- insights
+- architecture
 date: 2026-08-18 09:00:00 +0800
-categories: [insights, architecture]
-tags: [Gemini-Notebook, RAG, Career-Transition, Epistemic-Ledger, Sense-Making, Sovereign-OS]
-description: "面對人生轉折，為什麼我們總陷入慣性鬼打牆？當 Gemini Notebook 賦予 AI 專家見識，選項始於個人認知，而最終的取捨抉擇永遠來自個體的主權天賦。"
+description: 面對人生轉折，為什麼我們總陷入慣性鬼打牆？當 Gemini Notebook 賦予 AI 專家見識，選項始於個人認知，而最終的取捨抉擇永遠來自個體的主權天賦。
 image: /assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg
+layout: post
+tags:
+- Gemini-Notebook
+- RAG
+- Career-Transition
+- Epistemic-Ledger
+- Sense-Making
+- Sovereign-OS
+title: 聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦
 ---
 
 ![Intelligence vs Insight](/assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg)
@@ -135,4 +144,4 @@ AI 不再只是一個靠著預訓練權重憑空想像的「聰明實習生」�
 * **Claim**: 認知工具（如 Gemini Notebook）能打破人類演化形成的生物性思維慣性，並透過專業定錨極大化客觀選項邊界；但選項的適配性始終受限於個體的認知水位，而最終的取捨定奪永遠來自人類的主權天賦。
 * **Epistemic State**: `High Conviction (Core Principle)`
 * **Dependencies**: Dual-Process Cognitive Theory; Grounded Retrieval-Augmented Generation; Economics of Complements; Sovereign Epistemic OS Axioms.
-* 
+*

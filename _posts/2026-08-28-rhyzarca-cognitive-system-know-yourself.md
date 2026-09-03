@@ -1,10 +1,19 @@
 ---
-layout: post
-title: "當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？"
+blogger_post_id: '2930741190085670658'
+categories:
+- insights
+- architecture
 date: 2026-08-28 16:00:00 +0800
-categories: [insights, architecture]
-tags: [AGI-Civilization, Sovereign-OS, Loop-Engineering, Model-Agnostic, First-Principles]
-description: "當推論算力與專業知識成為水電般的廉價基礎設施，個人真正的護城河不再是「你有多聰明」，而是「這些智慧究竟如何屬於你」。本文解構 Rhyzarca 的四層架構，看它如何透過算力與狀態的解耦，成為 AGI 文明中不可被剝奪的數位地契。"
+description: 當推論算力與專業知識成為水電般的廉價基礎設施，個人真正的護城河不再是「你有多聰明」，而是「這些智慧究竟如何屬於你」。本文解構 Rhyzarca
+  的四層架構，看它如何透過算力與狀態的解耦，成為 AGI 文明中不可被剝奪的數位地契。
+layout: post
+tags:
+- AGI-Civilization
+- Sovereign-OS
+- Loop-Engineering
+- Model-Agnostic
+- First-Principles
+title: 當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？
 ---
 
 ![The Swappable Nervous System and the Sovereign Spine](/assets/images/posts/2026-08-28-rhyzarca-cognitive-system-know-yourself_1.jpg)

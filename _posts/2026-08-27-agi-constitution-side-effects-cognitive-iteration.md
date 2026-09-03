@@ -1,10 +1,18 @@
 ---
-layout: post
-title: "BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？"
+blogger_post_id: '3172284516608159184'
+categories:
+- insights
+- architecture
 date: 2026-08-27 12:00:00 +0800
-categories: [insights, architecture]
-tags: [AGI-Constitution, Epistemic-Ledger, Governance-Sandbox, Side-Effect-Budgeting, Sovereign-OS]
-description: "當推論邊際成本趨近於零，資訊落差的套利宣告終結。未來的社會不再追求單一利益最大化，而是建立在熱力學基建、全息治理沙盒與人類 20 瓦濕件約束之上的數位憲政體制。"
+description: 當推論邊際成本趨近於零，資訊落差的套利宣告終結。未來的社會不再追求單一利益最大化，而是建立在熱力學基建、全息治理沙盒與人類 20 瓦濕件約束之上的數位憲政體制。
+layout: post
+tags:
+- AGI-Constitution
+- Epistemic-Ledger
+- Governance-Sandbox
+- Side-Effect-Budgeting
+- Sovereign-OS
+title: BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？
 ---
 
 ![The AGI Constitution and Thermodynamic Foundation](/assets/images/posts/2026-08-27-agi-constitution-side-effects-cognitive-iteration_1.jpg)

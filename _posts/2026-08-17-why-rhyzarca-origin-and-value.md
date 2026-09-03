@@ -1,11 +1,20 @@
 ---
-layout: post
-title: "當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源"
+blogger_post_id: '616199098406382361'
+categories:
+- insights
+- architecture
 date: 2026-08-17 10:00:00 +0800
-categories: [insights, architecture]
-tags: [AGI, Epistemic-Ledger, Personalization, Sovereign-OS, Philosophy]
-description: "在模型更迭與算力商品化的時代，AI 給出的統計最佳解往往與具體個人的現實脫節。決策與引導的根本核心在於理解環境約束、價值取捨與認知水位——這正是 Rhyzarca 作為個人主權狀態層的起源與存在價值。"
+description: 在模型更迭與算力商品化的時代，AI 給出的統計最佳解往往與具體個人的現實脫節。決策與引導的根本核心在於理解環境約束、價值取捨與認知水位——這正是
+  Rhyzarca 作為個人主權狀態層的起源與存在價值。
 image: /assets/images/posts/2026-08-17-why-rhyzarca-origin-and-value_1.jpg
+layout: post
+tags:
+- AGI
+- Epistemic-Ledger
+- Personalization
+- Sovereign-OS
+- Philosophy
+title: 當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源
 ---
 
 ![Cyber-Humanism & Sovereign Writing](/assets/images/posts/2026-08-17-why-rhyzarca-origin-and-value_1.jpg)
@@ -120,4 +129,4 @@ Rhyzarca 核心採用了**「永不刪除，只加註記（Append-Only）」**�
 * **Claim**: AGI 的終極個人化價值，不在於模型的推論複雜度，而在於系統對使用者「環境邊界」、「價值觀取捨」與「歷時性認知軌跡」的主權對齊。
 * **Epistemic State**: `High Conviction (Foundational Axiom)`
 * **Dependencies**: Economics of Complements; Local-First Software Manifesto; Subjective Bayesian Epistemology.
-* 
+*

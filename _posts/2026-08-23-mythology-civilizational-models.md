@@ -1,10 +1,20 @@
 ---
-layout: post
-title: "神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗"
+blogger_post_id: '9100259439524101384'
+categories:
+- insights
+- epistemology
 date: 2026-08-23 06:00:00 +0800
-categories: [insights, epistemology]
-tags: [Mythology, Epistemology, Systems-Dynamics, Archaeology, AGI, Civilizational-Models]
-description: "為什麼能計算歲差、堆疊百萬噸巨石的遠古文明，卻同時住土坯房且用神話解釋世界？本文建立「小孩開大車（繼承型文明）」模型，推演技術斷層下的唯讀維運協議與政治黑箱；並以出土草稿鏈進行嚴格壓力測試，在現代 AGI 困境中照見人類的認識論鏡像。"
+description: 為什麼能計算歲差、堆疊百萬噸巨石的遠古文明，卻同時住土坯房且用神話解釋世界？本文建立「小孩開大車（繼承型文明）」模型，推演技術斷層下的唯讀維運協議與政治黑箱；並以出土草稿鏈進行嚴格壓力測試，在現代
+  AGI 困境中照見人類的認識論鏡像。
+layout: post
+tags:
+- Mythology
+- Epistemology
+- Systems-Dynamics
+- Archaeology
+- AGI
+- Civilizational-Models
+title: 神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗
 ---
 
 ![The Child Driving the Titan Hero Cover](/assets/images/posts/2026-08-23-mythology-civilizational-models_1.jpg)
@@ -165,4 +175,3 @@ description: "為什麼能計算歲差、堆疊百萬噸巨石的遠古文明，
   3. 該模型的核心價值在於提供了一套認識論透鏡，精準揭示了現代人類在面對不可解釋的 AGI 黑箱時，重回「經驗咒語、唯讀維運與標準早熟」的認識論困境。
 * **Epistemic State**: `High Conviction (Structural Demarcation & Epistemic Inversion)`
 * **Dependencies**: Epistemic Equal-Intelligence Axiom; Stack Decay Law; Archaeological Draft Chains (Merer's Papyrus, Proto-Cuneiform, Pyramidal Evolution); Oceanic Basaltic Plate Tectonics; LLM Interpretability & Prompt Engineering Epistemology.
-
