@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Rhyzarca Blog Client Script (Nav, TOC, Footers & UI Enhancements)
+   Rhyzarca Blog Client Script (Nav, TOC, Giscus & Footers)
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -54,9 +54,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 link.setAttribute("rel", "noopener noreferrer");
             }
         });
+
+        /* 5. 自動掛載 Giscus GitHub Discussions 留言系統 */
+        /* 只在單篇文章頁面掛載（避開首頁與標籤列表） */
+        var isSinglePost = window.location.pathname.length > 5 && window.location.pathname.indexOf("/search") === -1;
+        if (isSinglePost && !document.getElementById("giscus-container")) {
+            var giscusWrapper = document.createElement("div");
+            giscusWrapper.id = "giscus-container";
+            giscusWrapper.style.marginTop = "4rem";
+            giscusWrapper.style.paddingTop = "2rem";
+            giscusWrapper.style.borderTop = "1px solid #e2e8f0";
+
+            var giscusScript = document.createElement("script");
+            giscusScript.src = "https://giscus.app/client.js";
+            giscusScript.setAttribute("data-repo", "jerrychien1031/rhyzarca-blog");
+            giscusScript.setAttribute("data-repo-id", "R_kgDOT5wysg"); 
+            giscusScript.setAttribute("data-category", "General");
+            giscusScript.setAttribute("data-category-id", "DIC_kwDOT5wyss4DEyV5");
+            giscusScript.setAttribute("data-mapping", "pathname");
+            giscusScript.setAttribute("data-strict", "0");
+            giscusScript.setAttribute("data-reactions-enabled", "1");
+            giscusScript.setAttribute("data-emit-metadata", "0");
+            giscusScript.setAttribute("data-input-position", "bottom");
+            giscusScript.setAttribute("data-theme", "light");
+            giscusScript.setAttribute("data-lang", "zh-TW");
+            giscusScript.setAttribute("crossorigin", "anonymous");
+            giscusScript.async = true;
+
+            giscusWrapper.appendChild(giscusScript);
+            postBody.appendChild(giscusWrapper);
+        }
     }
 
-    /* 5. 自動在頁尾注入版權保護與主權聲明 (Footer) */
+    /* 6. 自動在全站頁尾注入版權保護與主權聲明 (Footer) */
     if (!document.getElementById("rhyzarca-footer")) {
         var footer = document.createElement("footer");
         footer.id = "rhyzarca-footer";
@@ -76,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
             '</div>' +
             '</div>';
 
-        /* 尋找合適的掛載點（Blogger 底層容器或 body） */
         var footerContainer = document.querySelector(".footer-outer, #footer, footer, .content-inner");
         if (footerContainer) {
             footerContainer.appendChild(footer);
