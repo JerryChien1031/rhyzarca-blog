@@ -165,6 +165,13 @@ AGI 絕非只是一把更順手、更便利的生產力工具。**它是人類�
 
 ---
 
+> ### 🔗 認知脈絡與延伸閱讀
+> * **前置命題**：[聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦](/search/label/insights)
+> * **工程解答（治理沙盒）**：[當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？](/search/label/speculations)
+> * **文明推演**：[神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗](/search/label/speculations)
+
+---
+
 ### 🏛️ Epistemic Ledger Entries: #0003
 
 * **Entry A: 認識論不對稱與人腦出廠規格**

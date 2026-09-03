@@ -190,6 +190,13 @@ AGI 可以窮舉出十億種資源調度方案，並精算出每條方案帶來�
 
 ---
 
+> ### 🔗 認知脈絡與延伸閱讀
+> * **工具與見識邊界**：[聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦](/search/label/insights)
+> * **極致社會型態推演**：[BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？](/search/label/speculations)
+> * **終極歸宿**：[當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？](/search/label/architecture)
+
+---
+
 ### 🏛️ Epistemic Ledger Entry: #0006
 
 * **Timestamp**: `2026-08-24T16:00:00+08:00`

@@ -219,6 +219,13 @@ AGI 甚至可以比我們更客觀地了解這個世界的運作規律。
 
 ---
 
+> ### 🔗 認知脈絡與延伸閱讀
+> * **原點回溯**：[認識論總帳 (Epistemic Ledger)：AI 時代的個人存在證明與主權錨定](/search/label/architecture)
+> * **價值發端**：[當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源](/search/label/insights)
+> * **完整治理全景**：[BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？](/search/label/speculations)
+
+---
+
 ### 🏛️ Epistemic Ledger Entry: #0007
 * **Timestamp**: `2026-08-28T16:00:00+08:00`
 * **Claim**: 當推論能力（Intelligence）成為公共基礎設施，個人主權與認知連續性（Personal Sovereign System）將成為新時代最稀缺的基礎設施。人類必須將算力（Empty Shell）與狀態（Sovereign State）徹底解耦，以確保在 AGI 迭代的洪流中，保有人格歷史與決策的絕對否決權。

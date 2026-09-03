@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             '<a href="/" class="nav-link">首頁</a>' +
             '<a href="/search/label/insights" class="nav-link">心得記錄 (Insights)</a>' +
             '<a href="/search/label/architecture" class="nav-link">系統日誌 (Architecture)</a>' +
-            '<a href="/search/label/embodied" class="nav-link">肉身感知 (Embodied)</a>' +
+            '<a href="/search/label/embodied" class="nav-link">生活體驗 (Embodied)</a>' +
             '<a href="/search/label/speculations" class="nav-link">科學思辨 (Speculations)</a>' +
             '</div>';
         header.parentNode.insertBefore(nav, header.nextSibling);
