@@ -232,3 +232,97 @@ body {
 .attribution, .widget.Attribution, #navbar-iframe, .navbar {
     display: none !important;
 }
+
+/* 10. Blogger 原生留言系統現代化美化 (Native Comments Modernization) */
+#comments {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+#comments h4 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1.5rem;
+}
+
+/* 留言卡片化容器 */
+.comments .comments-content .comment-thread ol {
+    list-style: none;
+    padding-left: 0;
+}
+
+.comments .comments-content .comment {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* 留言者大頭照圓形化 */
+.comments .avatar-image-container {
+    border-radius: 50% !important;
+    overflow: hidden;
+    width: 42px !important;
+    height: 42px !important;
+    border: 2px solid #e2e8f0;
+    margin-right: 0.75rem;
+}
+
+.comments .avatar-image-container img {
+    border-radius: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 留言者名稱與時間 */
+.comments .comment-header .user {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 1rem;
+}
+
+.comments .comment-header .datetime a {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+/* 留言本文內容 */
+.comments .comment-body {
+    color: #334155;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin: 0.75rem 0;
+}
+
+/* 回覆操作按鈕 */
+.comments .comment-actions a {
+    color: #2563eb;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.comments .comment-actions a:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+/* 嵌入式 Google 留言輸入框外層容器微調 */
+#comment-editor {
+    width: 100% !important;
+    min-height: 250px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-top: 1.5rem;
+    background: #ffffff;
+}
