@@ -84,3 +84,51 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+/* ==========================================================================
+   AEO / GEO: 動態注入 TechArticle 結構化資料 (Schema.org JSON-LD)
+   ========================================================================== */
+(function injectStructuredData() {
+    var isSinglePost = window.location.pathname.length > 5 && window.location.pathname.indexOf("/search") === -1;
+    if (!isSinglePost) return;
+
+    var postTitle = document.querySelector(".post-title, h1.entry-title");
+    var postBody = document.querySelector(".post-body, .entry-content");
+    var postDate = document.querySelector(".published, .date-header");
+
+    if (!postTitle || !postBody) return;
+
+    var schemaData = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": postTitle.innerText.trim(),
+        "inLanguage": "zh-TW",
+        "author": {
+            "@type": "Person",
+            "name": "Jerry Chien",
+            "jobTitle": "Cognitive System Architect",
+            "url": "https://blog.rhyzarca.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Rhyzarca",
+            "url": "https://blog.rhyzarca.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://blog.rhyzarca.com/favicon.ico"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": window.location.href
+        },
+        "description": document.querySelector('meta[name="description"]') 
+            ? document.querySelector('meta[name="description"]').getAttribute("content") 
+            : postBody.innerText.substring(0, 160).trim()
+    };
+
+    var script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify(schemaData);
+    document.head.appendChild(script);
+})();
