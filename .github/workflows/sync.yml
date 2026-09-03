@@ -6,10 +6,11 @@ on:
       - main
     paths:
       - '_posts/**'
-  workflow_dispatch: # 支援在 GitHub 網頁上手動點擊執行測試
+      - 'assets/**'
+  workflow_dispatch:
 
 permissions:
-  contents: write # 賦予寫入權限
+  contents: write
 
 jobs:
   sync:
@@ -21,6 +22,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      # -------------------------------------------------------------
+      # 1. 樣式與腳本 CDN 快取自動刷新（Purge jsDelivr Cache）
+      # -------------------------------------------------------------
+      - name: 自動刷新 jsDelivr CDN 快取
+        run: |
+          echo "正在請求 jsDelivr 清除快取..."
+          curl -s https://purge.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/assets/css/blogger.css || true
+          curl -s https://purge.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/assets/js/blogger.js || true
+          echo "✅ jsDelivr 快取清除請求已完成！"
+
+      # -------------------------------------------------------------
+      # 2. Python 環境設定與 Blogger 文章同步
+      # -------------------------------------------------------------
       - name: 設定 Python 環境
         uses: actions/setup-python@v5
         with:
