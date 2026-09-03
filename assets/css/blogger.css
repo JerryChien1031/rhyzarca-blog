@@ -1,0 +1,128 @@
+/* ==========================================================================
+   Rhyzarca Blog Modern Minimalist Theme (via jsDelivr)
+   ========================================================================== */
+
+/* 1. 全域排版與字體優化 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.85;
+    letter-spacing: 0.015em;
+}
+
+.post-body, .entry-content {
+    font-size: 1.08rem;
+    color: #334155;
+    word-break: break-word;
+}
+
+/* 2. 標題層次 (Hierarchy) */
+.post-body h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+}
+
+.post-body h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #1e293b;
+}
+
+/* 3. 圖片響應式與圖說置中 */
+.post-body img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 2rem auto 0.5rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.post-body em {
+    display: block;
+    text-align: center;
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 1.75rem;
+    font-style: normal;
+}
+
+/* 4. 引用區塊 (Blockquote) - 打造 Substack/Ghost 質感 */
+.post-body blockquote {
+    margin: 1.8rem 0;
+    padding: 1rem 1.4rem;
+    background-color: #f8fafc;
+    border-left: 4px solid #d97706; /* 琥珀金 */
+    border-radius: 0 8px 8px 0;
+    color: #475569;
+    font-size: 1.02rem;
+}
+
+.post-body blockquote p {
+    margin: 0.4rem 0;
+}
+
+/* 5. 自動生成目錄 (TOC) 容器 */
+#rhyzarca-toc {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+}
+
+#rhyzarca-toc .toc-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    color: #0f172a;
+}
+
+#rhyzarca-toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#rhyzarca-toc li {
+    margin: 0.4rem 0;
+}
+
+#rhyzarca-toc a {
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+#rhyzarca-toc a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* 6. 表格樣式優化 */
+.post-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+}
+
+.post-body th, .post-body td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.post-body th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #0f172a;
+}
