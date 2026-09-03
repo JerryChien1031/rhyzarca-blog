@@ -55,7 +55,7 @@ body {
     font-style: normal;
 }
 
-/* 4. 引用區塊 (Blockquote) - 打造 Substack/Ghost 質感 */
+/* 4. 引用區塊 (Blockquote) */
 .post-body blockquote {
     margin: 1.8rem 0;
     padding: 1rem 1.4rem;
@@ -159,4 +159,76 @@ body {
 #rhyzarca-nav .nav-link:hover {
     color: #0f172a;
     background-color: #f1f5f9;
+}
+
+/* 8. 全站頁尾版權 (Footer) */
+#rhyzarca-footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 3.5rem 1.5rem 2.5rem 1.5rem;
+    margin-top: 5rem;
+    border-top: 1px solid #1e293b;
+    text-align: center;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    box-sizing: border-box;
+}
+
+#rhyzarca-footer .footer-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#rhyzarca-footer .footer-brand {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #f8fafc;
+    letter-spacing: 0.03em;
+}
+
+#rhyzarca-footer .footer-copyright {
+    color: #cbd5e1;
+}
+
+#rhyzarca-footer .footer-license {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+#rhyzarca-footer .footer-license a {
+    color: #94a3b8;
+    text-decoration: underline;
+}
+
+#rhyzarca-footer .footer-license a:hover {
+    color: #e2e8f0;
+}
+
+#rhyzarca-footer .footer-links {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+#rhyzarca-footer .footer-links a {
+    color: #38bdf8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin: 0 0.5rem;
+}
+
+#rhyzarca-footer .footer-links a:hover {
+    color: #7dd3fc;
+    text-decoration: underline;
+}
+
+#rhyzarca-footer .footer-sep {
+    color: #334155;
+}
+
+/* 9. 徹底消除 Blogger 原生老舊雜訊 */
+.attribution, .widget.Attribution, #navbar-iframe, .navbar {
+    display: none !important;
 }
