@@ -1,16 +1,15 @@
 name: Sync Markdown Posts to Google Blogger
 
-# 觸發條件：當 main 分支的 _posts 資料夾有變更推播時觸發，亦支援手動觸發
 on:
   push:
     branches:
       - main
     paths:
       - '_posts/**'
-  workflow_dispatch:
+  workflow_dispatch: # 支援在 GitHub 網頁上手動點擊執行測試
 
 permissions:
-  contents: write # 允許 Actions 把 blogger_post_id 回寫並 commit 回儲存庫
+  contents: write # 賦予寫入權限
 
 jobs:
   sync:
@@ -26,7 +25,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: 安裝相依套件
         run: |
@@ -34,10 +32,15 @@ jobs:
           pip install python-frontmatter markdown beautifulsoup4 google-api-python-client google-auth-httplib2 google-auth-oauthlib python-dotenv
 
       - name: 還原授權檔案與環境變數
+        env:
+          CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          TOKEN_JSON: ${{ secrets.BLOGGER_TOKEN }}
+          BLOG_ID: ${{ secrets.BLOGGER_BLOG_ID }}
         run: |
-          echo "${{ secrets.BLOGGER_CLIENT_SECRET }}" > scripts/client_secret.json
-          echo "${{ secrets.BLOGGER_TOKEN }}" > scripts/token.json
-          echo "BLOGGER_BLOG_ID=${{ secrets.BLOGGER_BLOG_ID }}" > scripts/.env
+          mkdir -p scripts
+          echo "$CLIENT_SECRET" > scripts/client_secret.json
+          echo "$TOKEN_JSON" > scripts/token.json
+          echo "BLOGGER_BLOG_ID=$BLOG_ID" > scripts/.env
 
       - name: 執行 Blogger 同步腳本
         run: |
@@ -60,3 +63,4 @@ jobs:
             git commit -m "chore(blog): auto-update blogger_post_id [skip ci]"
             git push
           fi
+
