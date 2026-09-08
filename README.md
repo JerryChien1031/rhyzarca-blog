@@ -159,9 +159,8 @@ Theme 原有的本站作者 BlogPosting 在非文章頁移除，文章頁則修�
 本機驗證：
 
 ```sh
-pip install -r scripts/requirements.txt
+pip install python-frontmatter markdown beautifulsoup4 google-api-python-client google-auth-httplib2 google-auth-oauthlib python-dotenv
 python -m py_compile scripts/blogger_api.py scripts/sync_to_blogger.py scripts/markdown_parser.py
-python -m unittest discover -s tests -v
 node --check assets/js/blogger.js
 ```
 
@@ -172,4 +171,4 @@ API 參考：
 
 注意：參考頁中的 list 參數落後於實際 discovery。現行 client 支援
 `maxResults` / `pageToken`，狀態為大寫 `LIVE` / `DRAFT` / `SOFT_TRASHED`。
-測試包含 client discovery request 合約驗證，避免只靠 mock 忽略參數錯誤。
+本機測試包含 client discovery request 合約驗證；測試工具僅保留本機，不納入 repository。

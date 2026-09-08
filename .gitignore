@@ -7,3 +7,5 @@ __pycache__/
 .venv/
 .local-preview/
 /scripts/list_pages.py
+/scripts/requirements.txt
+/tests/test_sync.py
