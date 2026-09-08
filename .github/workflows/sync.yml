@@ -6,11 +6,18 @@ on:
       - main
     paths:
       - '_posts/**'
+      - '_pages/**'
+      - 'scripts/**'
+      - '.github/workflows/sync.yml'
       - 'assets/**'
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: blogger-sync
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -21,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
 
       # -------------------------------------------------------------
       # 1. 樣式與腳本 CDN 快取自動刷新（Purge jsDelivr Cache）
@@ -43,7 +51,7 @@ jobs:
       - name: 安裝相依套件
         run: |
           python -m pip install --upgrade pip
-          pip install python-frontmatter markdown beautifulsoup4 google-api-python-client google-auth-httplib2 google-auth-oauthlib python-dotenv
+          pip install -r scripts/requirements.txt
 
       - name: 還原授權檔案與環境變數
         env:
@@ -56,7 +64,11 @@ jobs:
           echo "$TOKEN_JSON" > scripts/token.json
           echo "BLOGGER_BLOG_ID=$BLOG_ID" > scripts/.env
 
+      - name: 本機邏輯測試
+        run: python -m unittest discover -s tests -v
+
       - name: 執行 Blogger 同步腳本
+        id: publish
         run: |
           cd scripts
           python sync_to_blogger.py
@@ -66,15 +78,16 @@ jobs:
         run: |
           rm -f scripts/client_secret.json scripts/token.json scripts/.env
 
-      - name: 將更新後的 blogger_post_id 回寫並提交至 GitHub
+      - name: 回寫 Posts 與 Pages 真實 Blogger identity
+        if: ${{ always() && steps.publish.outcome != 'skipped' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add _posts/*.md
+          git add -- '_posts/*.md' '_pages/*.md'
           if git diff --staged --quiet; then
             echo "沒有任何 Markdown 文章的 ID 發生變更，略過提交。"
           else
-            git commit -m "chore(blog): auto-update blogger_post_id [skip ci]"
+            git commit -m "chore(blog): auto-update Blogger identities [skip ci]"
             git push
           fi
 

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         nav.id = "rhyzarca-nav";
         nav.innerHTML = '<div class="nav-container">' +
             '<a href="/" class="nav-link">首頁</a>' +
+            '<a href="/p/about.html" class="nav-link">關於我</a>' +
             '<a href="/search/label/insights" class="nav-link">心得記錄 (Insights)</a>' +
             '<a href="/search/label/architecture" class="nav-link">系統日誌 (Architecture)</a>' +
             '<a href="/search/label/embodied" class="nav-link">生活體驗 (Embodied)</a>' +
@@ -18,9 +19,20 @@ document.addEventListener("DOMContentLoaded", function () {
         header.parentNode.insertBefore(nav, header.nextSibling);
     }
 
+    // Only owner links in the Profile gadget / author byline, not reader comments.
+    document.querySelectorAll('.widget.Profile a[href], .post-author a[href]').forEach(function (link) {
+        var url = new URL(link.href, window.location.href);
+        if (url.hostname === 'www.blogger.com' && url.pathname === '/profile/03091466585665229711') {
+            link.href = '/p/about.html';
+            link.classList.remove('g-profile');
+            if (link.classList.contains('profile-link')) link.textContent = '關於 Jerry Chien';
+        }
+    });
+
     /* 2. 取得文章主體容器 */
     var postBody = document.querySelector(".post-body, .entry-content");
     if (postBody) {
+        if (window.location.pathname === "/p/about.html") postBody.classList.add("about-profile");
         /* 3. 自動掃描 H2 生成目錄 (TOC) */
         var headings = postBody.querySelectorAll("h2");
         if (headings.length >= 2 && !document.getElementById("rhyzarca-toc")) {
@@ -88,8 +100,51 @@ document.addEventListener("DOMContentLoaded", function () {
 /* ==========================================================================
    AEO / GEO: 動態注入 TechArticle 結構化資料 (Schema.org JSON-LD)
    ========================================================================== */
-(function injectStructuredData() {
-    var isSinglePost = window.location.pathname.length > 5 && window.location.pathname.indexOf("/search") === -1;
+function injectStructuredData() {
+    var path = window.location.pathname;
+    var isStaticPage = /^\/p\/[^/]+\.html$/.test(path);
+    var isSinglePost = /^\/\d{4}\/\d{2}\/[^/]+\.html$/.test(path);
+    var aboutUrl = 'https://blog.rhyzarca.com/p/about.html';
+    var person = {
+        '@type': 'Person', '@id': aboutUrl + '#jerry-chien',
+        name: 'Jerry Chien', jobTitle: 'Cognitive System Architect', url: aboutUrl
+    };
+    // The live theme emits a standalone BlogPosting even on non-article pages.
+    // Normalize only this site's Jerry Chien article nodes, preserving other schema.
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(function (node) {
+        if (node.id === 'rhyzarca-structured-data') return;
+        try {
+            function clean(value) {
+                if (Array.isArray(value)) return value.map(clean).filter(Boolean);
+                if (!value || typeof value !== 'object') return value;
+                var types = [].concat(value['@type'] || []);
+                if (types.some(function (t) { return ['BlogPosting', 'TechArticle', 'Article'].includes(t); }) &&
+                    value.author && value.author.name === 'Jerry Chien') {
+                    if (!isSinglePost) return null;
+                    value.author = Object.assign({}, value.author, person);
+                }
+                if (value['@graph']) value['@graph'] = clean(value['@graph']);
+                return value;
+            }
+            var cleaned = clean(JSON.parse(node.textContent));
+            if (cleaned) node.textContent = JSON.stringify(cleaned);
+            else node.remove();
+        } catch (error) { /* Leave unrelated or invalid theme data untouched. */ }
+    });
+    if (document.getElementById('rhyzarca-structured-data')) return;
+    if (isStaticPage && path === '/p/about.html') {
+        person.sameAs = ['https://github.com/JerryChien1031',
+            'https://www.blogger.com/profile/03091466585665229711'];
+        var profile = document.createElement('script');
+        profile.id = 'rhyzarca-structured-data';
+        profile.type = 'application/ld+json';
+        profile.textContent = JSON.stringify({
+            '@context': 'https://schema.org', '@type': 'ProfilePage',
+            url: aboutUrl, mainEntity: person
+        });
+        document.head.appendChild(profile);
+        return;
+    }
     if (!isSinglePost) return;
 
     var postTitle = document.querySelector(".post-title, h1.entry-title");
@@ -103,12 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "@type": "TechArticle",
         "headline": postTitle.innerText.trim(),
         "inLanguage": "zh-TW",
-        "author": {
-            "@type": "Person",
-            "name": "Jerry Chien",
-            "jobTitle": "Cognitive System Architect",
-            "url": "https://blog.rhyzarca.com"
-        },
+        "author": person,
         "publisher": {
             "@type": "Organization",
             "name": "Rhyzarca",
@@ -128,7 +178,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     var script = document.createElement("script");
+    script.id = "rhyzarca-structured-data";
     script.type = "application/ld+json";
     script.text = JSON.stringify(schemaData);
     document.head.appendChild(script);
-})();
+}
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", injectStructuredData);
+} else {
+    injectStructuredData();
+}

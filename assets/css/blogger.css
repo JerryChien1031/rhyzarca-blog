@@ -326,3 +326,12 @@ body {
     margin-top: 1.5rem;
     background: #ffffff;
 }
+
+/* About uses the same readable slate / amber typography as posts. */
+.post-body.about-profile { max-width: 760px; margin-inline: auto; overflow-wrap: anywhere; }
+.about-profile h1 { color: #0f172a; line-height: 1.25; margin-bottom: 0.75rem; }
+.about-profile h1 + p { color: #64748b; border-left: 3px solid #d97706; padding-left: 1rem; }
+.about-profile a { text-underline-offset: 0.2em; }
+@media (max-width: 600px) {
+    .about-profile h1 { font-size: 1.9rem; }
+}

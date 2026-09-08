@@ -1,0 +1,8 @@
+.env
+.env.*
+token.json
+client_secret*.json
+__pycache__/
+*.py[cod]
+.venv/
+.local-preview/
