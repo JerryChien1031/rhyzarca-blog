@@ -1,9 +1,9 @@
 ---
-title: "關於我｜Jerry Chien"
-page_key: "about"
-blogger_page_id:
-blogger_page_url:
-description: "Jerry Chien，Rhyzarca 創作者。研究 AGI 時代的認知系統架構、個人主權狀態、認識論帳本與人機共生治理。"
+blogger_page_id: '6548027001029999926'
+blogger_page_url: https://blog.rhyzarca.com/p/about.html
+description: Jerry Chien，Rhyzarca 創作者。研究 AGI 時代的認知系統架構、個人主權狀態、認識論帳本與人機共生治理。
+page_key: about
+title: 關於我｜Jerry Chien
 ---
 
 # Jerry Chien
