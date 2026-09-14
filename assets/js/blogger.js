@@ -2,7 +2,49 @@
    Rhyzarca Blog Client Script (Nav, TOC & Sovereign Footers)
    ========================================================================== */
 
+function isBloggerErrorView() {
+    return Array.prototype.some.call(document.scripts, function (script) {
+        if (script.src) return false;
+
+        var source = script.textContent || "";
+        return source.indexOf("_WidgetManager._SetDataContext") !== -1 &&
+            /[\x27\x22]pageType[\x27\x22]\s*:\s*[\x27\x22]error_page[\x27\x22]/.test(source) &&
+            /[\x27\x22]isError[\x27\x22]\s*:\s*true\b/.test(source);
+    });
+}
+
+function renderCustomErrorPage() {
+    if (!isBloggerErrorView() || document.getElementById("rhyzarca-404")) return;
+
+    var statusMessage = document.querySelector("#Blog1 .blog-posts > .status-msg-wrap");
+    if (!statusMessage) return;
+
+    var errorPage = document.createElement("section");
+    errorPage.id = "rhyzarca-404";
+    errorPage.className = "rhyzarca-error-page";
+    errorPage.setAttribute("aria-labelledby", "rhyzarca-404-title");
+    errorPage.innerHTML = '<div class="error-code" aria-hidden="true">404</div>' +
+        '<h1 id="rhyzarca-404-title">找不到這一頁</h1>' +
+        '<p class="error-description">這個網址可能已經移動、刪除，或從一開始就不存在。</p>' +
+        '<p class="error-guidance">如果你是從舊文章或外部連結來到這裡，可以從首頁或分類重新找到相關內容。</p>' +
+        '<div class="error-actions">' +
+        '<a href="/" class="error-primary">返回首頁</a>' +
+        '<a href="/p/about.html" class="error-secondary">關於我</a>' +
+        '</div>' +
+        '<nav class="error-links" aria-label="內容分類">' +
+        '<a href="/search/label/insights">心得記錄</a>' +
+        '<a href="/search/label/architecture">系統日誌</a>' +
+        '<a href="/search/label/embodied">生活體驗</a>' +
+        '<a href="/search/label/speculations">科學思辨</a>' +
+        '</nav>';
+
+    document.body.classList.add("rhyzarca-error-view");
+    statusMessage.parentNode.replaceChild(errorPage, statusMessage);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    renderCustomErrorPage();
+
     /* 1. 自動在頁首 Header 下方注入分類導覽列 */
     var header = document.querySelector(".header-outer, #header, .header, header, .Header");
     if (header && !document.getElementById("rhyzarca-nav")) {
