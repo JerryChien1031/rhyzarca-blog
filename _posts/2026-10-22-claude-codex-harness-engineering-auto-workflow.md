@@ -1,10 +1,19 @@
 ---
-layout: post
-title: "Claude Code × OpenAI Codex：從共享契約到可恢復的自主工程工作流"
+blogger_post_id: '2348830972431582157'
+categories:
+- architecture
 date: 2026-10-22 02:54:40 +0800
-categories: [architecture]
-tags: [Harness-Engineering, Claude-Code, OpenAI-Codex, MCP, Graph-Runtime, Auto-Workflow, Epistemic-Ledger]
-description: "拆解 Claude Code 與 Codex 如何共用工程契約，以原生 Worker、MCP、持久化工作圖與合作式寫入認領完成協作，並從真實事故釐清自主工作流的恢復機制與驗收邊界。"
+description: 拆解 Claude Code 與 Codex 如何共用工程契約，以原生 Worker、MCP、持久化工作圖與合作式寫入認領完成協作，並從真實事故釐清自主工作流的恢復機制與驗收邊界。
+layout: post
+tags:
+- Harness-Engineering
+- Claude-Code
+- OpenAI-Codex
+- MCP
+- Graph-Runtime
+- Auto-Workflow
+- Epistemic-Ledger
+title: Claude Code × OpenAI Codex：從共享契約到可恢復的自主工程工作流
 ---
 
 ![Claude Code 與 Codex 以共同契約連接原生執行、工作狀態與獨立證據的技術封面](/assets/images/posts/2026-10-22-claude-codex-harness-engineering-auto-workflow_1.png)
