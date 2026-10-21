@@ -2,10 +2,12 @@ import os
 import glob
 import time
 import tempfile
+import sys
 import frontmatter
 from markdown_parser import parse_and_convert
 from blogger_api import (
     get_blogger_service,
+    BloggerAuthorizationError,
     publish_post,
     upsert_page
 )
@@ -71,9 +73,10 @@ def sync_pages(service):
 
 
 def sync_posts(service):
+    failures = []
     if not os.path.exists(POSTS_DIR):
         print(f"❌ 錯誤找不到 _posts 資料夾: {POSTS_DIR}")
-        return
+        return [('_posts', 'FileNotFoundError')]
 
     md_files = glob.glob(os.path.join(POSTS_DIR, '*.md'))
     print(f"📁 找到共 {len(md_files)} 篇 Markdown 文章。")
@@ -113,18 +116,37 @@ def sync_posts(service):
                 time.sleep(5)
 
         except Exception as e:
-            print(f"❌ 同步檔案 {filename} 失敗: {e}")
+            failures.append((filename, type(e).__name__))
+            print(f"❌ 同步檔案 {filename} 失敗 ({type(e).__name__})")
             time.sleep(10)
 
+    return failures
 
 
 def main():
     if not BLOG_ID:
         raise RuntimeError('BLOGGER_BLOG_ID is missing.')
-    service = get_blogger_service()
-    sync_posts(service)
-    sync_pages(service)
+    try:
+        service = get_blogger_service()
+    except BloggerAuthorizationError as exc:
+        print(f"❌ {exc}", file=sys.stderr)
+        return 1
+
+    failures = sync_posts(service)
+    try:
+        sync_pages(service)
+    except Exception as exc:
+        # Pages 保留原本遇錯即停止的行為，同時納入整體失敗結果。
+        failures.append(('_pages', type(exc).__name__))
+
+    if failures:
+        print(f"❌ 同步未全部成功，共 {len(failures)} 項失敗：", file=sys.stderr)
+        for path, error_type in failures:
+            print(f"- {path}: {error_type}", file=sys.stderr)
+        return 1
+    print('✅ Posts 與 Pages 同步全部成功。')
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

@@ -1,14 +1,14 @@
 # scripts/check_blogger_auth.py
 import os
 import sys
-from blogger_api import get_blogger_service
+from blogger_api import BloggerAuthorizationError, get_blogger_service
 
 def main():
     print("開始檢查 Blogger API 授權狀態...")
     try:
-        # 嘗試取得授權與 Service 物件
-        # 這會讀取 scripts/client_secret.json 和 scripts/token.json
-        service = get_blogger_service()
+        # 即使 Access Token 尚有效，也要確認 Refresh Token 能繼續使用。
+        # 僅在記憶體刷新；健康檢查不覆寫既有憑證。
+        service = get_blogger_service(force_refresh=True, persist_token=False)
         
         # 進行一個最簡單、不會修改資料的 API 呼叫來驗證 Token
         # 這裡嘗試讀取使用者自己的網誌清單
@@ -16,16 +16,20 @@ def main():
         
         if 'items' in blogs:
             print("✅ 憑證健康檢查通過：成功讀取 Blogger 網誌清單。")
-            sys.exit(0) # 成功退出
+            return 0
         else:
             print("✅ 憑證健康檢查通過：但找不到任何網誌。")
-            sys.exit(0)
+            return 0
 
-    except Exception as e:
-        print(f"❌ 憑證檢查失敗，可能 Token 已過期或被撤銷: {e}")
-        # 如果是 401 錯誤（通常是 token invalid_grant），程式會走到這裡
-        sys.exit(1) # 回傳非 0 值，讓 GitHub Actions 標記為失敗
+    except BloggerAuthorizationError as exc:
+        print(f"❌ 憑證檢查失敗: {exc}", file=sys.stderr)
+        return 1
+    except Exception as exc:
+        # 原始 OAuth/API 例外可能含敏感資料，僅回報例外類型。
+        print(f"❌ 憑證檢查失敗 ({type(exc).__name__})。請檢查網路、帳號及 Blogger 存取權。",
+              file=sys.stderr)
+        return 1
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())
 

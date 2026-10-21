@@ -2,6 +2,7 @@ import os
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
+from google.auth.exceptions import RefreshError
 import re
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
@@ -10,7 +11,12 @@ from googleapiclient.errors import HttpError
 # 設定我們需要的權限：管理 Blogger
 SCOPES = ['https://www.googleapis.com/auth/blogger']
 
-def get_blogger_service(client_secret_file='client_secret.json', token_file='token.json'):
+class BloggerAuthorizationError(RuntimeError):
+    """An actionable OAuth failure that does not expose credential responses."""
+
+
+def get_blogger_service(client_secret_file='client_secret.json', token_file='token.json',
+                        *, force_refresh=False, persist_token=True):
     """
     取得授權並建立 Blogger API 的通訊客戶端 (Service Object)。
     """
@@ -20,13 +26,32 @@ def get_blogger_service(client_secret_file='client_secret.json', token_file='tok
     if os.path.exists(token_file):
         creds = Credentials.from_authorized_user_file(token_file, SCOPES)
     if not creds:
-        raise RuntimeError('Existing Blogger OAuth token required; no interactive login.')
-    if not creds.valid:
+        raise BloggerAuthorizationError(
+            'Existing Blogger OAuth token required. Reauthorize locally and update '
+            'the GitHub Actions secret BLOGGER_TOKEN; CI cannot sign in interactively.')
+    if force_refresh or not creds.valid:
         if not creds.refresh_token:
-            raise RuntimeError('Blogger token cannot be refreshed.')
-        creds.refresh(Request())
-        with open(token_file, 'w', encoding='utf-8') as token:
-            token.write(creds.to_json())
+            raise BloggerAuthorizationError(
+                'Blogger refresh token is missing. Reauthorize with offline access '
+                'and update BLOGGER_TOKEN.')
+        try:
+            creds.refresh(Request())
+        except RefreshError as exc:
+            details = next((arg for arg in exc.args if isinstance(arg, dict)), {})
+            if details.get('error') == 'invalid_grant':
+                message = (
+                    'Blogger OAuth refresh failed (invalid_grant). The refresh token '
+                    'may have expired or been revoked. Check Google Auth Platform '
+                    'Audience: External + Testing limits Blogger refresh tokens to '
+                    'seven days. Reauthorize locally and update BLOGGER_TOKEN; '
+                    'changing Publishing Status alone does not replace an expired token.')
+            else:
+                message = ('Blogger OAuth refresh failed. Check the OAuth client, '
+                           'Google account access, and authorization service availability.')
+            raise BloggerAuthorizationError(message) from None
+        if persist_token:
+            with open(token_file, 'w', encoding='utf-8') as token:
+                token.write(creds.to_json())
 
     return build('blogger', 'v3', credentials=creds)
 
