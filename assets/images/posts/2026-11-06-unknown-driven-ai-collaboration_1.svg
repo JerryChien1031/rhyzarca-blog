@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">From Unknown to Verifiable — AI agent collaboration cover</title>
+<desc id="desc">A luminous human-intent node evolves through exploratory AI agents, research tools, and knowledge checkpoints into a verifiable outcome, over a midnight-blue architectural canvas.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050c1d"/><stop offset=".48" stop-color="#0b1832"/><stop offset="1" stop-color="#091026"/></linearGradient>
+  <radialGradient id="glowL"><stop stop-color="#e4b992" stop-opacity=".30"/><stop offset="1" stop-color="#e4b992" stop-opacity="0"/></radialGradient>
+  <radialGradient id="glowR"><stop stop-color="#5bc9c7" stop-opacity=".28"/><stop offset="1" stop-color="#5bc9c7" stop-opacity="0"/></radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d4a67c"/><stop offset=".42" stop-color="#b4b5db"/><stop offset="1" stop-color="#62d8c8"/></linearGradient>
+  <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#152842" stop-opacity=".93"/><stop offset="1" stop-color="#081729" stop-opacity=".97"/></linearGradient>
+  <linearGradient id="coin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a9fff1"/><stop offset="1" stop-color="#2a8f9b"/></linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="20"/></filter>
+  <filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#7ba3c5" stroke-opacity=".073" stroke-width="1"/></pattern>
+</defs>
+<rect width="1200" height="675" fill="url(#bg)"/>
+<rect width="1200" height="675" fill="url(#grid)"/>
+<ellipse cx="220" cy="430" rx="300" ry="265" fill="url(#glowL)"/>
+<ellipse cx="940" cy="345" rx="365" ry="310" fill="url(#glowR)"/>
+<path d="M0 549C218 494 320 588 515 529S946 428 1200 474" fill="none" stroke="#94a8d0" stroke-opacity=".09" stroke-width="2"/>
+<path d="M0 105C235 161 409 100 592 130S978 83 1200 118" fill="none" stroke="#94a8d0" stroke-opacity=".08" stroke-width="2"/>
+<g opacity=".42" fill="#7b9dbd"><circle cx="73" cy="89" r="2"/><circle cx="157" cy="508" r="1.6"/><circle cx="377" cy="130" r="1.8"/><circle cx="479" cy="543" r="1.5"/><circle cx="687" cy="80" r="1.9"/><circle cx="1101" cy="180" r="2"/><circle cx="1047" cy="510" r="1.7"/></g>
+<text x="75" y="74" font-family="Arial, sans-serif" font-size="17" letter-spacing="5" fill="#a8becf" opacity=".92">RHYZARCA / AI-NATIVE COLLABORATION</text>
+<text x="74" y="157" font-family="Arial, sans-serif" font-size="43" font-weight="700" letter-spacing="-.4" fill="#f0f4f9">FROM UNKNOWN</text>
+<text x="74" y="210" font-family="Arial, sans-serif" font-size="43" font-weight="700" letter-spacing="-.4" fill="#f0f4f9">TO VERIFIABLE</text>
+<line x1="76" y1="231" x2="475" y2="231" stroke="url(#beam)" stroke-width="3" stroke-linecap="round"/>
+<text x="75" y="264" font-family="Arial, sans-serif" font-size="16" letter-spacing="2.2" fill="#c8d5df">INTENT  /  DISCOVERY  /  CAPABILITY  /  EVIDENCE</text>
+<!-- broad luminous discovery corridor -->
+<path d="M295 408 C445 280, 525 493, 680 388 S953 355, 1108 355" fill="none" stroke="url(#beam)" stroke-width="3.2" stroke-opacity=".85" filter="url(#halo)"/>
+<path d="M295 408 C445 280, 525 493, 680 388 S953 355, 1108 355" fill="none" stroke="#d6e5f5" stroke-width="1.2" stroke-opacity=".7"/>
+<!-- human intent cube -->
+<g transform="translate(122 334)">
+  <circle cx="88" cy="82" r="100" stroke="#e0b98d" stroke-width="1.3" stroke-opacity=".55" fill="none" stroke-dasharray="4 9"/>
+  <circle cx="88" cy="82" r="76" fill="#b37d5b" fill-opacity=".075" stroke="#d6ae86" stroke-width="1.3"/>
+  <path d="M88 26 L135 55 L135 110 L88 140 L41 110 L41 55 Z" fill="#ca986d" fill-opacity=".09" stroke="#e6b995" stroke-width="1.5"/>
+  <path d="M41 55L88 84L135 55M88 84V140" fill="none" stroke="#e6b995" stroke-width="1.3" opacity=".8"/>
+  <circle cx="88" cy="84" r="13" fill="#f3c69e" filter="url(#halo)"/>
+  <text x="88" y="200" fill="#f4d9c2" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="3">HUMAN INTENT</text>
+</g>
+<!-- researching agents -->
+<g transform="translate(455 326)">
+  <path d="M-36 28L24 -25L86 33L31 90Z" fill="#2b3f67" fill-opacity=".35" stroke="#7794c4" stroke-opacity=".5"/>
+  <circle cx="24" cy="-25" r="19" fill="#283857" stroke="#b8aed6" stroke-width="2"/>
+  <circle cx="86" cy="33" r="17" fill="#223f5b" stroke="#98c5dc" stroke-width="2"/>
+  <circle cx="31" cy="90" r="18" fill="#1b4050" stroke="#7ccfc5" stroke-width="2"/>
+  <circle cx="-36" cy="28" r="17" fill="#26304d" stroke="#afadd9" stroke-width="2"/>
+  <circle cx="25" cy="29" r="28" fill="#152b44" stroke="#cccee7" stroke-width="2.4" filter="url(#halo)"/>
+  <g fill="#dce8ff"><circle cx="24" cy="-25" r="5"/><circle cx="86" cy="33" r="5"/><circle cx="31" cy="90" r="5"/><circle cx="-36" cy="28" r="5"/></g>
+  <circle cx="25" cy="29" r="10" fill="#e7e8fc"/>
+  <text x="27" y="152" fill="#cbd6e8" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="3">AGENT NETWORK</text>
+</g>
+<!-- knowledge modules -->
+<g transform="translate(718 298)">
+  <rect x="-21" y="2" width="141" height="105" rx="11" fill="url(#panel)" stroke="#63c2c9" stroke-opacity=".7"/>
+  <rect x="-5" y="-14" width="141" height="105" rx="11" fill="url(#panel)" stroke="#91a9d9" stroke-opacity=".8"/>
+  <rect x="11" y="-30" width="141" height="105" rx="11" fill="url(#panel)" stroke="#8eddd6"/>
+  <rect x="34" y="-4" width="90" height="8" rx="4" fill="#6bcdbd" fill-opacity=".68"/>
+  <rect x="34" y="17" width="69" height="5" rx="2.5" fill="#bacada" fill-opacity=".6"/>
+  <rect x="34" y="32" width="80" height="5" rx="2.5" fill="#bacada" fill-opacity=".35"/>
+  <g stroke="#79d5d2" fill="none"><circle cx="117" cy="54" r="12"/><path d="M110 54l5 6 10-13"/></g>
+  <text x="64" y="147" fill="#9ddbdc" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="3">KNOWLEDGE + TOOLS</text>
+</g>
+<!-- outcome -->
+<g transform="translate(1016 348)">
+  <circle cx="61" cy="24" r="75" fill="#4fd4c5" fill-opacity=".07" stroke="#8ff6df" stroke-width="1.6" filter="url(#halo)"/>
+  <circle cx="61" cy="24" r="51" stroke="#8ddbcf" stroke-width="1.2" stroke-opacity=".58" fill="none"/>
+  <path d="M36 24l17 17 36-38" fill="none" stroke="url(#coin)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#halo)"/>
+  <text x="59" y="121" fill="#a3f2df" text-anchor="middle" font-family="Arial" font-size="13" letter-spacing="2">VERIFIED</text>
+</g>
+<g transform="translate(73 596)">
+  <rect x="0" y="0" width="1054" height="42" rx="12" fill="#13263d" fill-opacity=".8" stroke="#85a7bd" stroke-opacity=".18"/>
+  <circle cx="26" cy="21" r="6" fill="#d2a478"/><text x="43" y="26" font-family="Arial" font-size="14" fill="#dae5ee">Problem discovery</text>
+  <circle cx="284" cy="21" r="6" fill="#b5b4df"/><text x="301" y="26" font-family="Arial" font-size="14" fill="#dae5ee">Agent orchestration</text>
+  <circle cx="578" cy="21" r="6" fill="#73d3d3"/><text x="595" y="26" font-family="Arial" font-size="14" fill="#dae5ee">Reusable capability</text>
+  <circle cx="844" cy="21" r="6" fill="#80efc7"/><text x="861" y="26" font-family="Arial" font-size="14" fill="#dae5ee">Evidence &amp; continuity</text>
+</g>
+</svg>

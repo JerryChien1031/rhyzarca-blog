@@ -69,6 +69,8 @@ bundle exec jekyll serve --livereload
 
 ## ✍️ 文章發布規範 (Writing Guidelines)
 
+**新文章必讀：[Blog 文章結構與圖片契約](docs/blog-article-contract.md)**。2026-11-06 起的新文章必須包含標準 Front Matter（含 `image` 首圖路徑），在正文最前面放置實際存在的首圖與圖說，再接 TL;DR。圖片的**位置、來源與命名固定；風格不固定**。長文另建議在靠近結語處加入收束圖。Draft **不可編造 `blogger_post_id`**；正式發布成功後，既有 Blogger 同步流程才會回寫真實文章 ID。獨立 PR 的 GitHub Actions 檢查缺漏，不能取代最終顯示與發布驗收。
+
 新增文章請於 `_posts/` 目錄下建立檔案，檔名格式遵循 `YYYY-MM-DD-title.md`。
 
 文章結構範本如下：
@@ -81,7 +83,12 @@ date: YYYY-MM-DD HH:MM:SS +0800
 categories: [insights, architecture]
 tags: [AGI, Epistemic-Ledger, Philosophy]
 description: "120 字以內之文章精要（TL;DR），利於 AEO 與社群預覽。"
+image: /assets/images/posts/YYYY-MM-DD-title_1.png
 ---
+
+![根據文章主題撰寫的首圖替代文字](/assets/images/posts/YYYY-MM-DD-title_1.png)
+
+*圖一：依文章主題設計的封面圖說。*
 
 > **TL;DR**  
 > 本文核心結論與摘要（BLUF 原則，先給出結論）。
