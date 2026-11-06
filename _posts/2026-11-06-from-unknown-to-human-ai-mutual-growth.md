@@ -1,8 +1,9 @@
 ---
-blogger_post_id: '4084431856132265811'
-blogger_permalink_slug: human-ai-mutual-growth
-blogger_migrate_from_id: '4084431856132265811'
 blogger_migrate_expected_old_path: /2026/11/ai.html
+blogger_migrate_from_id: '4084431856132265811'
+blogger_permalink_slug: human-ai-mutual-growth
+blogger_post_id: '4612228034531880686'
+blogger_post_url: https://blog.rhyzarca.com/2026/11/human-ai-mutual-growth.html
 categories:
 - insights
 date: 2026-11-06 08:50:00 +0800
