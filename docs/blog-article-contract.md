@@ -23,7 +23,6 @@ title: "從未知開始：文章的正式標題"
 date: 2026-11-06 09:00:00 +0800
 categories:
   - insights
-  - architecture
 tags:
   - Human-AI-Collaboration
   - MCP
@@ -33,6 +32,8 @@ image: /assets/images/posts/2026-11-06-example-title_1.png
 ~~~
 
 **只有正式發布成功後**，才可能由同步器補入例如 blogger_post_id: '1234567890123456789' 的真實數字（此為示意，不可直接使用）。欄位可由 YAML 序列化程式重排，不要求固定順序；核對的是名稱、型別與值是否有效。
+
+**分類與檔名必須先經語意判斷，不能只靠關鍵字套範本：**`insights` 是心得、觀點與人機協作反思；`architecture` 是已實作的系統工程、測試、版本與開發紀錄。使用者指定「只屬心得紀錄」時，`categories` 只能包含 `insights`，即使文中提到 MCP、Agent、GitHub 或系統示意也不得自動增加 `architecture`。英文 slug 需反映文章題旨（例如 `from-unknown-to-human-ai-mutual-growth`），禁止直接把內部任務代號或未經審閱的泛用工程名稱當成公開文章檔名。
 
 固定必填：layout: post；非空 title、date（含 +0800，日期與檔名前十碼一致）、categories、tags、description、image。摘要建議 120 字內。分類按文章主題設定，不強制所有文章同分類。新草稿不得有未經實際發佈的 blogger_post_id。
 

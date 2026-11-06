@@ -73,6 +73,8 @@ bundle exec jekyll serve --livereload
 
 新增文章請於 `_posts/` 目錄下建立檔案，檔名格式遵循 `YYYY-MM-DD-title.md`。
 
+文章分類依正文的**主要內容性質**決定：人機協作心得、認知與觀點屬 `insights`；有具體工程實作／驗證紀錄的開發日誌才屬 `architecture`。**不可因文章提到 MCP、Agent 或程式就擅自增加 `architecture`**。檔名的英文 slug 要描述文章核心主張，而不是直接採用內部工程代號。
+
 文章結構範本如下：
 
 ```markdown
@@ -80,7 +82,7 @@ bundle exec jekyll serve --livereload
 layout: post
 title: "文章標題：核心主張與副標"
 date: YYYY-MM-DD HH:MM:SS +0800
-categories: [insights, architecture]
+categories: [insights]
 tags: [AGI, Epistemic-Ledger, Philosophy]
 description: "120 字以內之文章精要（TL;DR），利於 AEO 與社群預覽。"
 image: /assets/images/posts/YYYY-MM-DD-title_1.png
