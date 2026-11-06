@@ -75,6 +75,8 @@ bundle exec jekyll serve --livereload
 
 文章分類依正文的**主要內容性質**決定：人機協作心得、認知與觀點屬 `insights`；有具體工程實作／驗證紀錄的開發日誌才屬 `architecture`。**不可因文章提到 MCP、Agent 或程式就擅自增加 `architecture`**。檔名的英文 slug 要描述文章核心主張，而不是直接採用內部工程代號。
 
+**重要：** GitHub 的檔名不會決定 Blogger 公開永久連結。新文章必須在 Front Matter 指定 `blogger_permalink_slug`；同步程式先以此英文名稱建立 Blogger 文章，再更新正式中文標題，並驗證真實 URL。已發布文章的舊網址不可靠重命名 Markdown 修復；需要明確授權、保存舊 ID 的遷移流程。
+
 文章結構範本如下：
 
 ```markdown
@@ -85,6 +87,7 @@ date: YYYY-MM-DD HH:MM:SS +0800
 categories: [insights]
 tags: [AGI, Epistemic-Ledger, Philosophy]
 description: "120 字以內之文章精要（TL;DR），利於 AEO 與社群預覽。"
+blogger_permalink_slug: human-ai-mutual-growth
 image: /assets/images/posts/YYYY-MM-DD-title_1.png
 ---
 

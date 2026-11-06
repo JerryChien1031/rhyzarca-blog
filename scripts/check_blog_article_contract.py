@@ -17,7 +17,7 @@ from PIL import Image
 
 REPO = Path(__file__).resolve().parents[1]
 START_DATE = "2026-11-06"
-REQUIRED = ("layout", "title", "date", "categories", "tags", "description", "image")
+REQUIRED = ("layout", "title", "date", "categories", "tags", "description", "image", "blogger_permalink_slug")
 IMAGE_RE = re.compile(r"!\[(?P<alt>[^\]\n]*)\]\((?P<url>[^)\s]+)\)")
 LOCAL_PREFIX = "/assets/images/posts/"
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".svg"}
@@ -93,6 +93,9 @@ def check_post(path: Path, repo: Path = REPO) -> tuple[list[str], bool]:
         value = meta.get(field)
         if value is None or value == "" or value == []:
             errors.append(f"缺少必要欄位／值：{field}")
+    slug = meta.get("blogger_permalink_slug")
+    if not isinstance(slug, str) or not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", slug) or len(slug) > 38:
+        errors.append("blogger_permalink_slug 必須為 38 字元內的小寫英文 kebab-case；用於驗證 Blogger 真正的公開 URL")
     if meta.get("layout") != "post":
         errors.append("layout 必須為 post")
     if not isinstance(meta.get("title"), str) or not meta.get("title", "").strip():

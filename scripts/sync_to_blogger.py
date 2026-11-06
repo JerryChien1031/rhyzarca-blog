@@ -4,6 +4,7 @@ import time
 import tempfile
 import sys
 import frontmatter
+import re
 from markdown_parser import parse_and_convert
 from blogger_api import (
     get_blogger_service,
@@ -11,6 +12,7 @@ from blogger_api import (
     publish_post,
     upsert_page
 )
+from blogger_post_permalink import upsert_with_permalink, require_slug
 from dotenv import load_dotenv
 
 # 1. 載入位於 scripts 底下的 .env 檔案
@@ -23,16 +25,24 @@ PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
 POSTS_DIR = os.path.join(PROJECT_ROOT, '_posts')
 PAGES_DIR = os.path.join(PROJECT_ROOT, '_pages')
 
-def update_markdown_frontmatter(filepath, post_id):
-    """
-    將成功發布後取得的 blogger_post_id 寫回 Markdown 檔案的 Frontmatter 中
+def update_markdown_frontmatter(filepath, post_id, post_url=None, legacy_post_id=None):
+    """Persist actual Blogger identity immediately, including partial migration progress.
+
+    Do not invent ID/URL. This checkpoint is repeated safely on retries; GitHub's
+    existing Workflow commits the resulting true metadata back to the repository.
     """
     with open(filepath, 'r', encoding='utf-8') as f:
         post = frontmatter.load(f)
 
-    post.metadata['blogger_post_id'] = post_id
+    updates = {'blogger_post_id': str(post_id)}
+    if post_url:
+        updates['blogger_post_url'] = str(post_url)
+    if legacy_post_id:
+        updates['blogger_migrate_from_id'] = str(legacy_post_id)
 
-    # 寫回檔案
+    if all(post.metadata.get(key) == value for key, value in updates.items()):
+        return
+    post.metadata.update(updates)
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(frontmatter.dumps(post))
 
@@ -99,12 +109,43 @@ def sync_posts(service):
             categories = metadata.get('categories', [])
             labels = list(set(tags + categories))
 
+            # New contract: verified ASCII permalink survives the Chinese title update.
+            # Existing articles without the field retain the historical publishing path.
+            permalink_slug = metadata.get('blogger_permalink_slug')
+            if permalink_slug:
+                permalink_slug = require_slug(permalink_slug)
+                published_date = metadata.get('date')
+                if hasattr(published_date, 'strftime'):
+                    yyyy_mm = published_date.strftime('%Y/%m')
+                else:
+                    match = re.match(r'^(\d{4})-(\d{2})', str(published_date or ''))
+                    if not match:
+                        raise ValueError('Cannot determine Blogger permalink year/month from date')
+                    yyyy_mm = match.group(1) + '/' + match.group(2)
+                expected_path = f'/{yyyy_mm}/{permalink_slug}.html'
+                migration_id = metadata.get('blogger_migrate_from_id')
+                expected_old_path = metadata.get('blogger_migrate_expected_old_path')
+                # A migration is explicit and constrained to the exact original ID/path.
+                def checkpoint(post_id, real_url, original_id):
+                    update_markdown_frontmatter(
+                        filepath, post_id, real_url, original_id)
+                verified = upsert_with_permalink(
+                    service, BLOG_ID, title=title, html_content=html_content,
+                    labels=labels, slug=permalink_slug, expected_path=expected_path,
+                    current_post_id=blogger_post_id,
+                    migration_from_id=migration_id,
+                    expected_old_path=expected_old_path, checkpoint=checkpoint)
+                print(f"✅ Blogger permalink verified: {verified['url']}")
+                print(f"✅ Blogger Post ID: {verified['id']}")
+                time.sleep(5)
+                continue
+
             if not blogger_post_id:
                 print(f"👉 狀態：尚未發布，正在發布新文章「{title}」...")
                 new_post_id = publish_post(service, BLOG_ID, title, html_content, labels)
                 print(f"✅ 發布成功！Blogger 文章 ID: {new_post_id}")
 
-                # 自動將 ID 寫回 Markdown 檔案
+                # 自動將 ID 回寫 Markdown，避免重複新增
                 update_markdown_frontmatter(filepath, new_post_id)
                 print(f"📝 已自動將 blogger_post_id 寫回 Markdown 檔案。")
 
