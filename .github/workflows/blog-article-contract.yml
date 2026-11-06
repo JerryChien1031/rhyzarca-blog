@@ -38,6 +38,9 @@ jobs:
       - name: Regression tests for the post contract
         run: python -m unittest discover -s tests -p 'test_blog_article_contract.py' -v
 
+      - name: Verify stable Blogger permalink publisher and migration recovery
+        run: python -m unittest discover -s tests -p 'test_blogger_post_permalink.py' -v
+
       - name: Validate changed article fields, images and official conversion
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
