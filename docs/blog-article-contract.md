@@ -9,6 +9,7 @@
 | BLOGGER_BLOG_ID | Blogger 整個網站的 ID，由既有同步 Workflow 的環境變數取得 | **不寫入文章**，不從其他文章複製 |
 | blogger_post_id | 單篇文章的 Blogger ID；同步腳本據此更新，缺少則可能建立新文章 | **首次正式發布成功後**才從 Blogger API 回傳並自動寫回；草稿不得填假值、空值或佔位符 |
 | image | 該文章的首圖本地路徑 | 新稿**必須提供**，且檔案真的存在、與正文第一張圖相同 |
+| blogger_permalink_slug | 新文章正式 Blogger URL 的英文尾碼 | 新稿**必填**，必須在首次發布前設定，不能以 GitHub 檔名取代 |
 
 實際的 scripts/sync_to_blogger.py 在首次成功發布後回寫 blogger_post_id。不得為了「欄位整齊」提前捏造 ID；已發布文章不能移除既有真實 ID，避免重新建立造成重複文章。Front Matter 的 image 用於文章來源契約，**不代表既有 Blogger 同步程式會用這個欄位設定 Blogger 特色圖片**。
 
@@ -27,6 +28,7 @@ tags:
   - Human-AI-Collaboration
   - MCP
 description: "說明本文問題、核心觀點與讀者收穫的精簡摘要。"
+blogger_permalink_slug: human-ai-mutual-growth
 image: /assets/images/posts/2026-11-06-example-title_1.png
 ---
 ~~~
@@ -34,6 +36,8 @@ image: /assets/images/posts/2026-11-06-example-title_1.png
 **只有正式發布成功後**，才可能由同步器補入例如 blogger_post_id: '1234567890123456789' 的真實數字（此為示意，不可直接使用）。欄位可由 YAML 序列化程式重排，不要求固定順序；核對的是名稱、型別與值是否有效。
 
 **分類與檔名必須先經語意判斷，不能只靠關鍵字套範本：**`insights` 是心得、觀點與人機協作反思；`architecture` 是已實作的系統工程、測試、版本與開發紀錄。使用者指定「只屬心得紀錄」時，`categories` 只能包含 `insights`，即使文中提到 MCP、Agent、GitHub 或系統示意也不得自動增加 `architecture`。英文 slug 需反映文章題旨（例如 `from-unknown-to-human-ai-mutual-growth`），禁止直接把內部任務代號或未經審閱的泛用工程名稱當成公開文章檔名。
+
+固定必填：`blogger_permalink_slug`（38 字以內小寫英文短句，作為 Blogger 真實 URL 的必要驗收值）。發布器先以此英文標題建立新 Post、立即保存真實 ID／URL，再更新中文顯示標題並核對 URL；不可憑 GitHub 文章檔名推定公開 URL。更改已發布舊文永久連結需獨立遷移，保留舊 Post ID 供核對，不可直接移除 ID 或重複發布。**API 未提供正式的 customPermalink 欄位，不能宣稱直接 patch 中文標題可修正既有 URL。**
 
 固定必填：layout: post；非空 title、date（含 +0800，日期與檔名前十碼一致）、categories、tags、description、image。摘要建議 120 字內。分類按文章主題設定，不強制所有文章同分類。新草稿不得有未經實際發佈的 blogger_post_id。
 
