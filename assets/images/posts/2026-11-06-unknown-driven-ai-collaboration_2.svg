@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title description">
+<title id="title">Recursive capability and epistemic continuity</title>
+<desc id="description">Three luminous knowledge, problem-solving, and capability cycles converge in a portable evidence ledger that can be handed between AI platforms.</desc>
+<defs>
+ <linearGradient id="back" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0d101e"/><stop offset=".5" stop-color="#15263c"/><stop offset="1" stop-color="#0b1e24"/></linearGradient>
+ <radialGradient id="a"><stop stop-color="#e9a477" stop-opacity=".22"/><stop offset="1" stop-color="#e9a477" stop-opacity="0"/></radialGradient>
+ <radialGradient id="b"><stop stop-color="#77a7e9" stop-opacity=".24"/><stop offset="1" stop-color="#77a7e9" stop-opacity="0"/></radialGradient>
+ <radialGradient id="c"><stop stop-color="#74e3bc" stop-opacity=".23"/><stop offset="1" stop-color="#74e3bc" stop-opacity="0"/></radialGradient>
+ <linearGradient id="line" x1="0" x2="1"><stop stop-color="#efc4a0"/><stop offset=".48" stop-color="#a1b9ef"/><stop offset="1" stop-color="#a0f0ca"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#283e59" stop-opacity=".95"/><stop offset="1" stop-color="#112331" stop-opacity=".98"/></linearGradient>
+ <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#a4b8c9" opacity=".18"/></pattern>
+ <filter id="shadow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<rect width="1200" height="675" fill="url(#back)"/><rect width="1200" height="675" fill="url(#dots)"/>
+<ellipse cx="268" cy="333" rx="242" ry="257" fill="url(#a)"/>
+<ellipse cx="621" cy="333" rx="253" ry="290" fill="url(#b)"/>
+<ellipse cx="978" cy="333" rx="257" ry="274" fill="url(#c)"/>
+<text x="65" y="73" font-family="Arial,sans-serif" font-size="18" letter-spacing="4" fill="#afc4d3">RHYZARCA / RECURSIVE KNOWLEDGE SYSTEM</text>
+<text x="63" y="146" font-family="Arial,sans-serif" font-size="42" font-weight="bold" fill="#eef3f6">KNOWLEDGE IS NOT A TOOL</text>
+<text x="65" y="187" font-family="Arial,sans-serif" font-size="22" letter-spacing="3" fill="#bdcfda">IT IS THE CONTINUITY BETWEEN TOOLS</text>
+<path d="M70 221H1130" stroke="#95b2cb" stroke-opacity=".23" stroke-width="1.5"/>
+<!-- circular iterative loops -->
+<g fill="none" stroke-width="2.5">
+ <circle cx="230" cy="387" r="110" stroke="#e9ac85" stroke-opacity=".65" stroke-dasharray="12 6"/>
+ <circle cx="600" cy="387" r="110" stroke="#8eb5ea" stroke-opacity=".65" stroke-dasharray="12 6"/>
+ <circle cx="970" cy="387" r="110" stroke="#8de4bd" stroke-opacity=".65" stroke-dasharray="12 6"/>
+</g>
+<g fill="none" stroke-opacity=".7" stroke-width="2.4">
+ <path d="M313 315L514 315" stroke="#dcabb0"/>
+ <path d="M684 315L884 315" stroke="#8dd2d8"/>
+ <path d="M884 461C796 554 410 555 313 461" stroke="#cfb7ba" stroke-dasharray="8 8"/>
+</g>
+<path d="M509 307l18 8-18 8" fill="none" stroke="#e0b8be" stroke-width="3" stroke-linecap="round"/>
+<path d="M879 307l18 8-18 8" fill="none" stroke="#8dd2d8" stroke-width="3" stroke-linecap="round"/>
+<g transform="translate(230 387)">
+ <circle r="78" fill="#342b35" fill-opacity=".65" stroke="#d89c7e" stroke-opacity=".65"/>
+ <circle cx="0" cy="-23" r="20" fill="none" stroke="#f0c2a3" stroke-width="5"/>
+ <path d="M-47 38C-36 0 36 0 47 38" fill="none" stroke="#f0c2a3" stroke-width="5" stroke-linecap="round"/>
+ <circle r="12" cx="50" cy="-47" fill="#fac7a5"/><path d="M50 -54v14m-7-7h14" stroke="#493331" stroke-width="2"/>
+</g>
+<g transform="translate(600 387)">
+ <circle r="78" fill="#21334e" fill-opacity=".7" stroke="#b2caf7" stroke-opacity=".8"/>
+ <path d="M-43 -15L0 -45L43 -15L43 35L0 62L-43 35Z" fill="#9fbdec" fill-opacity=".075" stroke="#d0ddff" stroke-width="2"/>
+ <path d="M-43 -15L0 8L43 -15M0 8V62" fill="none" stroke="#aebde2" stroke-width="2"/>
+ <g fill="#c1d9ff"><circle cx="-43" cy="-15" r="7"/><circle cx="43" cy="-15" r="7"/><circle cx="0" cy="62" r="7"/><circle cx="0" cy="8" r="10"/></g>
+</g>
+<g transform="translate(970 387)">
+ <circle r="78" fill="#143f3b" fill-opacity=".55" stroke="#a1f1c6" stroke-opacity=".85"/>
+ <rect x="-45" y="-39" width="82" height="66" rx="7" fill="url(#glass)" stroke="#a1f1c6" stroke-width="2"/>
+ <rect x="-33" y="-24" width="54" height="5" rx="2.5" fill="#a5d7c2"/>
+ <rect x="-33" y="-11" width="42" height="5" rx="2.5" fill="#a5d7c2" fill-opacity=".55"/>
+ <rect x="-33" y="2" width="49" height="5" rx="2.5" fill="#a5d7c2" fill-opacity=".45"/>
+ <rect x="-29" y="-26" width="82" height="67" rx="7" fill="none" stroke="#d2ffe3" stroke-opacity=".45" stroke-width="2"/>
+ <path d="M-1 40l13 11 26-29" fill="none" stroke="#83e9b2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g font-family="Arial,sans-serif" text-anchor="middle">
+ <text x="230" y="526" font-size="19" font-weight="bold" letter-spacing="1.7" fill="#f5cfba">PROBLEM</text>
+ <text x="230" y="549" font-size="13" letter-spacing="1" fill="#e6b6a5">Intent &amp; unknowns</text>
+ <text x="600" y="526" font-size="19" font-weight="bold" letter-spacing="1.7" fill="#d1e1ff">CAPABILITY</text>
+ <text x="600" y="549" font-size="13" letter-spacing="1" fill="#b3ccee">Agents, skills &amp; tools</text>
+ <text x="970" y="526" font-size="19" font-weight="bold" letter-spacing="1.7" fill="#b8f6d5">KNOWLEDGE</text>
+ <text x="970" y="549" font-size="13" letter-spacing="1" fill="#99dfbe">Evidence &amp; decisions</text>
+</g>
+<rect x="70" y="593" width="1060" height="44" rx="12" fill="#1a2a39" stroke="#b4c7d6" stroke-opacity=".23"/>
+<circle cx="100" cy="615" r="6" fill="#eeb89b"/>
+<circle cx="407" cy="615" r="6" fill="#adbfef"/>
+<circle cx="742" cy="615" r="6" fill="#96e0c6"/>
+<g font-family="Arial,sans-serif" font-size="15" fill="#dce5ed">
+ <text x="116" y="620">Traceable sources</text><text x="423" y="620">Portable contracts</text><text x="758" y="620">Recoverable decisions &amp; verification</text>
+</g>
+</svg>
