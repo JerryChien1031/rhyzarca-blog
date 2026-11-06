@@ -71,7 +71,7 @@ class PermalinkTests(unittest.TestCase):
     def test_migrate_old_only_after_new_verified_and_checkpointed(self):
         svc=Mock(); p=svc.posts.return_value
         old=row(ident=OLD_ID,path=OLD,marked=False)
-        p.get.return_value.execute.side_effect=[old,old,row(ident=OLD_ID,path=OLD,marked=False,status="DRAFT")]
+        p.get.return_value.execute.side_effect=[old,old,old,row(ident=OLD_ID,path=OLD,marked=False,status="DRAFT")]
         p.getByPath.return_value.execute.side_effect=NotFound()
         p.insert.return_value.execute.return_value=row(title="human-ai-mutual-growth")
         p.update.return_value.execute.return_value=row()
