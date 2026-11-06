@@ -34,6 +34,7 @@ class BlogArticleContractTest(unittest.TestCase):
             "categories:\n  - insights\n"
             "tags:\n  - AI\n"
             "description: '短摘要'\n"
+            "blogger_permalink_slug: example-topic\n"
             f"image: {self.image}\n---\n\n"
             f"![完整的封面替代文字]({self.image})\n\n"
             "*圖一：測試示意圖。*\n\n"
@@ -47,6 +48,10 @@ class BlogArticleContractTest(unittest.TestCase):
 
     def test_valid_draft_has_no_blogger_post_id(self):
         self.assertEqual([], self.errors())
+
+    def test_missing_permalink_slug_is_error(self):
+        self.post.write_text(self.good_text.replace("blogger_permalink_slug: example-topic\n", ""), encoding="utf-8")
+        self.assertTrue(any("blogger_permalink_slug" in err for err in self.errors()))
 
     def test_missing_image_frontmatter_is_error(self):
         self.post.write_text(self.good_text.replace(f"image: {self.image}\n", ""), encoding="utf-8")
