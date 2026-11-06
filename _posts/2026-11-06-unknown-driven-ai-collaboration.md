@@ -1,20 +1,21 @@
 ---
-layout: post
-title: "從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求"
-date: 2026-11-06 08:50:00 +0800
+blogger_post_id: '4084431856132265811'
 categories:
-  - insights
-  - architecture
-tags:
-  - Human-AI-Collaboration
-  - Vibe-Coding
-  - Multi-Agent
-  - MCP
-  - Knowledge-Base
-  - Harness-Engineering
-  - Epistemic-Ledger
-description: "從模糊的採購需求出發，分析 AI 如何自主探索、同平台與跨平台協作，利用 Gemini Notebook、Notion、MCP 擴充能力，並以骨牌式驗收與認知帳本持續累積可繼承知識。"
+- insights
+- architecture
+date: 2026-11-06 08:50:00 +0800
+description: 從模糊的採購需求出發，分析 AI 如何自主探索、同平台與跨平台協作，利用 Gemini Notebook、Notion、MCP 擴充能力，並以骨牌式驗收與認知帳本持續累積可繼承知識。
 image: /assets/images/posts/2026-11-06-unknown-driven-ai-collaboration_1.svg
+layout: post
+tags:
+- Human-AI-Collaboration
+- Vibe-Coding
+- Multi-Agent
+- MCP
+- Knowledge-Base
+- Harness-Engineering
+- Epistemic-Ledger
+title: 從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求
 ---
 
 ![從模糊意圖經過 AI Agent、工具研究與知識累積走向可驗證成果的原創封面](/assets/images/posts/2026-11-06-unknown-driven-ai-collaboration_1.svg)
