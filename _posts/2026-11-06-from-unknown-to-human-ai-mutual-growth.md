@@ -7,7 +7,7 @@ blogger_post_url: https://blog.rhyzarca.com/2026/11/human-ai-mutual-growth.html
 categories:
 - insights
 date: 2026-11-06 08:50:00 +0800
-description: 從模糊的採購需求出發，分析 AI 如何自主探索、同平台與跨平台協作，利用 Gemini Notebook、Notion、MCP 擴充能力，並以骨牌式驗收與認知帳本持續累積可繼承知識。
+description: 一份散落各處的報價單，如何變成一場人與 AI 一起解決問題的練習？從找資料、連工具到跨平台交接，看雙方如何邊做邊學，讓經驗不因換工具而重來。
 image: /assets/images/posts/2026-11-06-from-unknown-to-human-ai-mutual-growth_1.svg
 layout: post
 tags:
@@ -23,7 +23,7 @@ title: 從未知開始：當 AI 自行組織專業、擴充工具，與人類共
 
 ![從模糊意圖經過 AI Agent、工具研究與知識累積走向可驗證成果的原創封面](/assets/images/posts/2026-11-06-from-unknown-to-human-ai-mutual-growth_1.svg)
 
-*圖一：從未知走向可驗證成果。人類先提出意圖，AI 自主研究、組織專業與工具，逐步形成成果並留下可追溯的知識。此圖為本文原創概念示意，非任何平台的官方系統架構。*
+*圖一：人先說出想解決的麻煩，AI 幫忙找資料、工具與合作方法；一件件做完，過程和證據也留下來。此圖為原創概念示意，不是平台官方架構。*
 
 > **TL;DR**  
 > 不懂技術，不代表得自己先找出解法。從一份散落各處的報價單出發，AI 可以帶人找資料、連工具、跨平台找幫手；人則靠操作、選擇和回饋，幫 AI 看見現場真正的問題。
@@ -583,7 +583,7 @@ AI 可以提供一個簡短的驗收導覽，而不是把一份技術測試報�
 
 ![未知問題、Agent 與工具能力、證據知識三個循環形成可移轉認知連續層的原創概念圖](/assets/images/posts/2026-11-06-from-unknown-to-human-ai-mutual-growth_2.svg)
 
-*圖二：問題探索、能力增長與知識累積形成回饋循環。工具和模型可以更換，經驗、決策與可驗證的成果則應持續保留。*
+*圖二：從找出問題、補上工具，到記下經驗，三件事會彼此影響。換了模型或工具，也應找得回當時的決定和驗證結果。*
 
 ---
 
