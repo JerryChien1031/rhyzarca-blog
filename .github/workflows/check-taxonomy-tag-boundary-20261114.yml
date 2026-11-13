@@ -1,0 +1,74 @@
+name: Verify category and topic label separation
+on:
+  push:
+    branches: ['edit/practice-explorations-taxonomy-20261114']
+    paths: ['.github/workflows/check-taxonomy-tag-boundary-20261114.yml']
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Apply narrow label safeguard
+        run: |
+          python - <<'PY'
+          import json,re,subprocess
+          from pathlib import Path
+          assert not subprocess.check_output(['git','status','--porcelain=v1','-uall']).strip()
+          definitions=Path('_data/blog_categories.json')
+          data=json.loads(definitions.read_text())
+          assert data[0]['id']=='insights'
+          assert data[0]['aliases']==['Epistemology','epistemology']
+          data[0]['aliases']=[]
+          definitions.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+          js=Path('assets/js/blogger.js')
+          text=js.read_text()
+          text,n=re.subn(r'(?m)^var RHYZARCA_CATEGORIES = .*;$','var RHYZARCA_CATEGORIES = '+json.dumps(data,ensure_ascii=False)+';',text)
+          assert n==1
+          js.write_text(text)
+          doc=Path('docs/blog-taxonomy.md')
+          doc.write_text(doc.read_text()+'\n分類與主題標籤使用不同語意。`Epistemology` 仍是既有文章主題標籤，因此不設定為 `insights` 的自動轉址；大小寫歷史分類只在經審閱的文章欄位中正規化，不能攔截仍在使用的主題頁。\n')
+          test=Path('tests/test_blog_taxonomy.py')
+          source=test.read_text()
+          anchor="if __name__=='__main__': unittest.main()"
+          assert source.count(anchor)==1
+          addition='''    def test_category_aliases_do_not_capture_topic_tags(self):
+                  tags=set()
+                  for path in (ROOT/'_posts').glob('*.md'):
+                      tags.update(frontmatter.load(path).get('tags',[]))
+                  aliases={alias for category in self.categories for alias in category['aliases']}
+                  self.assertFalse(tags & aliases)
+                  self.assertNotIn('Epistemology',aliases)
+          '''
+          test.write_text(source.replace(anchor,addition+'\n'+anchor))
+          PY
+      - name: Verify original and category tests
+        run: |
+          python -m pip install PyYAML Pillow python-frontmatter markdown beautifulsoup4 google-api-python-client google-auth-httplib2 google-auth-oauthlib python-dotenv
+          python -m unittest discover -s tests -p 'test_blog_article_contract.py' -v
+          python -m unittest discover -s tests -p 'test_blogger_post_permalink.py' -v
+          python -m unittest discover -s tests -p 'test_blogger_recovery.py' -v
+          python -m unittest discover -s tests -p 'test_blog_taxonomy.py' -v
+          node --check assets/js/blogger.js
+      - name: Commit only non-workflow content with exact scope
+        run: |
+          python - <<'PY'
+          import subprocess
+          paths=['_data/blog_categories.json','assets/js/blogger.js','docs/blog-taxonomy.md','tests/test_blog_taxonomy.py']
+          assert set(subprocess.check_output(['git','diff','--name-only']).decode().splitlines())==set(paths)
+          subprocess.run(['git','add','--',*paths],check=True)
+          subprocess.run(['git','diff','--cached','--check'],check=True)
+          assert set(subprocess.check_output(['git','diff','--cached','--name-only']).decode().splitlines())==set(paths)
+          subprocess.run(['git','config','user.name','github-actions[bot]'],check=True)
+          subprocess.run(['git','config','user.email','github-actions[bot]@users.noreply.github.com'],check=True)
+          subprocess.run(['git','commit','-m','fix(blog): keep epistemology topic labels independent of category aliases'],check=True)
+          subprocess.run(['git','show','--stat','--oneline','HEAD'],check=True)
+          subprocess.run(['git','push','origin','HEAD:refs/heads/edit/practice-explorations-taxonomy-20261114'],check=True)
+          PY
