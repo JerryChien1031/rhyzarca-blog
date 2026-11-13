@@ -188,7 +188,7 @@ Life World 如果只是讓人填資料、再用 AI 做出幾個好玩的畫面�
 | --- | --- | --- |
 | **規劃型的互動** | 比較行程、限制、備案與人物反應，協助相關的人討論取捨 | 《海角小鎮一日遊》的 route-1，可以回溯改選；第一期完成的是一日行程題材 |
 | **情境型的互動** | 將抽象的過程拆成可體驗的場景，在關鍵時刻做選擇、觀察不同發展 | 《冰下之春》的捲動場景與《空城計》的互動劇情；跨領域提案用途尚待產品化 |
-| **純文字型的小說、腳本** | 讓角色、對話、動作與故事先能被閱讀、審稿與改編 | 有小說與劇本格式的匯出邏輯；本文提供從已公開劇情整理的純文字示範 |
+| **純文字型的小說、腳本** | 讓角色、對話、動作與故事先能被閱讀、審稿與改編 | 有小說與劇本格式的匯出邏輯；本文展示以文字敘事為主的原始互動閱讀 HTML（非純文字靜態頁） |
 
 這三條路線可以共用人物來源、作品版本與生成紀錄，再依目的選擇呈現方式。**離線 HTML 是本次為了交付和分享採用的載體，不是作品用途的全部定義。**
 
@@ -295,15 +295,15 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 有些改善在特定樣本上看得到，有些跨章時間矛盾仍存在。文章不應用「品質顯著提升」掩蓋這些還沒解決的問題。
 
-**純文字 Demo｜《現代鴻門宴：會館裡的最後合約》**
+**小說／腳本 Demo｜《現代鴻門宴：會館裡的最後合約》（互動閱讀版）**
 
-這份文字版保留已公開故事的四幕、場景提示、角色動作與 17 段對話，適合專注閱讀與審稿。它是為本篇 Blog 從原有互動作品整理的**純閱讀展示版**，不是 Life World 產品原生 reader-3 匯出，亦不包含互動腳本、人物設定與隱藏心理資料。
+這次改用 Life World 的**原始互動閱讀版（`play-1`）**，而不是先前整理的無腳本文字頁。作品包含四幕劇情、場景提示、角色動作與 17 段對話，也能逐段閱讀、查看虛構角色的情緒與立場，以及讀完後的結尾內容。它適合展示小說敘事和腳本式對話，但**不是純文字靜態頁**，請勿把互動功能誤認為產品原生的純閱讀匯出。
 
-<iframe title="Life World 純文字小說與腳本《現代鴻門宴》閱讀展示" src="https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-reader.html" width="100%" height="560" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-downloads" style="border:1px solid #d2ddd7;border-radius:12px;max-width:100%;background:#fcfaf6;"></iframe>
+<iframe title="Life World 小說與腳本《現代鴻門宴》原始互動閱讀版" src="https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-banquet.html" width="100%" height="560" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-downloads" style="border:1px solid #d2ddd7;border-radius:12px;max-width:100%;background:#fcfaf6;"></iframe>
 
-*純文字展示：可直接閱讀的小說敘事與腳本式對話；文字來源與互動劇場同源，但呈現目的不同。*
+*小說／腳本展示：原始互動 HTML 以文字劇情為主，讀者可以逐段揭開情節與角色狀態；非無腳本的純文字版。*
 
-[獨立閱讀完整文字版](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-reader.html)
+[獨立開啟《現代鴻門宴》互動閱讀版](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-banquet.html)
 
 這三份作品分別展示**如何比較方案、如何推演情境，以及如何閱讀故事**。不同用途可以共用一套人物與作品資料，但不需要用完全相同的介面呈現，也不必讓讀者在文章末端重新找一次展示入口。
 
