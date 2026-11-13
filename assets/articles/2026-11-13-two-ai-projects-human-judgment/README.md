@@ -3,7 +3,7 @@
 對應文章：`_posts/2026-11-13-two-ai-projects-human-judgment.md`  
 資產目錄：`assets/articles/2026-11-13-two-ai-projects-human-judgment/`
 
-本目錄是本次雙專案 Blog 文章的**獨立作品展示庫**，不是 Life World 正式產品的部署。四份 HTML 都來自使用者在本次對話提供的原始離線匯出檔，**原始內容逐位元組保留**；每份 HTML 內含必要資料、樣式、JavaScript 與嚴格的 CSP，沒有另外載入線上 API、憑證或私人環境。
+本目錄是本次雙專案 Blog 文章的**獨立作品展示庫**，不是 Life World 正式產品的部署。四份原始 HTML 均來自使用者在本次對話提供的離線匯出檔，**原始內容逐位元組保留**；另新增一份本篇專屬的**純閱讀衍生展示**，由已公開劇情資料整理，不假冒產品原生 `reader-3`。所有 HTML 都不連線載入模型、憑證或私人環境。
 
 | GitHub 檔名 | 原始作品 | Git Blob SHA（原檔核對） | 觀察定位 |
 | --- | --- | --- | --- |
@@ -11,6 +11,7 @@
 | `modern-hongmen-banquet.html` | `現代鴻門宴：會館裡的最後合約（互動版）.html` | `9a0236e9b912ca298c93908f8ff613d14e8e33aa` | 逐段閱讀、人物反應、真心話與結尾卡 |
 | `bakery-empty-fortress.html` | `空城計：巷口麵包店的最後清晨（互動版）.html` | `d68c9a4c366109d20f4affe6988a54ca6a8ccf78` | 互動故事作品，角色與劇情均屬虛構 |
 | `spring-under-ice-scroll.html` | `冰下之春（捲動劇情）.html` | `b820737a71e3c3ddac264e03995d7b79101f6fe0` | 捲動敘事作品，含完整離線播放器 |
+| `modern-hongmen-reader.html` | 由本目錄 `modern-hongmen-banquet.html` 的已公開劇情整理 | 衍生檔，不適用原始檔 SHA（請查看當次 Git Blob） | 本篇三類作品之一：純文字小說敘事／腳本式對話，4 幕 17 段；保留原正文，移除互動程式與角色狀態，**非產品原生 reader-3** |
 
 ## 發布與嵌入方式
 
@@ -24,3 +25,11 @@
 ## 本文圖像資產
 
 文章封面及報告重繪圖存放於既有的 `assets/images/posts/` 標準位置，以同樣文章 stem 加 `_1.svg` 至 `_4.svg` 命名，符合既有 Blog 圖片契約。InvoiceGuard 部分僅使用**報告比較與來源查核示意**，不展示真實或合成發票照片。
+
+## 本篇三種嵌入展示的對應
+
+- **規劃型互動**：`sea-town-route.html`
+- **情境型互動**：`spring-under-ice-scroll.html`
+- **純文字小說／腳本**：`modern-hongmen-reader.html`（從既有已公開作品整理的純閱讀示範，非原生 reader-3）
+
+其餘原始離線作品 `modern-hongmen-banquet.html` 與 `bakery-empty-fortress.html` 仍完整留存於本篇資產資料夾，但不在 Blog 正文重複嵌入。三份 Demo 連結只指向 GitHub Pages 靜態 HTML，不提供 Repo 開發日誌、Commit 或原始碼導航。
