@@ -3,10 +3,7 @@
     "id": "insights",
     "name": "心得記錄",
     "english": "Insights",
-    "aliases": [
-      "Epistemology",
-      "epistemology"
-    ],
+    "aliases": [],
     "summary": "對知識、工具、工作與人機協作的觀察、評析和反思；分享觀點如何形成與改變。"
   },
   {

@@ -46,3 +46,5 @@
 本次只改八篇文章的 categories；Blogger ID、標題、日期、slug、tags、正文、圖檔與作品連結不變。因 Jekyll 原設定把 categories 放進文章 URL，從實際變更前建置取得既有 URL，再以每篇 permalink 固定原路徑，避免舊連結失效。Blogger 更新既有 Post，不建立新文章。
 
 GitHub、Blogger 導覽、404 分類入口、標籤文字及分類說明同步使用四類定義。分類頁由 `_data/blog_categories.json` 產生；Blogger 腳本內的對照由測試比對，防止兩邊名稱再分歧。原始發文 Workflow 的同步範圍不變。
+
+分類與主題標籤使用不同語意。`Epistemology` 仍是既有文章主題標籤，因此不設定為 `insights` 的自動轉址；大小寫歷史分類只在經審閱的文章欄位中正規化，不能攔截仍在使用的主題頁。

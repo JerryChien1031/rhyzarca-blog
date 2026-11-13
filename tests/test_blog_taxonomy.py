@@ -43,4 +43,12 @@ class TaxonomyTests(unittest.TestCase):
         contract=(ROOT/'docs/blog-article-contract.md').read_text()
         self.assertIn('不限完成或成功',contract)
         self.assertNotIn('`architecture` 是已實作的系統工程',contract)
+    def test_category_aliases_do_not_capture_topic_tags(self):
+        tags=set()
+        for path in (ROOT/'_posts').glob('*.md'):
+            tags.update(frontmatter.load(path).get('tags',[]))
+        aliases={alias for category in self.categories for alias in category['aliases']}
+        self.assertFalse(tags & aliases)
+        self.assertNotIn('Epistemology',aliases)
+
 if __name__=='__main__': unittest.main()
