@@ -1,17 +1,20 @@
 ---
-layout: post
-title: "發票不能亂猜，故事不能亂演：兩個 AI 專案教我的人機協作"
-date: 2026-11-13 09:00:00 +0800
-categories:
-  - insights
-tags:
-  - Human-AI-Collaboration
-  - InvoiceGuard-AI
-  - Life-World
-  - RAG
-description: "同一段課程尾聲，我參與手寫發票辨識與 AI 故事世界兩個專案。從期別認錯、RAG 套錯規定，到人物設定與重複扣費的反例，記錄人如何和 AI 一起研究、修正與驗收。"
 blogger_permalink_slug: two-ai-projects-human-judgment
+blogger_post_id: '4357768617267032194'
+blogger_post_url: https://blog.rhyzarca.com/2026/11/two-ai-projects-human-judgment.html
+categories:
+- insights
+date: 2026-11-13 09:00:00 +0800
+description: 同一段課程尾聲，我參與手寫發票辨識與 AI 故事世界兩個專案。從期別認錯、RAG 套錯規定，到人物設定與重複扣費的反例，記錄人如何和 AI
+  一起研究、修正與驗收。
 image: /assets/images/posts/2026-11-13-two-ai-projects-human-judgment_1.svg
+layout: post
+tags:
+- Human-AI-Collaboration
+- InvoiceGuard-AI
+- Life-World
+- RAG
+title: 發票不能亂猜，故事不能亂演：兩個 AI 專案教我的人機協作
 ---
 
 ![InvoiceGuard AI 報告比較與 Life World 互動路徑的雙專案概念封面](/assets/images/posts/2026-11-13-two-ai-projects-human-judgment_1.svg)
