@@ -55,17 +55,17 @@ title: 發票不能亂猜，故事不能亂演：從行政痛點與 CRM 開始�
 
 #### 30 秒看兩個專案的技術與證據
 
-如果你比較關心工程實作，可以先從下面的事件與原始紀錄進入；正文會再說明每一件事為什麼發生。
+如果你比較關心工程實作，可以先看以下五個關鍵問題、我參與的處理方向，以及各案例的驗證界線。團隊開發日誌與原始測試資料不作為公開閱讀入口。
 
-**表一：雙專案的問題、工程處理方向與查證入口**
+**表一：雙專案的技術挑戰、處理方向與驗證界線**
 
-| 專案與問題 | 我參與的決策／協作重點 | 實際紀錄 |
+| 專案與問題 | 我參與的決策／協作重點 | 已知結果與限制 |
 | --- | --- | --- |
-| InvoiceGuard｜合法 JSON，期別仍認錯 | 區分模型讀字、程式換算與人工核對，檢查輸出是否有依據 | [期別辨識反例](https://github.com/Donato517/InvoiceGuard-AI-API/blob/69c74ce08c53960c5fa5533d7c2978aa80f54f31/docs/TEST_REPORT.md#L928) |
-| InvoiceGuard｜換成 B，卻被 A 的回應覆蓋 | 以 Claude 修正、Codex 跨情境複查的方式持續追反例 | [前台競態修正](https://github.com/Donato517/InvoiceGuard-AI/blob/d8874e5c14495da2e773a26c7cf5323de4a20ddf/docs/REVIEW_FIX_LOG.md#L370) |
-| InvoiceGuard｜RAG 有引用但套錯規定 | 檢視文件索引、來源適用性及資料不足時的回答邊界 | [RAG 問答測試](https://github.com/Donato517/InvoiceGuard-AI-ADMIN/blob/f67b5a6066f2c4d27b265a4f638b52ad6baefb83/docs/TEST_REPORT.md#L1399) |
-| Life World｜人物在畫面上，設定沒進模型 | 先做唯讀盤點，建立正式人物來源與作品版本的約束 | [人物來源接入](https://github.com/asixtw/life-world/commit/5cb5015a174ad821dea17abfc36236f4e33fd1b4) |
-| Life World｜重送造成多生成與計費風險 | 明確設定不可重複的條件，安排五輪獨立反例與驗收 | [互動遊戲複查](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/INTERACTIVE_GAME_REVIEW_20261112.md#L246) |
+| InvoiceGuard｜合法 JSON，期別仍認錯 | 將模型讀字、程式換算與人工核對分開，檢查內容是否有依據 | 同一樣張曾得到不一致期別；格式正確不代表辨識正確 |
+| InvoiceGuard｜B 的預覽卻被 A 的回應覆蓋 | Claude 修正、Codex 以登入轉址、重拍及延遲讀檔等情境獨立找反例 | 以選檔版本與回應有效性檢查避免舊資料覆蓋新檔 |
+| InvoiceGuard｜RAG 有來源卻套錯規定 | 核對文件索引、適用情境與資料不足時的回答邊界 | 「發票開錯」與「發票遺失」混淆，促使團隊修正檢索與回答方式 |
+| Life World｜選到人物卻未接入正式設定 | 在生成前進行唯讀盤點，限制人物設定來源並鎖定作品版本 | 找出舊角色卡與正式人物資料的差異；後續版本化接入 |
+| Life World｜重送可能造成多生成與計費 | 設定不可重複的驗收條件，交由不同 AI 工具反例複查 | 五輪限定案例檢驗；全套測試仍有原有的失敗、錯誤與略過 |
 
 這張表不是把不同日期的測試合成同一個「完成率」；各組證據仍以原始紀錄中的版本、樣本與環境為準。
 ---
@@ -88,7 +88,6 @@ title: 發票不能亂猜，故事不能亂演：從行政痛點與 CRM 開始�
 
 不論模型怎麼換，有一件事沒變：採購人員必須能核對 AI 原始值、修正值，財會也必須有自己的審核權限。這些不是多做幾個按鈕，而是讓錯誤不會一路進入正式流程。
 
-[早期發票辨識與期別反例](https://github.com/Donato517/InvoiceGuard-AI-API/blob/69c74ce08c53960c5fa5533d7c2978aa80f54f31/docs/TEST_REPORT.md#L928) · [現行期別換算規則](https://github.com/Donato517/InvoiceGuard-AI-API/blob/69c74ce08c53960c5fa5533d7c2978aa80f54f31/app/utils/invoice_format.py#L133) · [切換 Gemini 影像路徑的提交](https://github.com/Donato517/InvoiceGuard-AI-API/commit/61d98fa)
 
 ---
 
@@ -114,7 +113,6 @@ title: 發票不能亂猜，故事不能亂演：從行政痛點與 CRM 開始�
 
 看清楚統計證據的限制，才能知道哪些風險應留給程式檢查、哪些必須由人確認。
 
-[專案黃金集與標註狀態](https://github.com/Donato517/InvoiceGuard-AI-API/blob/69c74ce08c53960c5fa5533d7c2978aa80f54f31/docs/GOLDEN_SET.md#L5)
 
 ---
 
@@ -130,7 +128,6 @@ title: 發票不能亂猜，故事不能亂演：從行政痛點與 CRM 開始�
 
 這是我喜歡的協作方式：**不是叫兩個 AI 都說一次沒問題，而是讓其中一個故意找出另一個可能沒想到的情境。**
 
-[前台換檔競態與跨 Agent 複查](https://github.com/Donato517/InvoiceGuard-AI/blob/d8874e5c14495da2e773a26c7cf5323de4a20ddf/docs/REVIEW_FIX_LOG.md#L370)
 
 接著，輪到企業知識庫問答出問題。
 
@@ -146,7 +143,6 @@ RAG（檢索增強生成）會先從公司授權的法規、流程文件找資�
 
 這裡我看到的不是單純的模型優化，而是產品責任：**真正需要幫助的人，不能因為 AI 很有自信，就被帶往錯誤的下一步。**
 
-[實際 RAG 誤答與來源修正紀錄](https://github.com/Donato517/InvoiceGuard-AI-ADMIN/blob/f67b5a6066f2c4d27b265a4f638b52ad6baefb83/docs/TEST_REPORT.md#L1382) · [新手問答的開發與限制](https://github.com/Donato517/InvoiceGuard-AI-ADMIN/blob/f67b5a6066f2c4d27b265a4f638b52ad6baefb83/docs/RAG_DEVELOPMENT.md#L218)
 
 ---
 
@@ -182,7 +178,6 @@ Life World 如果只是讓人填資料、再用 AI 做出幾個好玩的畫面�
 
 這一段是 **Life World 從 CRM／日誌走向個人化創作的產品方向**，不能寫成目前已經完成的自動學習機制。要讓它成立，還得證明日誌能改變可追溯的人設版本，而不是只讓 AI 根據一兩句話隨意改分數。
 
-[人物設定接入的實際提交](https://github.com/asixtw/life-world/commit/5cb5015a174ad821dea17abfc36236f4e33fd1b4) · [人物來源、版本與驗收紀錄](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/ACCEPTANCE.md#L218)
 
 ---
 
@@ -210,7 +205,6 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 有些改善在特定樣本上看得到，有些跨章時間矛盾仍存在。文章不應用「品質顯著提升」掩蓋這些還沒解決的問題。
 
-[提示詞 v5～v8 的修正與人工閱讀紀錄](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/ACCEPTANCE.md#L293)
 
 #### 遊戲裡的「滿意 +2」，到底是根據什麼？
 
@@ -233,7 +227,6 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 這不是否定離線 HTML：**固定規則很適合負責可靠地播放，真正需要改善的是生成前的人物依據，以及日誌如何經過確認影響下一次生成。**
 
-[角色反應生成與分數規則的程式來源](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/app/turn_game.py) · [互動遊戲的人物版本、資料隔離及玩法設計](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/INTERACTIVE_GAME_REVIEW_20261112.md#L62)
 
 #### 為什麼要做成可下載、可重選的多結局 HTML？
 
@@ -259,7 +252,6 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 回到 Life World 最初的 CRM 與日誌構想，這也形成另一個理由：當使用者願意補記「朋友為什麼不喜歡趕場」「客戶為什麼希望先談某個議題」，下一次推演就有機會變得更貼近真實情境。但那些紀錄仍需要來源、授權與版本確認，不能把一次遊戲分數自動寫成真實人物的喜好。
 
-[互動行程的回溯、限制與結局設計](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/INTERACTIVE_GAME_REVIEW_20261112.md#L18) · [離線播放器原始程式](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/app/export_player/route-1.js)
 
 #### 情境型互動：不只知道路線，也能先看見事情怎麼發生
 
@@ -297,7 +289,7 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 *互動作品一：《海角小鎮一日遊》。這是提供的離線 HTML 作品，與文中合成版「海線小鎮一日行」操作截圖、受控真實模型試跑並非同一份驗收樣本。若內嵌視窗無法操作，可使用下方獨立連結。*
 
-[獨立開啟行程互動遊戲](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/sea-town-route.html) · [查看 HTML 原始檔並下載離線使用](https://github.com/JerryChien1031/rhyzarca-blog/blob/main/assets/articles/2026-11-13-two-ai-projects-human-judgment/sea-town-route.html)
+[獨立開啟行程互動遊戲](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/sea-town-route.html)
 
 另一件作品是《現代鴻門宴：會館裡的最後合約》。它改寫古典情節的角色衝突，讀者可以逐段揭開台詞，切換人物視角，讀完後再看看角色真正藏著什麼。
 
@@ -305,9 +297,9 @@ Life World 後來可以讓模型分段續寫、保存章節，再匯出為單一
 
 *互動作品二：《現代鴻門宴》。這份 HTML 是已提供的作品匯出檔，內容與人物均為虛構演出，並非真人事件紀錄。*
 
-[獨立閱讀《現代鴻門宴》](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-banquet.html) · [查看 HTML 原始檔](https://github.com/JerryChien1031/rhyzarca-blog/blob/main/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-banquet.html)
+[獨立閱讀《現代鴻門宴》](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/modern-hongmen-banquet.html)
 
-另外兩份同樣已納入這篇文章的展示檔案：[《空城計：巷口麵包店的最後清晨》互動版](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/bakery-empty-fortress.html)與[《冰下之春》捲動劇情](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/spring-under-ice-scroll.html)。它們可以獨立開啟，亦能從 GitHub 下載 HTML 離線閱讀。
+另外兩份同樣已納入這篇文章的展示檔案：[《空城計：巷口麵包店的最後清晨》互動版](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/bakery-empty-fortress.html)與[《冰下之春》捲動劇情](https://jerrychien1031.github.io/rhyzarca-blog/assets/articles/2026-11-13-two-ai-projects-human-judgment/spring-under-ice-scroll.html)。它們可以由各自的獨立展示頁開啟，也可以經由瀏覽器儲存成離線 HTML。
 
 這些作品不只展示 AI 的創作空間，也讓同一份情境能被分享、反覆改選，成為現實討論的起點。可是**有不同結局，不代表已經形成共識；能重算路線，也不等於已保存所有被放棄的方案與原因。** 真正要走到群體決策，還需要讓真人的回饋與取捨留下可回查的紀錄。
 
@@ -333,7 +325,6 @@ Life World 還有一個比故事台詞更棘手的問題。
 
 **AI 能幫忙找到許多測試情境，但哪個承諾不能被破壞，始終需要有人說清楚。**
 
-[Life World 五輪獨立複查](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/INTERACTIVE_GAME_REVIEW_20261112.md#L246) · [第五輪提交與修正](https://github.com/asixtw/life-world/commit/725e0e714c4bac847fea054bd63459ccfd69d4e7)
 
 ---
 
@@ -380,7 +371,7 @@ Life World 的三條作品路線也讓我重新理解 AI 產出的用途：規�
 
 AI 幫我研究、產生程式、找出可能的反例；我和團隊成員帶回真實的工作情境、使用回饋、取捨與驗收條件。當答案不對，重新查來源；當設計不適合，重新選方向；當測試失敗，留下可以再跑一次的紀錄。
 
-這讓我想起 Rhyzarca 之前寫過的[〈從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求〉](https://blog.rhyzarca.com/2026/11/human-ai-mutual-growth.html)。那篇文章從模糊需求談人機協作；而這次，兩個團隊專案給了我更具體的例子：人的參與並不是多餘的審批，而是讓 AI 的探索不會脫離現實的關鍵。
+這也延續了我對人機雙向成長的思考。過去從模糊需求討論 AI 如何協助人探索未知；這次的兩個團隊專案則給出更具體的經驗：人的參與並不是多餘的審批，而是讓 AI 的探索不會脫離現實的關鍵。
 
 ![InvoiceGuard AI 與 Life World 在真實資料與虛構創作中各自需要的人類確認界線](/assets/images/posts/2026-11-13-two-ai-projects-human-judgment_4.svg)
 
@@ -388,7 +379,7 @@ AI 幫我研究、產生程式、找出可能的反例；我和團隊成員帶�
 
 我也逐漸明白，Rhyzarca 一再談的「保留知識與決策理由」，不是為了替 AI 收集更多漂亮筆記，而是讓下次換了模型、換了團隊成員，我們仍能找回：**當時為什麼這樣做？哪些試過卻失敗？什麼結果真的驗過？**
 
-這也呼應了[〈數位巴別塔：當 AI 成為文明唯一的翻譯器〉](https://blog.rhyzarca.com/2026/09/agi-rhyzarca_0615099013.html)裡更深一層的擔憂：資料留住了，如果沒有人能回頭理解那些決定，知識仍可能一點一點失去意義。
+這也讓我想到「數位巴別塔」的另一種風險：資料雖然保存了，如果沒有人能回頭理解當時為什麼這樣決定，知識仍可能逐漸失去意義。
 
 對 Life World 而言，我現在還會多問一個問題：**使用者今天自願記下的經歷，能不能讓下一次故事裡的角色更像他原本想描述的那個人？** 如果能，作品才不只是在回報「你又填完一張表」，而是讓人看見記錄帶來的差異；如果不能，再精緻的互動遊戲也可能只是一項和 CRM 無關的附加功能。這還需要真實資料、授權、版本比較與使用者研究，不能只靠展示作品證明。
 
@@ -400,7 +391,7 @@ AI 幫我研究、產生程式、找出可能的反例；我和團隊成員帶�
 
 #### 🎮 Life World：四份可直接體驗的互動作品
 
-如果你想先看看作品，再決定要不要讀原始碼，可以從下面四份離線 HTML 開始。它們是本篇專屬資料夾裡的完整匯出作品，不需要登入 Life World。**試玩作品證明這些互動形式有可操作的實物，但不能單獨證明 CRM 留存率或產品正式部署成效。**
+如果你想先體驗作品，再閱讀前面的工程設計與限制，可以從下面四份離線 HTML 開始。它們是本篇專屬資料夾裡的完整匯出作品，不需要登入 Life World。**試玩作品證明這些互動形式有可操作的實物，但不能單獨證明 CRM 留存率或產品正式部署成效。**
 
 **表二：Life World 作品集入口（依三種方向對照）**
 
@@ -413,21 +404,13 @@ AI 幫我研究、產生程式、找出可能的反例；我和團隊成員帶�
 
 以上四份是已公開的互動展示。**純文字型小說／腳本有生成與匯出的實作紀錄，但這四份並未包含單獨的純閱讀版代表作**；不能因為輸出同樣包成 HTML，就把三種類型混為一談。
 
-原始檔及來源說明也保留在 [本篇專屬資產目錄](https://github.com/JerryChien1031/rhyzarca-blog/tree/main/assets/articles/2026-11-13-two-ai-projects-human-judgment)。作品內的示意資料、特定日期的真實模型 E2E 測試及正式產品流量，是三種不同的證據，不能混在一起。
-
----
-
-### 🔗 開發來源與延伸閱讀
-
-**InvoiceGuard AI：** [早期發票辨識與測試報告](https://github.com/Donato517/InvoiceGuard-AI-API/blob/69c74ce08c53960c5fa5533d7c2978aa80f54f31/docs/TEST_REPORT.md) · [前台換檔與複查紀錄](https://github.com/Donato517/InvoiceGuard-AI/blob/d8874e5c14495da2e773a26c7cf5323de4a20ddf/docs/REVIEW_FIX_LOG.md) · [RAG 問答與來源測試](https://github.com/Donato517/InvoiceGuard-AI-ADMIN/blob/f67b5a6066f2c4d27b265a4f638b52ad6baefb83/docs/TEST_REPORT.md)
-
-**Life World：** [人物與作品驗收紀錄](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/ACCEPTANCE.md) · [互動遊戲第五輪獨立複查](https://github.com/asixtw/life-world/blob/725e0e714c4bac847fea054bd63459ccfd69d4e7/docs/INTERACTIVE_GAME_REVIEW_20261112.md) · [對應功能分支提交](https://github.com/asixtw/life-world/commit/725e0e714c4bac847fea054bd63459ccfd69d4e7)
-
-**Rhyzarca 思想脈絡：** [〈從未知開始：人機協作與雙向成長〉](https://blog.rhyzarca.com/2026/11/human-ai-mutual-growth.html) · [〈Claude Code × OpenAI Codex：共享契約與自主工程工作流〉（GitHub 原文）](https://github.com/JerryChien1031/rhyzarca-blog/blob/main/_posts/2026-10-22-claude-codex-harness-engineering-auto-workflow.md)
+以上四個連結直接開啟獨立 HTML 作品，不必進入專案開發儲存庫；若需要離線使用，可由瀏覽器將作品另存為 HTML。作品內的示意資料、特定日期的真實模型 E2E 測試及正式產品流量，是三種不同的證據，不能混在一起。
 
 ---
 
 ### 🏛️ Epistemic Ledger Entry: #0011（候選分錄）
+
+本文公開版只連結已整理為獨立展示頁的互動作品，不提供團隊開發日誌、工程交接、程式庫原件或內部測試報告的公開導航；上述實測限制仍保留在文章中。
 
 - **Timestamp:** 2026-11-13T09:00:00+08:00
 - **Claim:** 在 AI 參與的真實開發中，允許模型創作或擷取資訊的範圍可因業務不同而改變，但使用者仍須能區分來源、推論、操作副作用與最終驗收。人機協作的價值不只是提高產出速度，更包括辨識錯誤、界定權責，以及讓後續開發者可以重建已確認的理由。
