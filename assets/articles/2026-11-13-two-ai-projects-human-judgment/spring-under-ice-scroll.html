@@ -1,0 +1,2187 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-V0oGEHGGw+XAyLi0tX6bJkMegoI6qMeSqiTB3yl8M88='; script-src 'sha256-prnHeSMTCtMIhTfuAJnfhS8WlXD7uwNQeJuzONDd59U='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Life World scroll-1">
+<title>冰下之春</title>
+<style>/* Life World 離線播放器 scroll-1：捲動劇情作品。頁面一律往下捲；每個場景釘在畫面上，圖層以不同速度移動。
+   不用 backdrop-filter 與 will-change：場景底下是大張的畫布，再疊這兩樣會加重手機的繪圖負擔。 */
+:root{--serif:"Noto Serif TC","Source Han Serif TC","Songti TC","PMingLiU","Times New Roman",serif;--bg:#0b1220;--ink:#f4f7fb;--mute:#b9c4d6;--card:rgba(10,18,32,.93);--rule:rgba(255,255,255,.18);--p1:#f2c14e;--p2:#6ec5ff;--p3:#ff8fa3;--accent:#7ee0c3;--who:#fff}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7;-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+[data-c="1"]{--who:var(--p1)}[data-c="2"]{--who:var(--p2)}[data-c="3"]{--who:var(--p3)}
+
+/* 頁首：標題、開場白、同行的人 */
+.lw-head{max-width:46rem;margin:0 auto;padding:5rem 1.5rem 4rem;min-height:88vh;display:flex;flex-direction:column;justify-content:center}
+.lw-kicker{margin:0 0 1.4rem;color:var(--accent);font-size:.82rem;letter-spacing:.24em}
+.lw-genre{margin-left:.8em;padding:.1em .6em;border:1px solid var(--rule);border-radius:1em;color:var(--mute)}
+h1{margin:0 0 1.6rem;font-family:var(--serif);font-weight:700;font-size:clamp(2.8rem,9vw,5rem);line-height:1.15;letter-spacing:.14em}
+h1::after{content:"";display:block;width:3.2rem;height:2px;margin-top:1.4rem;background:var(--accent)}
+.lw-part{margin-left:.8em;font-family:inherit;font-size:.3em;font-weight:400;color:var(--mute);letter-spacing:.3em;vertical-align:middle}
+.lw-premise{margin:0 0 2rem;font-family:var(--serif);font-size:1.22rem;line-height:2;letter-spacing:.04em}
+.lw-label{display:block;margin-bottom:.5rem;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--accent);font-size:.72rem;letter-spacing:.3em}
+.lw-cast{list-style:none;margin:0 0 2.4rem;padding:1rem 0 0;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:.5rem 2rem}
+.lw-name{font-weight:700;color:var(--who)}
+.lw-role{margin-left:.5em;color:var(--mute);font-size:.9em}
+.lw-start{margin:0;color:var(--mute);font-size:.9rem;letter-spacing:.2em;animation:lw-bob 2.4s ease-in-out infinite}
+.lw-start::after{content:"　↓"}
+
+/* 不能執行程式時的清單 */
+.lw-static{max-width:44rem;margin:0 auto;padding:0 1.25rem 3rem}
+.lw-need{padding:.8rem 1rem;border:1px solid var(--rule);border-radius:.6rem;color:var(--mute)}
+.lw-outline{padding-left:1.4rem}
+.lw-outline h2{margin:1.2rem 0 .2rem;font-size:1.05rem}
+.lw-outline p{margin:0 0 .3rem;color:var(--mute)}
+
+/* 場景：外層很高，裡面的舞台釘在畫面上 */
+.lw-scene{position:relative;height:300vh}
+/* 下一個場景提早一點開始，和前一個的尾巴交疊；剛進來時上緣用遮罩淡出（--feather 由程式依進度設定），像從霧裡浮上來。抉擇之後接上的場景不交疊 */
+.lw-scene + .lw-scene{margin-top:-30vh}
+.lw-scene.lw-after-gate{margin-top:0}
+.lw-stage[data-enter]{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--feather,30vh));mask-image:linear-gradient(to bottom,transparent 0,#000 var(--feather,30vh))}
+.lw-scene.lw-has-gate{height:380vh}
+/* 圖層比舞台大，舞台用 overflow:hidden 裁掉多出來的部分。hidden 的容器仍然可以被程式捲動（focus、scrollIntoView），
+   所以播放器在舞台的 scroll 事件把捲動歸零，畫面才不會偏掉。 */
+.lw-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#0b1220}
+.lw-cam{position:absolute;inset:0;transform-origin:50% 50%;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.lw-layer{position:absolute;left:0;top:0}
+/* 會飄的霧：一張白色、濃淡不一的圖（程式算出來的）橫向鋪兩次，整條慢慢往左移半條的寬度，接起來沒有縫；上下用遮罩淡出。
+   只有畫出來的場景（.is-live）才飄；系統要求減少動態效果時霧還在，但不動。位置、濃淡與速度由程式依場景設定。 */
+.lw-fogs{position:absolute;left:0;top:0;width:130%;height:100%;pointer-events:none}
+.lw-fog{position:absolute;left:0;width:200%;display:none;background-repeat:repeat-x;background-size:50% 100%;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 35%,#000 65%,transparent);mask-image:linear-gradient(to bottom,transparent,#000 35%,#000 65%,transparent)}
+.is-live .lw-fog{display:block;animation:lw-drift var(--fog-time,60s) linear infinite}
+.is-calm .lw-fog{animation:none}
+@keyframes lw-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.lw-shade{position:absolute;left:-20%;top:-20%;width:170%;height:290%;background:linear-gradient(#020818,#04122e 55%,#020a1a);opacity:0;transition:opacity .9s;pointer-events:none}
+.lw-glow{opacity:0;transition:opacity .9s}
+.is-night .lw-shade{opacity:.86}
+/* 暗角與顆粒：蓋在三層畫布上面、文字下面 */
+.lw-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(4,8,16,.5),rgba(4,8,16,0) 24%),radial-gradient(125% 95% at 50% 40%,rgba(3,6,14,0) 50%,rgba(3,6,14,.5) 100%)}
+.lw-grain{position:absolute;inset:0;pointer-events:none;background-size:128px 128px;opacity:.6}
+/* 還在浮上來的場景先不顯示自己的標題與視角鈕，免得和前一個場景的文字疊在一起 */
+.lw-title,.lw-views{transition:opacity .5s}
+.lw-stage[data-enter] .lw-title,.lw-stage[data-enter] .lw-views{opacity:0;pointer-events:none}
+.is-night .lw-glow{opacity:1}
+.lw-title{position:absolute;left:1.4rem;top:4.6rem;margin:0;padding-left:.9rem;border-left:2px solid var(--accent);font-family:var(--serif);font-size:1.25rem;font-weight:700;letter-spacing:.22em;text-shadow:0 2px 14px rgba(0,0,0,.75),0 0 2px rgba(0,0,0,.6)}
+.lw-views{position:absolute;right:1.2rem;top:4.6rem;display:flex;flex-direction:column;gap:.45rem;align-items:flex-end}
+.lw-view{padding:.32rem .95rem;border:1px solid rgba(255,255,255,.28);border-radius:2rem;background:rgba(8,14,26,.62);font-size:.82rem;letter-spacing:.12em;transition:background .2s,color .2s}
+.lw-view[aria-pressed="true"]{background:var(--ink);color:#0b1220;border-color:var(--ink)}
+
+/* 旁白與同行者的話：隨捲動出現，只留最近三則 */
+.lw-words{position:absolute;left:0;right:0;bottom:0;padding:6rem 1.25rem 2rem;display:flex;flex-direction:column;gap:.55rem;align-items:flex-start;background:linear-gradient(rgba(4,8,16,0),rgba(4,8,16,.55) 38%,rgba(4,8,16,.9) 100%);pointer-events:none}
+.lw-text,.lw-line{display:none;margin:0;max-width:40rem}
+.lw-text.is-on,.lw-line.is-on{display:block;animation:lw-rise .55s ease-out}
+.lw-text.is-past,.lw-line.is-past{display:none}
+.lw-text{font-family:var(--serif);font-size:1.24rem;line-height:1.9;letter-spacing:.05em;text-shadow:0 1px 12px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.7)}
+.lw-line{padding:.5rem 1rem .5rem .9rem;border-radius:.3rem 1rem 1rem .3rem;border:0;border-left:3px solid var(--who);background:linear-gradient(90deg,rgba(14,22,40,.94),rgba(14,22,40,.78));box-shadow:0 6px 22px rgba(0,0,0,.35);font-size:1rem;line-height:1.7}
+.lw-line[data-side="r"]{align-self:flex-end;border-left:0;border-right:3px solid var(--who);border-radius:1rem .3rem .3rem 1rem;background:linear-gradient(270deg,rgba(14,22,40,.94),rgba(14,22,40,.78))}
+.lw-who{margin-right:.8em;font-weight:700;font-size:.86em;letter-spacing:.1em;color:var(--who)}
+.lw-solo-line{border-style:dashed}
+.lw-stage[data-gated="1"] .lw-words{display:none}
+@keyframes lw-rise{from{opacity:0;transform:translateY(.7rem)}to{opacity:1;transform:none}}
+@keyframes lw-bob{0%,100%{transform:none}50%{transform:translateY(.4rem)}}
+
+/* 抉擇卡 */
+.lw-gate{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:min(34rem,calc(100% - 1.6rem));max-height:calc(100% - 7.5rem);overflow:auto;padding:1.3rem 1.4rem 1.3rem;border:1px solid rgba(255,255,255,.14);border-top:2px solid var(--accent);border-radius:.9rem;background:linear-gradient(180deg,rgba(20,30,52,.97),rgba(8,13,26,.97));box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.lw-prompt{margin:0 0 .9rem;font-family:var(--serif);font-size:1.28rem;font-weight:700;line-height:1.6;letter-spacing:.05em}
+.lw-claim,.lw-reaction{margin:.3rem 0;padding-left:.7rem;border-left:3px solid var(--who);font-size:.96rem}
+.lw-options{display:grid;gap:.5rem;margin-top:.8rem}
+.lw-option{position:relative;display:block;width:100%;padding:.75rem 2.2rem .75rem 1.1rem;border:1px solid rgba(255,255,255,.16);border-radius:.6rem;background:rgba(255,255,255,.05);text-align:left;transition:background .2s,border-color .2s,transform .2s}
+.lw-option::after{content:"→";position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--accent);opacity:.6}
+.lw-option:hover,.lw-option:focus-visible{background:rgba(126,224,195,.16);border-color:var(--accent);outline:none;transform:translateX(3px)}
+.lw-option strong{display:block;font-size:1.06rem;letter-spacing:.04em}
+.lw-hint{display:block;color:var(--mute);font-size:.86rem}
+.lw-picked{margin:0 0 .5rem;color:var(--accent);font-size:.78rem;letter-spacing:.2em}
+.lw-result{margin:0 0 .9rem;font-family:var(--serif);font-size:1.14rem;line-height:1.8;letter-spacing:.03em}
+.lw-delta{margin-left:.6em;font-weight:700;font-size:.86rem;white-space:nowrap}
+.lw-delta[data-way="up"]{color:#8ff0b0}.lw-delta[data-way="down"]{color:#ff9d8a}
+.lw-after{display:flex;justify-content:space-between;align-items:center;gap:.8rem;margin-top:.7rem}
+.lw-go{margin:0;color:var(--mute);font-size:.88rem}
+.lw-rechoose{padding:.25rem .8rem;border:1px solid var(--rule);border-radius:2rem;background:none;font-size:.86rem;color:var(--mute)}
+
+/* 固定在畫面上的讀數、信任與走過的路 */
+.lw-particles{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:4}
+.lw-fixed{position:fixed;left:0;right:0;top:0;z-index:5;padding:.6rem .8rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.4rem .8rem;pointer-events:none;transition:opacity .4s}
+html:not([data-in="1"]) .lw-fixed,html:not([data-in="1"]) .lw-particles{opacity:0;visibility:hidden}
+.lw-hud,.lw-meters{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;pointer-events:auto}
+.lw-chip{padding:.2rem .75rem;border-radius:2rem;background:rgba(8,14,26,.62);border:1px solid rgba(255,255,255,.14);font-size:.76rem;letter-spacing:.08em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lw-hud-stage{color:var(--accent);font-weight:700}
+.lw-meter{display:flex;align-items:center;gap:.4em}
+.lw-meter-name{color:var(--who);font-weight:700}
+.lw-meter-bar{position:relative;width:3.2rem;height:.34rem;border-radius:1rem;background:rgba(255,255,255,.18)}
+.lw-meter-bar i{position:absolute;top:0;bottom:0;border-radius:1rem;background:var(--who)}
+.lw-meter-value{min-width:1.4em;text-align:right;font-variant-numeric:tabular-nums}
+.lw-trail{position:relative}
+.lw-trail-toggle{color:var(--ink)}
+.lw-trail-list{position:absolute;left:0;top:calc(100% + .4rem);display:grid;gap:.2rem;min-width:11rem;max-height:60vh;overflow:auto;padding:.5rem;border:1px solid var(--rule);border-radius:.7rem;background:var(--card)}
+.lw-trail-list button{padding:.25rem .6rem;border:0;border-radius:.4rem;background:none;text-align:left;font-size:.9rem}
+.lw-trail-list button:hover,.lw-trail-list button:focus-visible{background:rgba(255,255,255,.12);outline:none}
+
+/* 結算 */
+.lw-finale{position:fixed;left:0;top:0;width:100%;height:100%;z-index:9;overflow:auto;padding:1.2rem .8rem 2rem;background:rgba(5,9,18,.84)}
+.lw-finale-card{max-width:38rem;margin:0 auto;padding:1.8rem 1.7rem 1.9rem;border:1px solid rgba(255,255,255,.14);border-top:2px solid var(--accent);border-radius:.9rem;background:linear-gradient(180deg,rgba(20,30,52,.97),rgba(8,13,26,.97));box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.lw-wake p{margin:.2rem 0;font-family:var(--serif);font-size:1.16rem;line-height:1.9;letter-spacing:.04em}
+/* 這一次的結局：醒來之後的幾句話、結局的名稱、為什麼是這一種。底下的清單列出一共有幾種，看過的寫名稱、沒看過的是霧 */
+.lw-ending{margin:1.1rem 0 0;padding:1rem 1.1rem 1.1rem;border-radius:.7rem;background:rgba(126,224,195,.08);border:1px solid rgba(126,224,195,.28)}
+.lw-ending-text p{margin:.2rem 0;font-family:var(--serif);font-size:1.1rem;line-height:1.9;letter-spacing:.04em}
+.lw-ending-title{margin:.9rem 0 .35rem;font-family:var(--serif);font-size:1.55rem;letter-spacing:.12em;color:var(--accent)}
+.lw-ending-why{margin:0;font-size:.86rem;color:var(--mute)}
+.lw-endings{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.35rem}
+.lw-endings li{padding:.15rem .6rem;border-radius:2rem;border:1px solid var(--rule);font-size:.86rem}
+.lw-endings li[data-state="seen"]{background:rgba(126,224,195,.16);border-color:rgba(126,224,195,.5)}
+.lw-endings li[data-state="fog"]{color:var(--mute);border-style:dashed;opacity:.7}
+.lw-endings li[data-now="1"]{box-shadow:0 0 0 2px rgba(126,224,195,.35)}
+.lw-endings-count{margin:0 0 .45rem;font-size:.86rem;color:var(--mute)}
+.lw-finale-title{margin:1.5rem 0 .9rem;font-family:var(--serif);font-size:1.3rem;letter-spacing:.16em}
+.lw-finale h3{margin:1.4rem 0 .6rem;font-size:.74rem;font-weight:500;color:var(--accent);letter-spacing:.3em}
+.lw-map{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.35rem}
+.lw-map li{padding:.15rem .6rem;border-radius:2rem;border:1px solid var(--rule);font-size:.86rem}
+.lw-map li[data-state="seen"]{background:rgba(126,224,195,.16);border-color:rgba(126,224,195,.5)}
+.lw-map li[data-state="fog"]{color:var(--mute);border-style:dashed;opacity:.7}
+.lw-atlas-count{margin:0 0 .3rem;font-weight:700}
+.lw-atlas-list{margin:0;padding-left:1.2rem;font-size:.92rem;color:var(--mute)}
+.lw-atlas-list b{color:var(--ink);margin-right:.5em}
+.lw-farewell{margin:.35rem 0;padding-left:.7rem;border-left:3px solid var(--who)}
+.lw-farewell small{margin-left:.6em;color:var(--mute)}
+.lw-note{margin:.6rem 0 0;font-size:.95rem;color:var(--mute)}
+.lw-next{margin:1.6rem 0 1.1rem;font-family:var(--serif);font-size:1.12rem;letter-spacing:.05em;color:var(--accent)}
+.lw-finale-buttons{display:flex;flex-wrap:wrap;gap:.6rem}
+.lw-finale-buttons button{padding:.45rem 1.1rem;border:1px solid var(--rule);border-radius:2rem;background:rgba(255,255,255,.08)}
+.lw-finale-buttons .lw-again{background:var(--ink);color:#0b1220;border-color:var(--ink)}
+
+.lw-foot{max-width:44rem;margin:0 auto;padding:2.5rem 1.25rem 3rem;color:var(--mute);font-size:.85rem}
+.lw-foot p{margin:.2rem 0}
+
+.is-calm .lw-cam,.is-calm .lw-shade,.is-calm .lw-glow{transition:none}
+.is-calm .lw-text.is-on,.is-calm .lw-line.is-on,.is-calm .lw-start{animation:none}
+@media (max-width:980px){
+  .lw-title{top:6rem}
+  .lw-views{top:6rem}
+}
+@media (max-width:640px){
+  .lw-title{top:8rem;left:1rem;font-size:1.05rem}
+  .lw-views{top:10.6rem;right:.7rem}
+  .lw-meter-bar{display:none}
+  .lw-words{padding:5rem .9rem 1.4rem}
+  .lw-text{font-size:1.08rem}
+  .lw-line{font-size:.94rem}
+  .lw-scene + .lw-scene{margin-top:-22vh}
+  .lw-scene.lw-after-gate{margin-top:0}
+  .lw-gate{top:54%;max-height:calc(100% - 10.5rem)}
+}
+@media print{.lw-fixed,.lw-particles,.lw-finale,.lw-scroll{display:none!important}.lw-static{display:block!important}html{background:#fff;color:#000}}</style>
+</head>
+<body>
+<header class="lw-head">
+<p class="lw-kicker">Life World 作品・捲動劇情<span class="lw-genre">奇境漂流</span></p>
+<h1>冰下之春<span class="lw-part">完整版</span></h1>
+<p class="lw-premise"><span class="lw-label">開場</span>你抽中一張前往南極的船票。船沒有抵達南極，而是把你帶到一個地圖上沒有的地方。冰層底下，為什麼是暖的？</p>
+<ul class="lw-cast"><li><span class="lw-name" data-c="1">杜承硯</span><span class="lw-role">帶路的人</span></li><li><span class="lw-name" data-c="2">許月禾</span><span class="lw-role">記錄的人</span></li><li><span class="lw-name" data-c="3">鄔向荃</span><span class="lw-role">好奇的人</span></li></ul>
+<p class="lw-start" hidden>往下捲，開始這趟旅程。</p>
+</header>
+<main>
+<section class="lw-static">
+<p class="lw-need">這件作品需要執行程式才能看：往下捲會一路換場景，中間有幾個地方要你做選擇，同行的人各自反應。請用瀏覽器直接打開這個檔案。下面是場景的清單。</p>
+<ol class="lw-outline"><li><h2>城市公寓的夜晚</h2><p>冷氣低低地響，電視上是一部極地紀錄片。</p><p>你握著半杯冰水，眼皮越來越重。</p><p>手機亮了一下：恭喜，你抽中一張前往南極的船票。</p></li><li><h2>清晨的港口</h2><p>登船證不知什麼時候已經在你手裡。</p><p>鏽紅色的破冰船鳴了一聲笛，切開灰藍色的晨霧。</p><p>同船的三個人，你都覺得眼熟，卻想不起在哪裡見過。</p></li><li><h2>冰海航行</h2><p>浮冰越來越密，羅盤的指針開始亂轉。</p><p>水面上的冰山只是一小角。</p><p>有個巨大的影子從船底滑過，像在帶路，也像在把船帶偏。</p></li><li><h2>風暴與擱淺</h2><p>一座地圖上沒有的冰崖刺破濃霧。</p><p>船身猛地一斜，警報響成一片。</p></li><li><h2>無名冰島的海岸</h2><p>浪把你們推上一片漆黑的沙灘，破冰船已經被風雪吞沒。</p><p>藍色的冰崖擋在面前。</p><p>幾隻比人還高的企鵝站在遠處，安靜地看著你們。</p></li><li><h2>冰原的夜</h2><p>（依你的選擇而定）</p></li><li><h2>冰原與冰隙</h2><p>冰原上的風大得站不穩。</p><p>腳下裂開一道深藍色的縫。奇怪的是，裂縫裡不冷。</p><p>一縷帶著泥土味的暖風，從底下吹上來。</p></li><li><h2>冰拱海岸</h2><p>（依你的選擇而定）</p></li><li><h2>藍冰洞</h2><p>（依你的選擇而定）</p></li><li><h2>地熱谷地</h2><p>溫暖的霧撲在臉上。</p><p>冰牆圍出一座綠色的谷地，溫泉冒著泡，叫不出名字的花開在霧裡。</p><p>深度計停在冰面下兩百四十公尺，溫度卻是春天。</p></li><li><h2>六角石柱林</h2><p>（依你的選擇而定）</p></li><li><h2>彩色溫泉階地</h2><p>（依你的選擇而定）</p></li><li><h2>往上飄的蒸氣瀑</h2><p>（依你的選擇而定）</p></li><li><h2>鹽晶平原</h2><p>三條路在一片白色的平原會合，地上是鹽結成的六角格子。</p><p>來舔鹽的不只你們：矮小的長毛象、背上長滿青苔的巨龜、角上有光的鹿，還有羽毛像冰晶的鳥。</p><p>那隻巨龜一直跟著記錄的人，不肯走。</p></li><li><h2>溫泉後面的裂口</h2><p>（依你的選擇而定）</p></li><li><h2>裂開的谷地</h2><p>（依你的選擇而定）</p></li><li><h2>地下暗河</h2><p>（依你的選擇而定）</p></li><li><h2>晶洞</h2><p>（依你的選擇而定）</p></li><li><h2>熔岩管</h2><p>（依你的選擇而定）</p></li><li><h2>地底湖</h2><p>路的盡頭是一座湖，看不到對岸。</p><p>湖底每隔幾秒就湧出一串氣泡，很規律，像有什麼巨大的東西在呼吸。</p><p>水位在漲。剛才走過的岸，已經在水裡了。</p></li><li><h2>洞頂的光</h2><p>（依你的選擇而定）</p></li><li><h2>無名的孤島</h2><p>湖水把你們往上推，穿過一條很長的水道。</p><p>再睜開眼睛，已經在海面上。一座沒有樹的小島，四周只有海。</p><p>天快亮了。</p></li><li><h2>回程</h2><p>身後的冰島越來越小，最後和海平線分不出來。</p><p>沒有人說話。</p><p>城市的燈在前面亮了起來。</p></li></ol>
+</section>
+<div class="lw-scroll" hidden></div>
+</main>
+<footer class="lw-foot"><p>這是 AI 依人物設定生成的虛構演出，不代表真實人物或事實。</p><p>由 Life World 匯出・捲動劇情 scroll-1</p></footer>
+<script type="application/json" id="lw-story">{"atlas":[{"id":"iceberg","kind":"現象","name":"冰山的水下九成","note":"冰比海水輕一點點，所以只有一成露出水面。"},{"id":"whale","kind":"生物","name":"船底的巨影","note":"跟著破冰船游了一整個下午，沒有浮上來過。"},{"id":"penguin","kind":"生物","name":"巨型企鵝","note":"比人還高。很久以前的企鵝確實有這麼大。"},{"id":"aurora","kind":"現象","name":"極光","note":"太陽吹來的帶電粒子撞上高空的空氣，發出綠色的光。"},{"id":"arch","kind":"地貌","name":"冰拱海岸","note":"海浪年復一年掏空冰崖的底部，留下一道道拱門。"},{"id":"blueice","kind":"地貌","name":"藍冰","note":"被壓了上千年的冰擠掉了氣泡，只讓藍光穿過。"},{"id":"valley","kind":"地貌","name":"地熱谷地","note":"地底的熱把冰融出一個洞，冰牆反而替它擋住了風。"},{"id":"columns","kind":"地貌","name":"六角石柱林","note":"岩漿冷卻收縮時，會裂成最省力的形狀：六角形。"},{"id":"terraces","kind":"地貌","name":"彩色溫泉階地","note":"每一層水溫不同，住著不同顏色的細菌。"},{"id":"steamfall","kind":"地貌","name":"往上飄的蒸氣瀑","note":"熱泉遇到冷空氣變成霧，沿著崖壁往上爬。"},{"id":"saltflat","kind":"地貌","name":"鹽晶平原","note":"溫泉水乾了以後，鹽結成一格一格的六角形。"},{"id":"turtle","kind":"生物","name":"苔背巨龜","note":"背上的青苔順著同一個方向長，像被水流梳過。"},{"id":"deer","kind":"生物","name":"發光苔鹿","note":"角上長著會發光的苔，天黑以後像一盞小燈。"},{"id":"mammoth","kind":"生物","name":"矮種長毛象","note":"只到人的腰，毛長得拖在地上。"},{"id":"icebird","kind":"生物","name":"冰羽鳥","note":"羽毛半透明，飛起來像一把碎冰。"},{"id":"blindfish","kind":"生物","name":"暗河的白魚","note":"一輩子住在黑暗裡，眼睛退化了，靠水流的震動認路。"},{"id":"crystal","kind":"地貌","name":"晶洞","note":"溫泉水裡的礦物一點一點結晶，一根柱子要長幾十萬年。"},{"id":"lavatube","kind":"地貌","name":"熔岩管","note":"岩漿流過以後，外層先冷卻變硬，裡面流光了，留下一條管子。"},{"id":"lake","kind":"現象","name":"地底湖的呼吸","note":"湖底的熱泉一陣一陣地冒泡，間隔幾乎不變。"},{"id":"glowworm","kind":"生物","name":"洞頂的光","note":"一種蟲的幼蟲，吐出沾著黏液的絲，用光把飛蟲引過來。"}],"cast":[{"color":1,"id":"lead","name":"杜承硯","role":"帶路的人"},{"color":2,"id":"rec","name":"許月禾","role":"記錄的人"},{"color":3,"id":"cur","name":"鄔向荃","role":"好奇的人"}],"finale":{"endings":[{"id":"melt","text":["夢的最後，谷地從中間塌了下去。","你驚醒，冰水灑了一身。","窗邊的盆栽，掉了一片葉子。"],"title":"遺憾｜融掉的冰","when":[{"flag":"egg","is":"kept"}],"why":"那顆卵被帶走了。"},{"id":"map","text":["手機亮了。群組裡有人說，昨晚夢到冰層底下有一座綠色的谷地。","另一個人接著說出一個只有你見過的細節。","「要不要真的去一趟？」"],"title":"圓滿｜四個人的地圖","when":[{"people":{"gte":3},"with":{"gte":2}}],"why":"卵放回去了，而且三個人都信任你。"},{"id":"warm","text":["手機亮了。兩個人傳來訊息，都說昨晚好像夢到了你。","另一個人只回了一張貼圖。"],"title":"溫暖｜有人記得","when":[{"people":{"gte":2},"with":{"gte":2}}],"why":"卵放回去了，有兩個人信任你。"},{"id":"credits","text":["電視播完了片尾，畫面停在一片藍。","沒有人傳訊息。","你找了一張便條紙，把還記得的路畫下來。"],"title":"平淡｜片尾字幕","why":"卵放回去了，但信任你的人不到兩個。"}],"farewell":{"cur":{"high":"謝謝你陪我走到這裡。底下其實很暖，我本來真的不想回來的。","low":"這趟路走下來，至少我們把地圖沒畫的地方都摸過一遍了。","mid":"這趟路走下來，至少我們把地圖沒畫的地方都摸過一遍了。"},"lead":{"high":"平安回來就好，這次多虧有你一路照應。","low":"總算平安回來了，以後這種遠門少出為妙。","mid":"這趟路總算走完了，先回去再說。"},"rec":{"high":"謝謝你陪我走到這裡，這些故事我不會忘記。","low":"這段旅程的聲音我都有好好收著。","mid":"這段旅程的聲音我都有好好收著。"}},"next":"冰層底下的暗河，還在流。","notes":[{"text":"好奇的人最晚回訊息：「我夢到我住在一個很暖的地方。」","when":[{"flag":"heart","is":"below"}]},{"text":"你的手臂上有一道淺淺的紅印，不記得是什麼時候弄的。","when":[{"flag":"hurt","is":"yes"}]}],"title":"全劇終","wake":["你在沙發上翻了個身。","手裡的冰水晃出幾滴，還沒有倒。","魚缸咕嚕冒出一串泡泡。"]},"format":"lw-scroll.v1","genre":"奇境漂流","meter":{"high":2,"label":"信任","low":-2,"max":6,"min":-6},"part":"完整版","premise":"你抽中一張前往南極的船票。船沒有抵達南極，而是把你帶到一個地圖上沒有的地方。冰層底下，為什麼是暖的？","scenario":"ice-spring","scenes":[{"axis":"y","hud":{"depth":[0,0],"temp":[18,18]},"id":"s01","kind":"apartment","particles":"dust","said":[],"stage":"啟程","text":["冷氣低低地響，電視上是一部極地紀錄片。","你握著半杯冰水，眼皮越來越重。","手機亮了一下：恭喜，你抽中一張前往南極的船票。"],"title":"城市公寓的夜晚","views":[{"id":"room","label":"室內平視"},{"cam":{"s":2.2,"x":18,"y":8},"id":"tv","label":"電視特寫"}]},{"axis":"x","hud":{"depth":[0,0],"temp":[4,-2]},"id":"s02","kind":"harbor","particles":"snow","said":[{"text":"船笛聲一響，這霧濃得連航道都看不清，只能先看水面浮冰怎麼動。","who":"lead"},{"text":"這張登船證的紅鏽，真像我小時候住過的那座老碼頭。","who":"rec"},{"text":"這船開得可真隨性，連港口名字都省了。","who":"cur"}],"stage":"啟程","text":["登船證不知什麼時候已經在你手裡。","鏽紅色的破冰船鳴了一聲笛，切開灰藍色的晨霧。","同船的三個人，你都覺得眼熟，卻想不起在哪裡見過。"],"title":"清晨的港口","views":[{"id":"dock","label":"碼頭仰望"},{"cam":{"s":1.5,"x":0,"y":16},"id":"deck","label":"甲板俯瞰"}]},{"atlas":["iceberg","whale"],"axis":"x","hud":{"depth":[0,0],"temp":[-8,-16]},"id":"s03","kind":"icesea","particles":"snow","said":[{"text":"羅盤亂轉的時候，我想聽聽剛才那波浪聲是怎麼打上來的。","who":"rec"},{"text":"那影子晃得挺快，我看它根本想把我們帶往別處。","who":"cur"},{"text":"冰山下面暗流很深，船底剛才擦過去的時候，方向盤直接被扯了一下。","who":"lead"}],"stage":"啟程","text":["浮冰越來越密，羅盤的指針開始亂轉。","水面上的冰山只是一小角。","有個巨大的影子從船底滑過，像在帶路，也像在把船帶偏。"],"title":"冰海航行","views":[{"id":"side","label":"船側"},{"cam":{"s":1,"x":0,"y":-42},"id":"under","label":"水下"}]},{"axis":"x","gate":{"claims":[{"text":"沒人知道我們在哪，拿信號槍，至少還有人能看見火光。","who":"lead"},{"text":"相機得拿著，沒有照片，回去誰也不會相信我們見過這裡。","who":"rec"},{"text":"拿保溫毯吧，至少能在外面好好過夜。","who":"cur"}],"id":"g1","options":[{"hint":"帶路的人：求救最要緊。","id":"flare","label":"信號槍","outcomes":[{"delta":{"lead":1},"name":"flare","reactions":{"cur":{"high":"信號槍拿就拿了，希望用得上。","low":"信號槍拿就拿了，希望用得上。","mid":"信號槍拿就拿了，希望用得上。"},"lead":{"high":"信號槍拿好，等下出去能不能被看見就靠這個了。","low":"信號槍拿好，等下出去能不能被看見就靠這個了。","mid":"信號槍拿好，等下出去能不能被看見就靠這個了。"},"rec":{"high":"把信號槍收好，我們得準備出發了。","low":"把信號槍收好，我們得準備出發了。","mid":"把信號槍收好，我們得準備出發了。"}},"result":"你把信號槍塞進外套，跳上救生艇。","set":{"item":"flare"}}]},{"hint":"記錄的人：沒有照片，誰會相信？","id":"camera","label":"相機","outcomes":[{"delta":{"rec":1},"name":"camera","reactions":{"cur":{"high":"相機嗎，希望拍得下這裡的冷清。","low":"相機嗎，希望拍得下這裡的冷清。","mid":"相機嗎，希望拍得下這裡的冷清。"},"lead":{"high":"相機拿著也沒用，不過你決定就好，上艇吧。","low":"相機拿著也沒用，不過你決定就好，上艇吧。","mid":"相機拿著也沒用，不過你決定就好，上艇吧。"},"rec":{"high":"這台相機我掛好了，回去正好能把剛才的浪影留下來。","low":"這台相機我掛好了，回去正好能把剛才的浪影留下來。","mid":"這台相機我掛好了，回去正好能把剛才的浪影留下來。"}},"result":"你把相機掛上脖子，跳上救生艇。","set":{"item":"camera"}}]},{"hint":"好奇的人：有它就能在外面過夜。","id":"blanket","label":"保溫毯","outcomes":[{"delta":{"cur":1},"name":"blanket","reactions":{"cur":{"high":"有這張毯子，心裡踏實多了。","low":"有這張毯子，心裡踏實多了。","mid":"有這張毯子，心裡踏實多了。"},"lead":{"high":"保溫毯先抱著，海風刺骨，別在半路凍僵了。","low":"保溫毯先抱著，海風刺骨，別在半路凍僵了。","mid":"保溫毯先抱著，海風刺骨，別在半路凍僵了。"},"rec":{"high":"保溫毯抱在手裡了，走吧。","low":"保溫毯抱在手裡了，走吧。","mid":"保溫毯抱在手裡了，走吧。"}},"result":"你抱著保溫毯，跳上救生艇。","set":{"item":"blanket"}}]}],"prompt":"救生艇只等三十秒。你只來得及拿一樣東西。"},"hud":{"depth":[0,0],"temp":[-16,-28]},"id":"s04","kind":"storm","particles":"storm","said":[{"text":"冰崖擋在前面，船身卡得死死的，再不走引擎就要燒了。","who":"lead"}],"stage":"遇難","text":["一座地圖上沒有的冰崖刺破濃霧。","船身猛地一斜，警報響成一片。"],"title":"風暴與擱淺"},{"atlas":["penguin"],"axis":"x","hud":{"depth":[0,0],"temp":[-28,-32]},"id":"s05","kind":"beach","particles":"snow","said":[{"text":"企鵝站在那裡一動不動，好像在等我們解釋來意。","who":"cur"},{"text":"那些企鵝站得那麼直，真像在排隊等著聽我們說話。","who":"rec"},{"text":"企鵝站在那邊看，風雪把破冰船埋得快看不見了。","who":"lead"}],"stage":"遇難","text":["浪把你們推上一片漆黑的沙灘，破冰船已經被風雪吞沒。","藍色的冰崖擋在面前。","幾隻比人還高的企鵝站在遠處，安靜地看著你們。"],"title":"無名冰島的海岸","views":[{"id":"far","label":"低角度遠景"},{"cam":{"s":2.4,"x":-24,"y":-6},"id":"penguin","label":"巨型企鵝特寫"}]},{"atlas":["aurora"],"axis":"x","hud":{"depth":[0,0],"temp":[-32,-35]},"id":"s06a","kind":"aurora","particles":"snow","said":[{"text":"這光綠得像假的一樣，卻把冰原照得透亮。","who":"cur"},{"text":"毯子夠用就好，這光綠得有點邪門，但至少風停了。","who":"lead"}],"stage":"遇難","text":["有保溫毯，你們敢在背風處等到風停。","天黑之後，整片天空亮了起來。","綠色的光像一條河，往冰原深處流過去。"],"title":"冰原的夜","when":[{"flag":"item","is":"blanket"}]},{"axis":"y","gate":{"claims":[{"text":"沿海岸繞雖然慢，但腳踩在冰面上總比掉下去好。","who":"lead"},{"text":"我想順著暖風下去看看，那裡頭一定藏著沒人聽過的聲音。","who":"rec"},{"text":"我倒想聞聞看那道裂縫底下到底有什麼。","who":"cur"}],"id":"g2","options":[{"hint":"慢，但每一步都踩得到地。","id":"coast","label":"沿海岸繞過去","outcomes":[{"delta":{"lead":1},"name":"coast","reactions":{"cur":{"high":"沿著冰崖繞也行，總之先走吧。","low":"沿著冰崖繞也行，總之先走吧。","mid":"沿著冰崖繞也行，總之先走吧。"},"lead":{"high":"沿著冰崖走是對的，至少不用在裂縫裡猜運氣。","low":"貼著冰崖走雖然繞，但至少每一步都踩在實地上。","mid":"貼著冰崖走雖然繞，但至少每一步都踩在實地上。"},"rec":{"high":"沿著冰崖走吧，風雪不等人。","low":"沿著冰崖走吧，風雪不等人。","mid":"沿著冰崖走吧，風雪不等人。"}},"result":"你們貼著冰崖，往海岸的方向走。","set":{"route":"coast"}}]},{"hint":"暖風是從那裡吹上來的。","id":"crevasse","label":"下冰隙","outcomes":[{"delta":{"cur":1,"rec":1},"name":"crevasse","reactions":{"cur":{"high":"繩子拉好，我已經等不及看下面藏著什麼了。","low":"滑下去看看，我挺想知道裂縫底下藏著什麼。","mid":"滑下去看看，我挺想知道裂縫底下藏著什麼。"},"lead":{"high":"繩子拉好，滑下去就全憑運氣了，跟著我走。","low":"繩子拉好，滑下去就全憑運氣了，跟著我走。","mid":"繩子拉好，滑下去就全憑運氣了，跟著我走。"},"rec":{"high":"繩子拉緊了，我跟著你下去；這地方太少人進來，我想知道裡頭藏了什麼。","low":"繩子綁好了，我跟著你下去看看這縫隙底下到底有什麼。","mid":"繩子綁好了，我跟著你下去看看這縫隙底下到底有什麼。"}},"result":"你們綁好繩子，一個接一個滑進裂縫。","set":{"route":"crevasse"}}]}],"prompt":"暴風雪就要到了。怎麼走？"},"hud":{"depth":[0,0],"temp":[-35,-30]},"id":"s06","kind":"icefield","particles":"storm","said":[{"text":"裂縫底下吹上來的暖風，帶著泥土味，我得記下這個細節。","who":"rec"}],"stage":"遇難","text":["冰原上的風大得站不穩。","腳下裂開一道深藍色的縫。奇怪的是，裂縫裡不冷。","一縷帶著泥土味的暖風，從底下吹上來。"],"title":"冰原與冰隙","variants":[{"paint":"flare","text":"帶路的人朝裂縫裡開了一槍。紅光一路往下墜，照出很深的地方有一抹綠色。","when":[{"flag":"item","is":"flare"}]}],"views":[{"id":"top","label":"冰原俯瞰"},{"cam":{"s":1,"x":0,"y":-42},"id":"cut","label":"裂縫剖面"}]},{"atlas":["arch"],"axis":"x","hud":{"depth":[0,-40],"temp":[-30,-6]},"id":"s07c","kind":"coast","particles":"snow","said":[{"text":"拱門那邊有光，不是月光，走過去看看才知道是什麽。","who":"lead"},{"text":"冰拱門後面透出來的光，看著真有點不對勁。","who":"cur"}],"stage":"世外桃源","text":["你們貼著冰崖走了一整天。","海浪把冰崖掏出一道又一道拱門，夕陽從拱門裡穿過來。","天黑的時候，最後一道拱門後面，透出不是月光的光。"],"title":"冰拱海岸","when":[{"flag":"route","is":"coast"}]},{"atlas":["blueice"],"axis":"y","hud":{"depth":[0,-180],"temp":[-30,4]},"id":"s07","kind":"icecave","particles":"drip","said":[{"text":"藍冰透出的光像舊照片，安安靜靜的，不吵人。","who":"rec"},{"text":"滴水聲聽起來不像真的，這裡連時間都慢了。","who":"cur"}],"stage":"世外桃源","text":["風雪的聲音被冰層隔在頭頂，只剩滴水聲。","被壓了上千年的冰是藍色的，光從裡面透出來。","通道盡頭，有一片綠色的光在一明一滅。"],"title":"藍冰洞","when":[{"flag":"route","is":"crevasse"}]},{"atlas":["valley"],"axis":"y","gate":{"claims":[{"text":"石柱林在高處，上去才能看清這到底是什麼鬼地方。","who":"lead"},{"text":"我想去彩色溫泉階地，那些顏色肯定能拼湊出特別的故事。","who":"rec"},{"text":"去蒸氣瀑布吧，我很好奇那裡的水為什麼往上流。","who":"cur"}],"id":"g3","options":[{"hint":"他想到高處看清楚地形。","id":"lead","label":"跟帶路的人去石柱林","outcomes":[{"delta":{"lead":1},"name":"lead","reactions":{"cur":{"high":"那就跟著去石柱林瞧瞧，反正到哪都一樣。","low":"石柱林嗎，那走吧，看看他們能帶出什麼路。","mid":"石柱林嗎，那走吧，看看他們能帶出什麼路。"},"lead":{"high":"跟我走，石柱林那邊高，地形我來帶路，不會錯的。","low":"跟我往石柱林走，高處看得到水流怎麼走。","mid":"跟我往石柱林走，高處看得到水流怎麼走。"},"rec":{"high":"聽你的，我們先往石柱林去；反正今天有的是時間，慢慢走。","low":"那就跟著石柱林走吧，我們白色的平原見。","mid":"那就跟著石柱林走吧，我們白色的平原見。"}},"result":"你跟著帶路的人往高處走。另外兩人各自出發，約好在白色的平原會合。","set":{"walk":"lead"}}]},{"hint":"他想弄清楚那些顏色是什麼。","id":"rec","label":"跟記錄的人去溫泉階地","outcomes":[{"delta":{"rec":1},"name":"rec","reactions":{"cur":{"high":"走吧，去溫泉階地瞧瞧，希望別讓我失望。","low":"溫泉階地聽起來挺熱鬧，去那裡看看也無妨。","mid":"溫泉階地聽起來挺熱鬧，去那裡看看也無妨。"},"lead":{"high":"你選了記錄那邊，那溫泉階地交給你們，注意安全。","low":"溫泉階地那邊冒煙，去那裡看看也好。","mid":"溫泉階地那邊冒煙，去那裡看看也好。"},"rec":{"high":"我跟你去溫泉階地，我也很想弄清楚那些顏色到底是怎麼回事。","low":"走吧，我跟著你去溫泉階地看看那些顏色是怎麼來的。","mid":"走吧，我跟著你去溫泉階地看看那些顏色是怎麼來的。"}},"result":"你跟著記錄的人往冒煙的階地走。另外兩人各自出發，約好在白色的平原會合。","set":{"walk":"rec"}}]},{"hint":"他說那道瀑布看起來不太對勁。","id":"cur","label":"跟好奇的人去蒸氣瀑","outcomes":[{"delta":{"cur":1},"name":"cur","reactions":{"cur":{"high":"我就想去看水怎麼往上流，走吧！","low":"蒸氣瀑布這名字有意思，我非得親眼看看。","mid":"蒸氣瀑布這名字有意思，我非得親眼看看。"},"lead":{"high":"好奇歸好奇，瀑布那邊路滑，自己跟緊了。","low":"蒸氣瀑布那邊霧大，去的時候小心腳下。","mid":"蒸氣瀑布那邊霧大，去的時候小心腳下。"},"rec":{"high":"走吧，我們去蒸氣瀑布，我今天特別想聽聽那裡的聲音。","low":"那就去蒸氣瀑布那邊看看吧，聽著水聲總沒錯。","mid":"那就去蒸氣瀑布那邊看看吧，聽著水聲總沒錯。"}},"result":"你跟著好奇的人往崖壁走。另外兩人各自出發，約好在白色的平原會合。","set":{"walk":"cur"}}]}],"prompt":"三個人各有想去的地方。你跟誰走？"},"hud":{"depth":[-180,-240],"temp":[4,18]},"id":"s08","kind":"valley","particles":"pollen","said":[{"text":"這地方暖得古怪，我倒想把每樣東西都摸過一遍。","who":"cur"},{"text":"這深度計上的數字真讓人糊塗，冰底下竟然有春天。","who":"rec"},{"text":"深度計壞了吧，地下兩百公尺怎麼可能是暖的。","who":"lead"}],"stage":"世外桃源","text":["溫暖的霧撲在臉上。","冰牆圍出一座綠色的谷地，溫泉冒著泡，叫不出名字的花開在霧裡。","深度計停在冰面下兩百四十公尺，溫度卻是春天。"],"title":"地熱谷地","variants":[{"text":"你們在夜裡抵達。整座谷地的植物都在發光。","view":"night","when":[{"flag":"route","is":"coast"}]}],"views":[{"id":"wide","label":"俯瞰全景"},{"cam":{"s":1.5,"x":0,"y":-14},"id":"eye","label":"平視"},{"id":"night","label":"夜間","night":true}]},{"atlas":["columns"],"axis":"y","hud":{"depth":[-240,-230],"temp":[18,21]},"id":"s09a","kind":"columns","particles":"pollen","said":[],"solo":{"lines":{"high":"跟你說個底，從棄船到現在，我根本不認得路，全是照著水流方向在猜。","low":"先走再說，其實我根本不認得路，一直都只是順著水流猜方向而已。","mid":"先走再說，其實我根本不認得路，一直都只是順著水流猜方向而已。"},"who":"lead"},"stage":"世外桃源","text":["一根根六角形的石柱，整齊得像有人排過。","岩漿冷卻收縮的時候，會裂成這種形狀。","從柱頂看得到整座谷地的水往哪裡流。"],"title":"六角石柱林","when":[{"flag":"walk","is":"lead"}]},{"atlas":["terraces"],"axis":"y","hud":{"depth":[-240,-244],"temp":[18,21]},"id":"s09b","kind":"terraces","particles":"steam","said":[],"solo":{"lines":{"high":"我其實在谷地偷偷把一顆卵放進了背包。","low":"我有些話想先放在這裡，但現在不知道該怎麼說。","mid":"我有些話想先放在這裡，但現在不知道該怎麼說。"},"who":"rec"},"stage":"世外桃源","text":["一層一層的水池，從橘色、黃色到藍綠色。","顏色來自住在不同水溫裡的細菌。","池水滿了就往下一層流，一路流向谷底。"],"title":"彩色溫泉階地","when":[{"flag":"walk","is":"rec"}]},{"atlas":["steamfall"],"axis":"y","hud":{"depth":[-240,-236],"temp":[18,21]},"id":"s09c","kind":"steamfall","particles":"steam","said":[],"solo":{"lines":{"high":"這裡越往下越暖，老實說，我其實開始不想回去了。","low":"這裡越往下越暖，其實……我有點不想回去了。","mid":"這裡越往下越暖，其實……我有點不想回去了。"},"who":"cur"},"stage":"世外桃源","text":["遠看是一道瀑布，走近才發現水是往上的。","熱泉從崖底噴出來，遇到冷空氣變成白霧，沿著崖壁往上爬。","霧爬到冰牆頂，又變成水滴，落回谷裡。"],"title":"往上飄的蒸氣瀑","when":[{"flag":"walk","is":"cur"}]},{"atlas":["saltflat","turtle","deer","mammoth","icebird"],"axis":"x","gate":{"claims":[{"text":"包裡那顆卵得馬上放回去，我們是客人，不是來這裡拿東西的。","who":"lead"},{"text":"我需要一樣帶得回去的證據，那顆卵留著吧。","who":"rec"},{"text":"等一下，別急著走。背包裡那顆卵，我至少想先摸一下。","who":"cur"}],"id":"g4","options":[{"hint":"帶路的人會站在你這邊。","id":"return","label":"「放回去，現在。」","outcomes":[{"delta":{"lead":1,"rec":-1},"name":"returned-forced","reactions":{"cur":{"high":"放回去了。看那隻巨龜回頭的樣子，這樣也算剛好。","low":"放回去了。看著那隻巨龜轉身，心裡好像也落定了。","mid":"放回去了。看著那隻巨龜轉身，心裡好像也落定了。"},"lead":{"high":"放得對，你看巨龜那樣子，這才叫把本來該留下的東西還給人家。","low":"放回去了就好，巨龜看樣子也在等我們把本來不屬於我們的東西還給它。","mid":"放回去了就好，巨龜看樣子也在等我們把本來不屬於我們的東西還給它。"},"rec":{"high":"你說得對，我把卵放回去，我們走吧。","low":"既然你這麼說，那我們還是把它放回原處吧。","mid":"既然你這麼說，那我們還是把它放回原處吧。"}},"result":"他把卵放回原處。巨龜低頭碰了碰它，轉身，慢慢往溫泉後面的裂口走，走幾步就回頭看你們。","set":{"egg":"returned","guide":"yes"}}]},{"hint":"好奇的人也想多看那顆卵一眼。","id":"hide","label":"「先別說，我幫你瞞著。」","outcomes":[{"delta":{"cur":1,"lead":-1},"name":"kept-hidden","reactions":{"cur":{"high":"拉鍊拉上了。地面裂開時我心跳好快，但我高興你選這個。","low":"拉鍊拉上了。地面剛才裂開那一下，真的不是開玩笑的。","mid":"拉鍊拉上了。地面剛才裂開那一下，真的不是開玩笑的。"},"lead":{"high":"把卵扣著不放不是辦法，剛才地都動了，你非得惹出麻煩才甘心嗎？","low":"你這樣把東西藏著，地底下剛才都裂開了，我看事情沒那麼簡單。","mid":"你這樣把東西藏著，地底下剛才都裂開了，我看事情沒那麼簡單。"},"rec":{"high":"有你幫忙瞞著，我心裡踏實多了，謝謝你。","low":"謝謝你幫我瞞著，這件事我們先不說。","mid":"謝謝你幫我瞞著，這件事我們先不說。"}},"result":"你把背包的拉鍊拉上。地面抖了一下，鹽殼裂開一道縫。巨龜看了你們很久，轉身走進霧裡。","set":{"egg":"kept","guide":"no"}}]},{"hint":"他會怎麼選，要看他有多信任你。","id":"trust","label":"「你自己決定。」","outcomes":[{"delta":{"rec":1},"name":"returned-free","reactions":{"cur":{"high":"最後放回去了。看著巨龜離開，我才發現自己一直在捏一把冷汗。","low":"最後還是放回去了。巨龜轉身走進霧裡，這樣也對。","mid":"最後還是放回去了。巨龜轉身走進霧裡，這樣也對。"},"lead":{"high":"你自己決定放回去是對的，巨龜轉身走的時候，我也跟著鬆了口氣。","low":"總算把它放回原處了，這才像話，省得後面又生出什麼枝節。","mid":"總算把它放回原處了，這才像話，省得後面又生出什麼枝節。"},"rec":{"high":"我看了看，還是把它放回去了，這樣比較對。","low":"我看了看，還是把它放回去了，這樣比較對。","mid":"我看了看，還是把它放回去了，這樣比較對。"}},"result":"他看了看相機，又看了看你，把卵放了回去。「照片夠了。」巨龜轉身，慢慢往溫泉後面的裂口走。","set":{"egg":"returned","guide":"yes"},"when":[{"flag":"item","is":"camera"},{"gte":1,"meter":"rec"}]},{"delta":{"rec":1},"name":"returned-free","reactions":{"cur":{"high":"最後放回去了。看著巨龜離開，我才發現自己一直在捏一把冷汗。","low":"最後還是放回去了。巨龜轉身走進霧裡，這樣也對。","mid":"最後還是放回去了。巨龜轉身走進霧裡，這樣也對。"},"lead":{"high":"你自己決定放回去是對的，巨龜轉身走的時候，我也跟著鬆了口氣。","low":"總算把它放回原處了，這才像話，省得後面又生出什麼枝節。","mid":"總算把它放回原處了，這才像話，省得後面又生出什麼枝節。"},"rec":{"high":"我看了看，還是把它放回去了，這樣比較對。","low":"我看了看，還是把它放回去了，這樣比較對。","mid":"我看了看，還是把它放回去了，這樣比較對。"}},"result":"他抱著背包站了很久，最後蹲下來，把卵放回原處。「我信你會替我作證。」巨龜轉身，慢慢往溫泉後面的裂口走。","set":{"egg":"returned","guide":"yes"},"when":[{"flag":"item","not":"camera"},{"gte":2,"meter":"rec"}]},{"delta":{"lead":-1},"name":"kept-refused","reactions":{"cur":{"high":"背包抱得那麼緊也沒用，地面還是震了一下，巨龜走了。不過沒關係，我們再看著辦。","low":"背包抱得那麼緊也沒用，地面還是震了一下，巨龜走了。","mid":"背包抱得那麼緊也沒用，地面還是震了一下，巨龜走了。"},"lead":{"high":"你自己決定留著的，但瞧這地面裂開的樣子，後果也只能我們自己擔。","low":"你偏要把卵留著，地都震了，我看這條路是不會好走啦。","mid":"你偏要把卵留著，地都震了，我看這條路是不會好走啦。"},"rec":{"high":"我還是把它抱緊了，捨不得現在就放手。","low":"我還是把它抱緊了，捨不得現在就放手。","mid":"我還是把它抱緊了，捨不得現在就放手。"}},"result":"「沒有它，誰會相信我們來過？」他把背包抱得更緊。地面抖了一下，巨龜轉身走進霧裡。","set":{"egg":"kept","guide":"no"}}]}],"prompt":"記錄的人的背包裡，有一顆卵。"},"hud":{"depth":[-240,-250],"temp":[21,24]},"id":"s10","kind":"saltflat","particles":"pollen","said":[{"text":"連長毛象和巨龜都來舔鹽，這平原的規則跟外面不太一樣。","who":"cur"},{"text":"那隻巨龜一直跟著記錄的人不放，前面有三條路要匯合了。","who":"lead"}],"stage":"世外桃源","text":["三條路在一片白色的平原會合，地上是鹽結成的六角格子。","來舔鹽的不只你們：矮小的長毛象、背上長滿青苔的巨龜、角上有光的鹿，還有羽毛像冰晶的鳥。","那隻巨龜一直跟著記錄的人，不肯走。"],"title":"鹽晶平原","views":[{"id":"wide","label":"全景"},{"cam":{"s":2.2,"x":16,"y":-16},"id":"turtle","label":"巨龜特寫"},{"id":"night","label":"夜間","night":true}]},{"axis":"y","gate":{"claims":[{"text":"水往哪裡流，出口就在哪裡，我們直接沿著地下河走最保險。","who":"lead"},{"text":"岩壁上有東西在發亮，我想知道那到底是什麼。","who":"rec"},{"text":"暗河有三條，我投最暖的那條一票，岩壁摸起來一定不一樣。","who":"cur"}],"id":"g5","options":[{"hint":"帶路的人說，水知道出口在哪裡。","id":"river","label":"沿著地下河走","outcomes":[{"delta":{"lead":1},"name":"river","reactions":{"cur":{"high":"跟著水聲走吧，巨龜在前面游得倒挺自在的。有你同行，這條路也沒那麼黑。","low":"跟著水聲走吧，巨龜在前面游得倒挺自在的。","mid":"跟著水聲走吧，巨龜在前面游得倒挺自在的。"},"lead":{"high":"聽你的沿著水流走對了，連巨龜都帶頭游，這條路肯定能通出去。","low":"跟著水聲走準沒錯，巨龜都在前面游了，我們就順著這條地下河下去。","mid":"跟著水聲走準沒錯，巨龜都在前面游了，我們就順著這條地下河下去。"},"rec":{"high":"你選了這條河，我聽你的，我們一起走。","low":"既然你決定沿著河走，那我們就跟著水聲往前。","mid":"既然你決定沿著河走，那我們就跟著水聲往前。"}},"result":"你們跟著水聲走。巨龜滑進暗河，在前面慢慢地游。","set":{"path":"river"}}]},{"hint":"記錄的人想知道是什麼在發亮。","id":"crystal","label":"走有反光的那一條","outcomes":[{"delta":{"rec":1},"name":"crystal","reactions":{"cur":{"high":"走有反光的這條路。巨龜跟上來了，只要跟你走，去哪裡我都很有興趣。","low":"走有反光的這條路。巨龜剛剛在洞口停了一下，希望沒選錯。","mid":"走有反光的這條路。巨龜剛剛在洞口停了一下，希望沒選錯。"},"lead":{"high":"走有反光的岔路雖然繞了點，但巨龜也跟著上來，就當作換條路線看看。","low":"選那條有反光的岔路也行，至少眼前能看清路，巨龜這會兒也跟上來了。","mid":"選那條有反光的岔路也行，至少眼前能看清路，巨龜這會兒也跟上來了。"},"rec":{"high":"你選了發光的岔路，我相信你的直覺，走吧。","low":"既然你要看發光的東西，那我就陪你走這條。","mid":"既然你要看發光的東西，那我就陪你走這條。"}},"result":"你們往有反光的岔路走。巨龜在洞口停了一下，也跟了上來。","set":{"path":"crystal"}}]},{"hint":"好奇的人已經把手貼在岩壁上了。","id":"lava","label":"走最暖的那一條","outcomes":[{"delta":{"cur":1},"name":"lava","reactions":{"cur":{"high":"這條管子真暖和。巨龜沒跟來，但我更喜歡現在只有我們兩個往前走。","low":"這條管子真暖和。巨龜沒跟上來，在洞口看著我們呢。","mid":"這條管子真暖和。巨龜沒跟上來，在洞口看著我們呢。"},"lead":{"high":"挑最暖的管子走是個法子，雖然巨龜沒跟著，但照這溫度走下去再說吧。","low":"鑽進最暖的那條管子裡去，雖然巨龜沒跟來，至少我們先把這段路走完。","mid":"鑽進最暖的那條管子裡去，雖然巨龜沒跟來，至少我們先把這段路走完。"},"rec":{"high":"你選了最暖的一條，雖然巨龜沒跟，但我跟著你。","low":"這條管子真暖和，巨龜卻沒有跟上來。","mid":"這條管子真暖和，巨龜卻沒有跟上來。"}},"result":"你們鑽進那條暖烘烘的管子。巨龜沒有跟來，在洞口看著你們走遠。","set":{"path":"lava"}}]}],"prompt":"裂口後面，暗河分成三條路。走哪一條？"},"hud":{"depth":[-250,-300],"temp":[24,22]},"id":"s11a","kind":"gateway","particles":"firefly","said":[{"text":"巨龜停在暗河口等著，水聲就在裡面，看來得決定怎麼走了。","who":"lead"},{"text":"這條暗河的聲音聽起來很深，我們得想想再走。","who":"rec"},{"text":"巨龜停在暗河前一直回頭，是在等我們挑一條路吧。","who":"cur"}],"stage":"地底","text":["巨龜停在裂口前。","裡面有水聲，是一條往下流的暗河。","牠回頭看了你們一眼，像在等你們決定。"],"title":"溫泉後面的裂口","when":[{"flag":"guide","is":"yes"}]},{"axis":"y","hud":{"depth":[-250,-300],"temp":[24,31]},"id":"s11b","kind":"gateway","paint":"lava","particles":"ember","said":[{"text":"這條熔岩管還有餘溫，沒別的路了，跟緊。","who":"lead"},{"text":"這條熔岩管還有餘溫，我把它記下來。","who":"rec"},{"text":"裂縫底下有光，這條熔岩管看上去還留著熱度，我們得從這裡過去。","who":"cur"}],"stage":"地底","text":["谷地又震了一次，鹽殼整片裂開。","裂縫底下透出暗紅色的光，是一條還有餘溫的熔岩管。","沒有別的路了。"],"title":"裂開的谷地","when":[{"flag":"guide","is":"no"}]},{"atlas":["blindfish"],"axis":"x","hud":{"depth":[-300,-330],"temp":[22,23]},"id":"s12a","kind":"river","particles":"firefly","said":[{"text":"水是溫的，跟著那隻巨龜走，別掉隊。","who":"lead"},{"text":"這暗河裡有沒眼睛的魚，水是溫的。","who":"rec"}],"stage":"地底","text":["暗河在腳邊流，水是溫的。","巨龜游在前面，背上的青苔在黑暗裡微微發亮。","水裡有白色的魚，沒有眼睛，碰到腳踝就散開。"],"title":"地下暗河","when":[{"flag":"path","is":"river"}]},{"atlas":["crystal"],"axis":"y","hud":{"depth":[-300,-330],"temp":[22,23]},"id":"s12b","kind":"crystal","particles":"dust","said":[{"text":"這晶洞的柱子比人還粗，光會折好幾次。","who":"rec"},{"text":"這些透明晶柱真大，手電筒的光打在上面，折了好幾次才照到邊。","who":"cur"}],"stage":"地底","text":["岔路的盡頭是一座晶洞。","透明的晶柱比人還粗，橫七豎八地架在頭頂。","手電筒的光照進去，在裡面折了好幾次才出來。"],"title":"晶洞","variants":[{"paint":"flash","text":"記錄的人按下快門。閃光在晶柱之間彈來彈去，整座洞亮了一瞬間。","when":[{"flag":"item","is":"camera"}]}],"when":[{"flag":"path","is":"crystal"}]},{"atlas":["lavatube"],"axis":"y","hud":{"depth":[-300,-330],"temp":[26,31]},"id":"s12c","kind":"lava","particles":"ember","said":[{"text":"管壁摸起來溫溫的。岩漿從這裡流光後，居然留下一條這麼完整的路。","who":"cur"},{"text":"管壁還有熱度，當年岩漿流過留下的，腳步踩穩。","who":"lead"}],"stage":"地底","text":["管壁是黑色的，摸起來還有餘溫。","很久以前岩漿從這裡流過，外層先冷卻，裡面流光了，留下這條管子。","越往裡面走，腳下越暖。"],"title":"熔岩管","variants":[{"text":"沒有巨龜帶路。你們只能一隻手扶著岩壁，一步一步往下走。","when":[{"flag":"guide","is":"no"}]}],"when":[{"flag":"path","not":"river"},{"flag":"path","not":"crystal"}]},{"atlas":["lake"],"axis":"y","gate":{"claims":[{"text":"水位在漲，現在就得走，再晚出口就淹了。","who":"lead"},{"text":"我還想多留一晚，這裡值得再記一次。","who":"rec"},{"text":"外面沒有這裡暖和，我們為什麼不乾脆在湖邊多留一晚？","who":"cur"}],"id":"g6","options":[{"hint":"帶路的人一直盯著水位。","id":"leave","label":"「現在就走。」","outcomes":[{"delta":{"lead":1},"name":"leave","reactions":{"cur":{"high":"雖然這裡挺舒服的，不過既然你決定走，我也只好跟上。","low":"好吧，水都快淹上來了，我跟著你走就是了。","mid":"好吧，水都快淹上來了，我跟著你走就是了。"},"lead":{"high":"你這次反應挺快，沒多耽誤，走吧。","low":"總算跟上來了，走吧，出口就在前面。","mid":"總算跟上來了，走吧，出口就在前面。"},"rec":{"high":"你走得真乾脆，但我總算把這裡記全了。","low":"我們走吧，我把剛才看到的記下了。","mid":"我們走吧，我把剛才看到的記下了。"}},"result":"好奇的人看了湖很久，深吸一口氣，跟了上來。「走吧。反正你會再帶我來。」","set":{"heart":"along","stay":"no"},"when":[{"gte":2,"meter":"cur"}]},{"delta":{"cur":-1,"lead":1},"name":"leave","reactions":{"cur":{"high":"雖然這裡挺舒服的，不過既然你決定走，我也只好跟上。","low":"好吧，水都快淹上來了，我跟著你走就是了。","mid":"好吧，水都快淹上來了，我跟著你走就是了。"},"lead":{"high":"你這次反應挺快，沒多耽誤，走吧。","low":"總算跟上來了，走吧，出口就在前面。","mid":"總算跟上來了，走吧，出口就在前面。"},"rec":{"high":"你走得真乾脆，但我總算把這裡記全了。","low":"我們走吧，我把剛才看到的記下了。","mid":"我們走吧，我把剛才看到的記下了。"}},"result":"好奇的人站在水邊不肯動。帶路的人回頭拉了他一把，他才跟上來，一路上不停地回頭。","set":{"heart":"below","stay":"no"}}]},{"hint":"另外兩個人都還不想走。","id":"stay","label":"「多留一晚。」","outcomes":[{"delta":{"cur":1,"lead":-1,"rec":1},"name":"stay","reactions":{"cur":{"high":"聽你的，我們留下來。你看這溫度多剛好，我其實有點捨不得走。","low":"地是濕的，但至少這裡夠暖。我來盯著水位，你先休息吧。","mid":"地是濕的，但至少這裡夠暖。我來盯著水位，你先休息吧。"},"lead":{"high":"你要留我就陪你守著，但水位真不能再高了。","low":"非要在這裡耗著，等水淹上來就來不及了。","mid":"水還在漲，留過夜不是好主意，但也只能這樣了。"},"rec":{"high":"你陪我多留一晚，這些細節我會好好記著。","low":"好，我們留下來，我再核對一下白天的紀錄。","mid":"好，我們留下來，我再核對一下白天的紀錄。"}},"result":"你們裹著保溫毯在湖邊過夜。帶路的人沒有睡，每隔一陣子就去看水位。","set":{"heart":"along","hurt":"no","stay":"yes"},"when":[{"flag":"item","is":"blanket"}]},{"delta":{"cur":1,"lead":-1,"rec":1},"name":"stay","reactions":{"cur":{"high":"聽你的，我們留下來。你看這溫度多剛好，我其實有點捨不得走。","low":"地是濕的，但至少這裡夠暖。我來盯著水位，你先休息吧。","mid":"地是濕的，但至少這裡夠暖。我來盯著水位，你先休息吧。"},"lead":{"high":"你要留我就陪你守著，但水位真不能再高了。","low":"非要在這裡耗著，等水淹上來就來不及了。","mid":"水還在漲，留過夜不是好主意，但也只能這樣了。"},"rec":{"high":"你陪我多留一晚，這些細節我會好好記著。","low":"好，我們留下來，我再核對一下白天的紀錄。","mid":"好，我們留下來，我再核對一下白天的紀錄。"}},"result":"你們在湖邊過夜，地是濕的，冷氣從石頭縫裡鑽上來。帶路的人沒有睡，每隔一陣子就去看水位。","set":{"heart":"along","hurt":"yes","stay":"yes"}}]}],"prompt":"水位在漲。要不要在湖邊多留一晚？"},"hud":{"depth":[-330,-340],"temp":[23,24]},"id":"s13","kind":"cavern","particles":"drip","said":[{"text":"水位在漲，湖底的氣泡像是有東西在呼吸。","who":"rec"},{"text":"前面是地底湖，水位一直在漲，得當心。","who":"lead"},{"text":"你看湖底冒出的氣泡，規律得像某種呼吸。水位真的在往上升了。","who":"cur"}],"stage":"地底","text":["路的盡頭是一座湖，看不到對岸。","湖底每隔幾秒就湧出一串氣泡，很規律，像有什麼巨大的東西在呼吸。","水位在漲。剛才走過的岸，已經在水裡了。"],"title":"地底湖"},{"atlas":["glowworm"],"axis":"y","hud":{"depth":[-340,-338],"temp":[24,24]},"id":"s13n","kind":"cavern","paint":"aglow","particles":"firefly","said":[{"text":"把燈熄掉之後，洞頂亮得像整片星空都掉進湖裡了。","who":"cur"},{"text":"燈熄了，洞頂的光點比星空還密，水漫上來了。","who":"rec"}],"stage":"地底","text":["熄了燈，洞頂亮了起來。","成千上萬的光點，比外面的星空還密，倒映在湖面上。","半夜，水漫到了腳邊。"],"title":"洞頂的光","when":[{"flag":"stay","is":"yes"}]},{"axis":"y","gate":{"claims":[{"text":"得生火，煙是最遠看得見的東西。","who":"lead"},{"text":"在沙灘用石頭排字吧，從空中一眼就能看見。","who":"rec"},{"text":"四周全都是海，我們不如用漂流木釘一艘筏子自己划出去。","who":"cur"}],"id":"g7","options":[{"hint":"帶路的人已經在撿漂流木了。","id":"fire","label":"生火","outcomes":[{"delta":{"lead":2},"name":"fire","reactions":{"cur":{"high":"濃煙才剛冒出來，漁船就看見了。我們總算能離開這裡了。","low":"信號槍的紅光才剛升上去，那艘漁船就立刻轉過頭來了。","mid":"信號槍的紅光才剛升上去，那艘漁船就立刻轉過頭來了。"},"lead":{"high":"信號槍打得準，船轉過來了，這次算你判斷得對。","low":"火生起來了，希望漁船看得見這信號。","mid":"火生起來了，希望漁船看得見這信號。"},"rec":{"high":"信號槍的紅光很清楚，漁船轉過來了。","low":"煙升起來了，我們等船來。","mid":"煙升起來了，我們等船來。"}},"result":"火升起來的時候，帶路的人想起那把信號槍。紅光升到最高處，海平線上有一艘漁船轉了過來。","set":{"rescue":"boat"},"when":[{"flag":"item","is":"flare"}]},{"delta":{"lead":1},"name":"fire","reactions":{"cur":{"high":"濃煙才剛冒出來，漁船就看見了。我們總算能離開這裡了。","low":"信號槍的紅光才剛升上去，那艘漁船就立刻轉過頭來了。","mid":"信號槍的紅光才剛升上去，那艘漁船就立刻轉過頭來了。"},"lead":{"high":"信號槍打得準，船轉過來了，這次算你判斷得對。","low":"火生起來了，希望漁船看得見這信號。","mid":"火生起來了，希望漁船看得見這信號。"},"rec":{"high":"信號槍的紅光很清楚，漁船轉過來了。","low":"煙升起來了，我們等船來。","mid":"煙升起來了，我們等船來。"}},"result":"濃煙升起來。過了很久很久，海平線上才出現一艘漁船。","set":{"rescue":"boat"}}]},{"hint":"記錄的人說，飛機上的人看得到。","id":"letters","label":"在沙灘上排字","outcomes":[{"delta":{"rec":1},"name":"letters","reactions":{"cur":{"high":"沙灘上的字發揮作用了，直升機這麼快就找到我們，真厲害。","low":"用黑石頭排的三個大字真清楚，中午直升機就繞回來找我們了。","mid":"用黑石頭排的三個大字真清楚，中午直升機就繞回來找我們了。"},"lead":{"high":"這字排得夠醒目，直升機這回總算找過來了。","low":"用石頭排字太慢了，幸好直升機有看見。","mid":"沙灘排字也算個辦法，直升機繞回來了。"},"rec":{"high":"直升機真的看到了我們排的字，這段記錄完整了。","low":"黑石頭排的字很清楚，直升機繞回來了。","mid":"黑石頭排的字很清楚，直升機繞回來了。"}},"result":"你們用黑色的石頭在沙灘上排出三個大字。中午，一架直升機繞了回來。","set":{"rescue":"heli"}}]},{"hint":"好奇的人想自己划出去。","id":"raft","label":"造一艘筏","outcomes":[{"delta":{"cur":1},"name":"raft","reactions":{"cur":{"high":"木頭散得真快，不過多虧這段漂流，我們才被科考船發現。","low":"筏子才划出去就散了，好險後來有科考船的小艇把我們撈起來。","mid":"筏子才划出去就散了，好險後來有科考船的小艇把我們撈起來。"},"lead":{"high":"抱著木頭漂那陣子真懸，幸好科考船就在附近。","low":"我就說筏子不靠譜，散得真快。","mid":"木頭筏子散了，好在科考船把我們撈上去了。"},"rec":{"high":"雖然筏子散了，但我們還是被科考船找到了。","low":"木頭散了，好險科考船放下了小艇。","mid":"木頭散了，好險科考船放下了小艇。"}},"result":"筏子划出去不到一公里就散了。你們抱著木頭漂了一陣子，一艘科考船放下了小艇。","set":{"rescue":"ship"}}]}],"prompt":"四周只有海。怎麼讓人發現你們？"},"hud":{"depth":[-340,0],"temp":[24,2]},"id":"s14","kind":"island","particles":"dust","said":[{"text":"上來了，這是座無名小島，天快亮了。","who":"lead"},{"text":"水流把我們推上來了，眼前只有這座沒有樹的小島和快亮的天空。","who":"cur"}],"stage":"歸途","text":["湖水把你們往上推，穿過一條很長的水道。","再睜開眼睛，已經在海面上。一座沒有樹的小島，四周只有海。","天快亮了。"],"title":"無名的孤島","variants":[{"text":"出口比昨天窄了一半。有人的手臂在岩壁上劃開一道口子，血一直沒有止住。","when":[{"flag":"hurt","is":"yes"}]}]},{"axis":"x","hud":{"depth":[0,0],"temp":[2,14]},"id":"s15","kind":"voyage","last":true,"particles":"snow","said":[{"text":"冰島越來越小，城市的燈光亮了起來。","who":"rec"},{"text":"冰島越來越小了，前面就是城市的燈光。","who":"lead"},{"text":"後面的冰島越來越小，城市的燈光在前面亮起來，大家都不說話了。","who":"cur"}],"stage":"歸途","text":["身後的冰島越來越小，最後和海平線分不出來。","沒有人說話。","城市的燈在前面亮了起來。"],"title":"回程","variants":[{"paint":"boat","text":"漁船的船艙裡，有熱茶的味道。","when":[{"flag":"rescue","is":"boat"}]},{"paint":"ship","text":"科考船上的人問你們從哪裡來。記錄的人張了張嘴，不知道該從哪裡說起。","when":[{"flag":"rescue","is":"ship"}]},{"paint":"heli","text":"直升機的門開著，風很大。底下的海是一整片灰色。","when":[{"flag":"rescue","is":"heli"}]},{"text":"碼頭上，一輛救護車亮著燈在等。","when":[{"flag":"hurt","is":"yes"}]}]}],"title":"冰下之春"}</script>
+<script>(function () {
+  'use strict';
+  // Life World 離線播放器 scroll-1：捲動劇情作品。
+  // 整件作品是一條往下捲的長卷：每個場景是一段很高的區塊，裡面的舞台釘在畫面上；捲動的進度（0 到 1）決定
+  // 圖層移動多少（遠的慢、近的快）、旁白與同行者的話出現到哪一句、角落的深度與氣溫是多少。
+  // 使用者在幾個場景的最後做選擇：選之前後面的場景不存在（頁面到這裡為止），選了才接上去；回頭改選，後面整段換掉。
+  // 三位同行者各有一個數值（信任）；選項讓誰升降寫在劇本裡，說哪一句話看選完之後的數值落在哪一個區間。
+  // 走到最後，依留下來的旗標與數值決定是哪一種結局（資料裡由上往下第一個條件成立的）。
+  // 劇本、台詞與同行者的名字都寫在檔案的內嵌資料（lw-scroll.v1）裡：這段程式不連線、不呼叫模型。
+  //
+  // 程式分三部分：
+  // ・規則（純函式）：條件成不成立、選項的結果、把目前的選擇從頭走一遍（replay）。和 app/scroll_story.py 是同一套，
+  //   由 browser_tests/test_export_scroll_offline.py 逐項對照。唯一的狀態是 picks（每個抉擇選了什麼）。
+  // ・畫面：依 replay 的結果建立或移除場景；捲動時更新進度、圖層、文字、讀數與微粒；最後倒捲回第一幕並顯示結算。
+  // ・繪製（PAINT）：每一種場景的背景都用程式畫在 canvas 上（遠、中、近三層，另有夜間才顯示的發光層），檔案裡沒有圖片。
+  //   岩石、雪、冰、草地的材質與雲霧也是用雜訊算出來的（見「材質與光影」）；幾個場景在中景與近景之間另有一層會飄的霧。
+  //   只畫靠近畫面的場景，離開就釋放，手機的記憶體才夠用。
+  // 沒有程式時頁面是靜態的清單（.lw-static）。系統要求減少動態效果時：沒有微粒動畫、霧不飄、鏡頭不滑動、倒捲直接到位。
+
+  var holder = document.getElementById('lw-story');
+  var box = document.querySelector('.lw-scroll');
+  if (!holder || !box) return;
+  var DATA = JSON.parse(holder.textContent);
+  var METER = DATA.meter, CAST = DATA.cast, SCENES = DATA.scenes;
+  var WHO = {};
+  CAST.forEach(function (member) { WHO[member.id] = member; });
+  var root = document.documentElement;
+  var CALM = Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var DEPTH = {far: 0.04, mid: 0.11, near: 0.24, glow: 0.11}; // 捲完一個場景，各圖層移動多少（舞台寬或高的比例）
+  var TALL = {icesea: true, icefield: true};                   // 畫面下方還有東西可看（水下、剖面）的場景：畫布比較高
+  var NIGHT = {valley: true, saltflat: true};                  // 有夜間視角的場景：多一層發光層
+  var GATE_AT = 0.7;                                           // 捲到場景的這個進度，抉擇卡出現
+  var KEEP = 3;                                                // 畫面上最多留最近幾則文字
+  var PEOPLE = ['#f2c14e', '#6ec5ff', '#ff8fa3'];              // 三位同行者的顏色（和樣式表的 --p1 到 --p3 相同）
+  var ENTER = 0.07;                                            // 場景剛進來的這段進度裡，上緣是柔邊（和前一個場景交疊的部分慢慢淡入）
+  // 會飄的霧：哪些場景有、每一層放在舞台的哪裡（top、tall 是佔舞台高度的比例）、多濃、飄一圈幾秒。放在中景與近景之間，
+  // 捲動時移動的幅度也介於兩者之間。冰原的那兩層是貼著冰面吹的雪，所以快得多。
+  var FOG = {
+    columns: [{top: 0.5, tall: 0.6, alpha: 0.55, time: 70}, {top: 0.28, tall: 0.45, alpha: 0.3, time: 110}],
+    valley: [{top: 0.38, tall: 0.5, alpha: 0.45, time: 80}],
+    icefield: [{top: 0.34, tall: 0.34, alpha: 0.7, time: 16}, {top: 0.2, tall: 0.5, alpha: 0.35, time: 28}],
+    cavern: [{top: 0.34, tall: 0.36, alpha: 0.3, time: 90}],
+    island: [{top: 0.42, tall: 0.3, alpha: 0.3, time: 60}]
+  };
+  var FOG_DEPTH = 0.16;
+
+  // ======== 規則（純函式） ========
+  function band(value) { return value <= METER.low ? 'low' : value >= METER.high ? 'high' : 'mid'; }
+  function signed(value) { return value > 0 ? '+' + value : value < 0 ? '−' + (-value) : '0'; }
+  function within(value, bounds) { return !((bounds.gte !== undefined && value < bounds.gte) || (bounds.lte !== undefined && value > bounds.lte)); }
+  function holds(conditions, state) {
+    return (conditions || []).every(function (rule) {
+      var value;
+      if (rule.flag !== undefined) {
+        value = state.flags[rule.flag];
+        return !((rule.is !== undefined && value !== rule.is) || (rule.not !== undefined && value === rule.not));
+      }
+      if (rule.people !== undefined) { // 數人數：數值落在 with 這個範圍的同行者有幾位，人數要落在 people 這個範圍
+        value = Object.keys(state.meters).filter(function (who) { return within(state.meters[who], rule['with']); }).length;
+        return within(value, rule.people);
+      }
+      return within(state.meters[rule.meter], rule);
+    });
+  }
+  // 走到結尾時是哪一種結局：由上往下第一個條件成立的（最後一種沒有條件）。資料裡沒有寫結局就是 null
+  function endingOf(state) {
+    var endings = (DATA.finale && DATA.finale.endings) || [];
+    for (var index = 0; index < endings.length; index += 1) if (holds(endings[index].when, state)) return endings[index].id;
+    return null;
+  }
+  function snapshot(state) {
+    var flags = {}, meters = {};
+    Object.keys(state.flags).forEach(function (key) { flags[key] = state.flags[key]; });
+    Object.keys(state.meters).forEach(function (key) { meters[key] = state.meters[key]; });
+    return {flags: flags, meters: meters};
+  }
+  function outcomeOf(option, state) {
+    for (var index = 0; index < option.outcomes.length; index += 1) {
+      if (holds(option.outcomes[index].when, state)) return option.outcomes[index];
+    }
+    return option.outcomes[option.outcomes.length - 1];
+  }
+  // 場景在目前狀態下的樣子：文字（含畫面變化多出來的一段）、多畫什麼、一進來用哪個視角
+  function sceneView(scene, state) {
+    var text = scene.text.slice(), paint = scene.paint || null, view = scene.views && scene.views.length ? scene.views[0].id : null;
+    (scene.variants || []).forEach(function (variant) {
+      if (!holds(variant.when, state)) return;
+      if (variant.text) text.push(variant.text);
+      if (variant.paint) paint = variant.paint;
+      if (variant.view) view = variant.view;
+    });
+    return {text: text, paint: paint, view: view};
+  }
+  // 把目前的選擇從頭走一遍：經過哪些場景（每一步記下進場時的狀態與這一步選了什麼）、圖鑑、每個抉擇的結果、停在哪裡
+  function replay(picks) {
+    var state = {flags: {}, meters: {}};
+    CAST.forEach(function (member) { state.meters[member.id] = 0; });
+    var run = {steps: [], atlas: [], outcomes: {}, complete: false, waiting: null};
+    for (var index = 0; index < SCENES.length; index += 1) {
+      var scene = SCENES[index];
+      if (!holds(scene.when, state)) continue;
+      var step = {scene: scene, at: snapshot(state), look: sceneView(scene, state), pick: null};
+      run.steps.push(step);
+      (scene.atlas || []).forEach(function (item) { if (run.atlas.indexOf(item) < 0) run.atlas.push(item); });
+      if (scene.gate) {
+        var chosen = picks[scene.gate.id];
+        if (chosen === undefined) { run.waiting = scene.gate.id; break; }
+        var option = scene.gate.options.filter(function (item) { return item.id === chosen; })[0];
+        var outcome = outcomeOf(option, state);
+        Object.keys(outcome.set || {}).forEach(function (key) { state.flags[key] = outcome.set[key]; });
+        Object.keys(outcome.delta || {}).forEach(function (who) {
+          state.meters[who] = Math.max(METER.min, Math.min(METER.max, state.meters[who] + outcome.delta[who]));
+        });
+        step.pick = {option: option, outcome: outcome, after: snapshot(state)};
+        run.outcomes[scene.gate.id] = outcome.name;
+      }
+      if (scene.last) { run.complete = true; break; }
+    }
+    run.state = state;
+    run.ending = run.complete ? endingOf(state) : null;
+    return run;
+  }
+
+  // ======== 小工具 ========
+  function make(tag, name, text) {
+    var element = document.createElement(tag);
+    if (name) element.className = name;
+    if (text !== undefined && text !== null) element.textContent = text;
+    return element;
+  }
+  function add(parent) {
+    for (var index = 1; index < arguments.length; index += 1) if (arguments[index]) parent.appendChild(arguments[index]);
+    return parent;
+  }
+  function empty(element) { while (element.firstChild) element.removeChild(element.firstChild); }
+  function said(tag, name, who, text) { // 「誰：一句話」
+    var line = make(tag, name);
+    line.setAttribute('data-who', who);
+    line.setAttribute('data-c', WHO[who].color);
+    return add(line, make('span', 'lw-who', WHO[who].name), document.createTextNode(text));
+  }
+  function lerp(pair, amount) { return pair[0] + (pair[1] - pair[0]) * amount; }
+  function random(seed) { // 固定種子的亂數：同一個場景每次畫出來都一樣
+    return function () {
+      seed = seed + 0x6D2B79F5 | 0;
+      var value = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      value = value + Math.imul(value ^ value >>> 7, 61 | value) ^ value;
+      return ((value ^ value >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  // ======== 繪製：共用的筆法 ========
+  // 畫風：分層的剪影加上大氣透視（越遠越淡、越接近天空的顏色）、柔和的光暈與霧、物體邊緣的受光線。
+  // 輪廓用平滑的雜訊產生，不用折線，山稜與冰崖才像自然的形狀。
+  if (window.CanvasRenderingContext2D && !window.CanvasRenderingContext2D.prototype.roundRect) { // 舊的瀏覽器沒有圓角矩形：退回直角
+    window.CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h) { this.rect(x, y, w, h); };
+  }
+  function hex(color) { return [parseInt(color.slice(1, 3), 16), parseInt(color.slice(3, 5), 16), parseInt(color.slice(5, 7), 16)]; }
+  function mix(a, b, t) { // 兩個顏色之間：t=0 是 a，t=1 是 b
+    var p = hex(a), q = hex(b);
+    return '#' + [0, 1, 2].map(function (i) { return ('0' + Math.round(p[i] + (q[i] - p[i]) * t).toString(16)).slice(-2); }).join('');
+  }
+  function tint(color, a) { var p = hex(color); return 'rgba(' + p[0] + ',' + p[1] + ',' + p[2] + ',' + a + ')'; }
+  function shade(c, x0, y0, x1, y1, stops) {
+    var gradient = c.createLinearGradient(x0, y0, x1, y1);
+    stops.forEach(function (color, index) { gradient.addColorStop(stops.length === 1 ? 0 : index / (stops.length - 1), color); });
+    return gradient;
+  }
+  function fillV(c, x, y, w, h, stops) { c.fillStyle = shade(c, 0, y, 0, y + h, stops); c.fillRect(x, y, w, h); }
+  function poly(c, points, style) {
+    c.beginPath();
+    points.forEach(function (point, index) { if (index) c.lineTo(point[0], point[1]); else c.moveTo(point[0], point[1]); });
+    c.closePath();
+    c.fillStyle = style;
+    c.fill();
+  }
+  function oval(c, x, y, rx, ry, style) { c.beginPath(); c.ellipse(x, y, rx, ry, 0, 0, 6.2832); c.fillStyle = style; c.fill(); }
+  function stroke(c, points, color, width) {
+    c.beginPath();
+    points.forEach(function (point, index) { if (index) c.lineTo(point[0], point[1]); else c.moveTo(point[0], point[1]); });
+    c.strokeStyle = color;
+    c.lineWidth = width;
+    c.lineJoin = c.lineCap = 'round';
+    c.stroke();
+  }
+  function curve(c, points, color, width) { // 通過各點的平滑曲線
+    c.beginPath();
+    c.moveTo(points[0][0], points[0][1]);
+    for (var index = 1; index < points.length - 1; index += 1) {
+      c.quadraticCurveTo(points[index][0], points[index][1], (points[index][0] + points[index + 1][0]) / 2, (points[index][1] + points[index + 1][1]) / 2);
+    }
+    c.lineTo(points[points.length - 1][0], points[points.length - 1][1]);
+    c.strokeStyle = color;
+    c.lineWidth = width;
+    c.lineJoin = c.lineCap = 'round';
+    c.stroke();
+  }
+  // 邊緣柔和的橢圓：霧、雲、光暈、蒸氣都用它
+  function soft(c, x, y, rx, ry, color, a) {
+    c.save();
+    c.translate(x, y);
+    c.scale(1, ry / rx);
+    var gradient = c.createRadialGradient(0, 0, 0, 0, 0, rx);
+    gradient.addColorStop(0, tint(color, a));
+    gradient.addColorStop(0.55, tint(color, a * 0.45));
+    gradient.addColorStop(1, tint(color, 0));
+    c.fillStyle = gradient;
+    c.beginPath();
+    c.arc(0, 0, rx, 0, 6.2832);
+    c.fill();
+    c.restore();
+  }
+  function mist(c, x0, x1, y, h, color, a) { // 一條橫的霧帶：中間最濃，上下淡出
+    var gradient = c.createLinearGradient(0, y - h, 0, y + h);
+    gradient.addColorStop(0, tint(color, 0));
+    gradient.addColorStop(0.5, tint(color, a));
+    gradient.addColorStop(1, tint(color, 0));
+    c.fillStyle = gradient;
+    c.fillRect(x0, y - h, x1 - x0, h * 2);
+  }
+  function cloud(c, rnd, x, y, w, color, a) {
+    for (var index = 0; index < 9; index += 1) soft(c, x + (rnd() - 0.5) * w, y + (rnd() - 0.5) * w * 0.14, w * (0.2 + rnd() * 0.3), w * (0.05 + rnd() * 0.06), color, a);
+  }
+  function dots(c, rnd, count, x0, y0, x1, y1, size, colors) { // 一把散開的小點
+    for (var index = 0; index < count; index += 1) oval(c, x0 + (x1 - x0) * rnd(), y0 + (y1 - y0) * rnd(), size * (0.5 + rnd()), size * (0.5 + rnd()), colors[Math.floor(rnd() * colors.length)]);
+  }
+  function stars(c, rnd, count, x0, y0, x1, y1, size) {
+    for (var index = 0; index < count; index += 1) {
+      var x = x0 + (x1 - x0) * rnd(), y = y0 + (y1 - y0) * rnd(), big = rnd() < 0.06;
+      oval(c, x, y, size * (big ? 2.2 : 0.6 + rnd()), size * (big ? 2.2 : 0.6 + rnd()), 'rgba(255,255,255,' + (0.35 + rnd() * 0.6) + ')');
+      if (big) soft(c, x, y, size * 9, size * 9, '#cfe2ff', 0.5);
+    }
+  }
+  // 平滑的雜訊：回傳函式 n(x, 八度數, 粗糙度)，值在 0 到 1 之間
+  function fractal(seed) {
+    var rnd = random(seed), table = [];
+    for (var index = 0; index < 256; index += 1) table.push(rnd());
+    function smooth(x) { var whole = Math.floor(x), part = x - whole, ease = part * part * (3 - 2 * part); return table[whole & 255] * (1 - ease) + table[(whole + 1) & 255] * ease; }
+    return function (x, octaves, rough) {
+      var sum = 0, amp = 1, total = 0;
+      for (var octave = 0; octave < (octaves || 4); octave += 1) { sum += smooth(x) * amp; total += amp; amp *= rough || 0.5; x = x * 2.03 + 17; }
+      return sum / total;
+    };
+  }
+  // 一道稜線（山、冰崖、浪、地面）：o = {x0, x1, y 基準線, amp 起伏, scale 疏密, shift, oct, rough, ridged 尖的, fade 從左邊升起的寬度, gap [缺口的中心, 半寬], bottom, fill, rim 頂緣的受光色, rimW}
+  function terrain(c, n, o) {
+    var step = Math.max(2, (o.x1 - o.x0) / 260), points = [], x, value;
+    for (x = o.x0; x <= o.x1 + step; x += step) {
+      value = n(x / o.scale + (o.shift || 0), o.oct || 5, o.rough || 0.5);
+      if (o.ridged) value = 1 - Math.abs(value * 2 - 1);
+      if (o.fade) value *= Math.min(1, (x - o.x0) / o.fade); // 從左邊慢慢升起，不是一道直牆
+      if (o.gap) value *= Math.min(1, Math.pow(Math.abs(x - o.gap[0]) / o.gap[1], 1.6)); // 中間的缺口：兩岸往中間降下去
+      points.push([x, o.y - o.amp * value]);
+    }
+    c.beginPath();
+    c.moveTo(o.x0, o.bottom);
+    points.forEach(function (point) { c.lineTo(point[0], point[1]); });
+    c.lineTo(o.x1 + step, o.bottom);
+    c.closePath();
+    c.fillStyle = o.fill;
+    c.fill();
+    if (o.rim) { c.beginPath(); points.forEach(function (point, index) { if (index) c.lineTo(point[0], point[1]); else c.moveTo(point[0], point[1]); }); c.strokeStyle = o.rim; c.lineWidth = o.rimW || 2; c.lineJoin = 'round'; c.stroke(); }
+    return points;
+  }
+  // 水面：漸層加上一條條細碎的反光；lx 是光源在水面的倒影位置（沒有就不畫光柱）
+  function water(c, rnd, x0, x1, y0, y1, stops, glint, lx, light) {
+    fillV(c, x0, y0, x1 - x0, y1 - y0, stops);
+    for (var index = 0; index < 220; index += 1) {
+      var depth = Math.pow(rnd(), 1.6), y = y0 + (y1 - y0) * depth, wide = (x1 - x0) * (0.006 + 0.03 * rnd()) * (0.35 + depth), x = x0 + rnd() * (x1 - x0);
+      stroke(c, [[x, y], [x + wide, y]], tint(glint, 0.05 + rnd() * 0.16), Math.max(1, (y1 - y0) * 0.004 * (0.4 + depth)));
+    }
+    if (lx !== undefined) {
+      for (var beam = 0; beam < 70; beam += 1) {
+        var fall = Math.pow(rnd(), 1.3), by = y0 + (y1 - y0) * fall * 0.9, bw = (x1 - x0) * (0.012 + 0.05 * fall) * (0.4 + rnd());
+        stroke(c, [[lx - bw + (rnd() - 0.5) * bw, by], [lx + bw + (rnd() - 0.5) * bw, by]], tint(light, 0.55 * (1 - fall * 0.7)), Math.max(1, (y1 - y0) * 0.006));
+      }
+    }
+  }
+  // 從一點散開的光束（疊加發亮）
+  function rays(c, x, y, len, from, to, count, color, a) {
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    for (var index = 0; index < count; index += 1) {
+      var angle = from + (to - from) * (index + 0.5) / count, wide = (to - from) / count * 0.32;
+      var gradient = c.createLinearGradient(x, y, x + Math.cos(angle) * len, y + Math.sin(angle) * len);
+      gradient.addColorStop(0, tint(color, a));
+      gradient.addColorStop(1, tint(color, 0));
+      poly(c, [[x, y], [x + Math.cos(angle - wide) * len, y + Math.sin(angle - wide) * len], [x + Math.cos(angle + wide) * len, y + Math.sin(angle + wide) * len]], gradient);
+    }
+    c.restore();
+  }
+  // 冰塊：受光面、背光面與頂面三個切面，底下有一點水的反光
+  function berg(c, x, y, w, h, light, dark, skew) {
+    var peak = x + w * (skew === undefined ? 0.42 : skew);
+    poly(c, [[x, y], [x + w * 0.16, y - h * 0.55], [peak, y - h], [x + w * 0.5, y]], light);
+    poly(c, [[peak, y - h], [x + w * 0.72, y - h * 0.62], [x + w, y], [x + w * 0.5, y]], dark);
+    poly(c, [[x + w * 0.16, y - h * 0.55], [peak, y - h], [x + w * 0.5, y - h * 0.48], [x + w * 0.3, y - h * 0.34]], tint('#ffffff', 0.55));
+    stroke(c, [[x + w * 0.16, y - h * 0.55], [peak, y - h], [x + w * 0.72, y - h * 0.62]], 'rgba(255,255,255,.9)', Math.max(1, h * 0.012));
+  }
+  // 一個旅人：連帽外套、圍巾（各自的顏色）、腳下的影子。x、y 是腳的位置，s 是身高；kit：'pole' 登山杖、'pack' 背包
+  function traveler(c, x, y, s, scarf, kit) {
+    var coat = '#17223a', dark = '#0e1626';
+    soft(c, x, y + s * 0.01, s * 0.3, s * 0.05, '#000000', 0.38);
+    if (kit === 'pack') { c.fillStyle = '#5b3f2a'; c.beginPath(); c.roundRect(x - s * 0.27, y - s * 0.7, s * 0.15, s * 0.3, s * 0.04); c.fill(); c.fillStyle = '#7a563a'; c.fillRect(x - s * 0.27, y - s * 0.62, s * 0.15, s * 0.03); }
+    c.fillStyle = dark; // 腿與靴子
+    c.beginPath(); c.moveTo(x - s * 0.11, y); c.lineTo(x - s * 0.09, y - s * 0.36); c.lineTo(x + s * 0.09, y - s * 0.36); c.lineTo(x + s * 0.11, y); c.lineTo(x + s * 0.025, y); c.lineTo(x, y - s * 0.2); c.lineTo(x - s * 0.025, y); c.closePath(); c.fill();
+    c.fillStyle = coat; // 外套
+    c.beginPath(); c.moveTo(x - s * 0.16, y - s * 0.3);
+    c.bezierCurveTo(x - s * 0.22, y - s * 0.5, x - s * 0.19, y - s * 0.72, x - s * 0.07, y - s * 0.77);
+    c.lineTo(x + s * 0.07, y - s * 0.77);
+    c.bezierCurveTo(x + s * 0.19, y - s * 0.72, x + s * 0.22, y - s * 0.5, x + s * 0.16, y - s * 0.3);
+    c.closePath(); c.fill();
+    oval(c, x, y - s * 0.86, s * 0.11, s * 0.12, coat); // 帽兜
+    oval(c, x + s * 0.015, y - s * 0.85, s * 0.07, s * 0.085, '#d9b9a3'); // 臉
+    c.beginPath(); c.arc(x, y - s * 0.86, s * 0.125, 3.3, 6.1); c.strokeStyle = '#8b97ad'; c.lineWidth = s * 0.035; c.lineCap = 'round'; c.stroke(); // 帽緣的毛
+    c.fillStyle = scarf; c.beginPath(); c.roundRect(x - s * 0.11, y - s * 0.775, s * 0.22, s * 0.06, s * 0.03); c.fill(); c.fillRect(x + s * 0.05, y - s * 0.75, s * 0.05, s * 0.15); // 圍巾
+    c.beginPath(); c.moveTo(x + s * 0.165, y - s * 0.32); c.bezierCurveTo(x + s * 0.22, y - s * 0.5, x + s * 0.19, y - s * 0.7, x + s * 0.08, y - s * 0.765); c.strokeStyle = 'rgba(255,255,255,.22)'; c.lineWidth = s * 0.014; c.stroke(); // 受光的那一側
+    if (kit === 'pole') stroke(c, [[x + s * 0.24, y], [x + s * 0.2, y - s * 0.62]], '#c9d3e2', s * 0.018);
+  }
+  // 四個人：你（白圍巾）與三位同行者（各自的顏色）；帶路的人拿登山杖，記錄的人背背包，好奇的人個子最小
+  function party(c, x, y, s, who) {
+    var scarves = ['#f4f7fb'].concat(PEOPLE), kits = [null, 'pole', 'pack', null], sizes = [1, 1.04, 0.95, 0.88];
+    (who || [0, 1, 2, 3]).forEach(function (member, place) { traveler(c, x + place * s * 0.58, y + (place % 2) * s * 0.03, s * sizes[member], scarves[member], kits[member]); });
+  }
+  function penguin(c, x, y, s) {
+    soft(c, x, y, s * 0.34, s * 0.05, '#000000', 0.35);
+    c.fillStyle = '#121824'; c.beginPath(); c.moveTo(x - s * 0.2, y - s * 0.06);
+    c.bezierCurveTo(x - s * 0.3, y - s * 0.5, x - s * 0.2, y - s * 0.96, x, y - s);
+    c.bezierCurveTo(x + s * 0.2, y - s * 0.96, x + s * 0.3, y - s * 0.5, x + s * 0.2, y - s * 0.06); c.closePath(); c.fill();
+    c.fillStyle = shade(c, 0, y - s * 0.8, 0, y, ['#fff6da', '#ffffff', '#dfe6ee']); c.beginPath(); c.moveTo(x - s * 0.1, y - s * 0.07);
+    c.bezierCurveTo(x - s * 0.2, y - s * 0.45, x - s * 0.1, y - s * 0.78, x + s * 0.04, y - s * 0.78);
+    c.bezierCurveTo(x + s * 0.2, y - s * 0.74, x + s * 0.24, y - s * 0.4, x + s * 0.16, y - s * 0.07); c.closePath(); c.fill();
+    soft(c, x - s * 0.02, y - s * 0.8, s * 0.12, s * 0.07, '#ffc23d', 0.95); // 頸側的黃
+    poly(c, [[x + s * 0.1, y - s * 0.93], [x + s * 0.34, y - s * 0.89], [x + s * 0.1, y - s * 0.86]], '#2a2f3a');
+    stroke(c, [[x + s * 0.12, y - s * 0.885], [x + s * 0.3, y - s * 0.888]], '#f08a3c', s * 0.016);
+    oval(c, x + s * 0.06, y - s * 0.93, s * 0.016, s * 0.016, '#f4f7fb');
+    c.fillStyle = '#121824'; c.beginPath(); c.moveTo(x - s * 0.2, y - s * 0.66); c.quadraticCurveTo(x - s * 0.34, y - s * 0.4, x - s * 0.24, y - s * 0.22); c.quadraticCurveTo(x - s * 0.2, y - s * 0.44, x - s * 0.17, y - s * 0.6); c.closePath(); c.fill();
+    poly(c, [[x - s * 0.16, y], [x - s * 0.02, y - s * 0.07], [x + s * 0.02, y]], '#e58a2c'); poly(c, [[x + s * 0.02, y], [x + s * 0.14, y - s * 0.07], [x + s * 0.22, y]], '#e58a2c');
+  }
+  function turtle(c, x, y, s, rnd) {
+    soft(c, x, y, s * 1.0, s * 0.09, '#000000', 0.32);
+    [-0.5, 0.48].forEach(function (leg) { c.fillStyle = '#44543f'; c.beginPath(); c.roundRect(x + leg * s - s * 0.1, y - s * 0.2, s * 0.22, s * 0.2, s * 0.06); c.fill(); });
+    c.fillStyle = shade(c, 0, y - s * 0.44, 0, y - s * 0.16, ['#6f8463', '#44543f']); // 頭與脖子
+    c.beginPath(); c.moveTo(x + s * 0.6, y - s * 0.2); c.quadraticCurveTo(x + s * 0.8, y - s * 0.5, x + s * 1.0, y - s * 0.42);
+    c.quadraticCurveTo(x + s * 1.1, y - s * 0.3, x + s * 0.98, y - s * 0.2); c.quadraticCurveTo(x + s * 0.8, y - s * 0.12, x + s * 0.6, y - s * 0.12); c.closePath(); c.fill();
+    oval(c, x + s * 0.97, y - s * 0.34, s * 0.022, s * 0.022, '#0d120d'); oval(c, x + s * 0.975, y - s * 0.345, s * 0.008, s * 0.008, '#ffffff');
+    c.save(); c.beginPath(); c.ellipse(x, y - s * 0.14, s * 0.8, s * 0.6, 0, 3.1416, 6.2832); c.closePath(); c.clip(); // 殼
+    fillV(c, x - s, y - s * 0.8, s * 2, s * 0.7, ['#9cc46e', '#5f8f4c', '#345a37', '#243f2c']);
+    for (var scute = 0; scute < 7; scute += 1) { // 殼上的紋
+      var sx = x - s * 0.66 + scute * s * 0.22;
+      stroke(c, [[sx, y - s * 0.14], [sx + s * 0.1, y - s * 0.5], [sx + s * 0.3, y - s * 0.56]], 'rgba(20,45,28,.35)', s * 0.012);
+    }
+    soft(c, x - s * 0.25, y - s * 0.62, s * 0.5, s * 0.22, '#e8ffc0', 0.35); // 殼頂的光
+    for (var index = 0; index < 90; index += 1) { // 背上的苔：都往同一邊倒，像被水流梳過
+      var angle = 3.25 + rnd() * 2.9, reach = 0.35 + rnd() * 0.6;
+      var mx = x + Math.cos(angle) * s * 0.78 * reach, my = y - s * 0.14 + Math.sin(angle) * s * 0.58 * reach;
+      curve(c, [[mx, my], [mx + s * 0.05, my - s * 0.045], [mx + s * 0.11, my - s * 0.05]], rnd() < 0.5 ? 'rgba(205,240,140,.85)' : 'rgba(120,180,95,.85)', s * 0.022);
+    }
+    c.restore();
+    c.beginPath(); c.ellipse(x, y - s * 0.14, s * 0.8, s * 0.6, 0, 3.3, 5.2); c.strokeStyle = 'rgba(235,255,200,.55)'; c.lineWidth = s * 0.018; c.stroke();
+    c.fillStyle = '#2c3b2b'; c.beginPath(); c.roundRect(x - s * 0.82, y - s * 0.17, s * 1.64, s * 0.075, s * 0.03); c.fill();
+  }
+  function deer(c, x, y, s, glowOnly) {
+    var tips = [];
+    function antler(ax, ay, angle, len, depth) { // 分岔的角
+      var ex = ax + Math.cos(angle) * len, ey = ay + Math.sin(angle) * len;
+      if (!glowOnly) stroke(c, [[ax, ay], [ex, ey]], '#b9d9b0', s * 0.03 * (depth + 1) / 3);
+      if (depth) { antler(ex, ey, angle - 0.5, len * 0.66, depth - 1); antler(ex, ey, angle + 0.45, len * 0.6, depth - 1); } else tips.push([ex, ey]);
+    }
+    if (!glowOnly) {
+      var coat = '#6e4f3b', belly = '#8a6a52';
+      soft(c, x, y, s * 0.5, s * 0.05, '#000000', 0.3);
+      [[-0.3, -0.02], [-0.2, 0.03], [0.2, -0.03], [0.3, 0.02]].forEach(function (leg) { curve(c, [[x + leg[0] * s, y - s * 0.55], [x + (leg[0] + leg[1]) * s, y - s * 0.28], [x + leg[0] * s, y]], coat, s * 0.045); });
+      c.fillStyle = shade(c, 0, y - s * 0.8, 0, y - s * 0.4, [coat, belly]);
+      c.beginPath(); c.moveTo(x - s * 0.4, y - s * 0.62); c.bezierCurveTo(x - s * 0.38, y - s * 0.84, x + s * 0.3, y - s * 0.86, x + s * 0.36, y - s * 0.66);
+      c.bezierCurveTo(x + s * 0.36, y - s * 0.42, x - s * 0.36, y - s * 0.4, x - s * 0.4, y - s * 0.62); c.closePath(); c.fill();
+      curve(c, [[x + s * 0.3, y - s * 0.7], [x + s * 0.42, y - s * 0.92], [x + s * 0.5, y - s * 1.08]], coat, s * 0.11);
+      c.fillStyle = coat; c.beginPath(); c.ellipse(x + s * 0.58, y - s * 1.1, s * 0.15, s * 0.085, 0.25, 0, 6.2832); c.fill();
+      poly(c, [[x + s * 0.46, y - s * 1.16], [x + s * 0.4, y - s * 1.3], [x + s * 0.52, y - s * 1.2]], coat);
+      oval(c, x + s * 0.62, y - s * 1.12, s * 0.014, s * 0.014, '#120b06');
+      poly(c, [[x - s * 0.4, y - s * 0.68], [x - s * 0.48, y - s * 0.74], [x - s * 0.4, y - s * 0.6]], '#f1ead8');
+    }
+    antler(x + s * 0.5, y - s * 1.18, -1.9, s * 0.28, 2);
+    antler(x + s * 0.58, y - s * 1.18, -1.25, s * 0.28, 2);
+    if (glowOnly) tips.forEach(function (tip) { soft(c, tip[0], tip[1], s * 0.22, s * 0.22, '#96ffd2', 0.95); oval(c, tip[0], tip[1], s * 0.018, s * 0.018, '#ffffff'); });
+  }
+  function mammoth(c, x, y, s, rnd) {
+    var coat = '#7d5539';
+    soft(c, x, y, s * 0.9, s * 0.08, '#000000', 0.3);
+    c.fillStyle = shade(c, 0, y - s * 1.2, 0, y, ['#9a6c48', coat, '#553722']);
+    c.beginPath(); c.moveTo(x - s * 0.62, y - s * 0.1); c.bezierCurveTo(x - s * 0.72, y - s * 0.9, x - s * 0.2, y - s * 1.16, x + s * 0.2, y - s * 1.08);
+    c.bezierCurveTo(x + s * 0.5, y - s * 1.3, x + s * 0.86, y - s * 1.1, x + s * 0.84, y - s * 0.74); c.bezierCurveTo(x + s * 0.8, y - s * 0.5, x + s * 0.62, y - s * 0.3, x + s * 0.6, y - s * 0.1); c.closePath(); c.fill();
+    curve(c, [[x + s * 0.8, y - s * 0.74], [x + s * 0.94, y - s * 0.4], [x + s * 0.84, y - s * 0.12], [x + s * 0.92, y - s * 0.04]], coat, s * 0.13); // 鼻子
+    curve(c, [[x + s * 0.66, y - s * 0.62], [x + s * 0.9, y - s * 0.34], [x + s * 1.16, y - s * 0.44], [x + s * 1.2, y - s * 0.66]], '#f4ecd8', s * 0.05); // 牙
+    for (var index = 0; index < 90; index += 1) { // 長毛：一層一層垂下來
+      var hx = x - s * 0.6 + rnd() * s * 1.16, top = y - s * (0.12 + rnd() * 0.5), long = s * (0.1 + rnd() * 0.16);
+      curve(c, [[hx, top], [hx + s * 0.02, top + long * 0.6], [hx - s * 0.01, Math.min(y, top + long)]], rnd() < 0.5 ? 'rgba(70,44,26,.75)' : 'rgba(170,122,84,.7)', s * 0.022);
+    }
+    oval(c, x + s * 0.64, y - s * 0.86, s * 0.026, s * 0.026, '#120b06');
+    soft(c, x - s * 0.1, y - s * 1.02, s * 0.5, s * 0.14, '#ffe2bd', 0.3);
+  }
+  function bird(c, x, y, s, flip) {
+    var d = flip ? -1 : 1;
+    poly(c, [[x, y], [x - d * s * 1.1, y - s * 0.55], [x - d * s * 0.5, y - s * 0.1]], 'rgba(235,248,255,.92)');
+    poly(c, [[x, y], [x - d * s * 1.1, y - s * 0.55], [x - d * s * 0.7, y - s * 0.6]], 'rgba(170,215,240,.85)');
+    poly(c, [[x, y], [x + d * s * 1.0, y - s * 0.42], [x + d * s * 0.42, y + s * 0.02]], 'rgba(205,235,250,.9)');
+    poly(c, [[x - s * 0.12, y - s * 0.04], [x + s * 0.12, y - s * 0.04], [x, y + s * 0.46]], 'rgba(245,252,255,.95)');
+    oval(c, x + d * s * 0.02, y - s * 0.1, s * 0.09, s * 0.07, '#f4fbff');
+  }
+  // 破冰船：x、y 是船身左下角（吃水線），s 是船長
+  function ship(c, x, y, s) {
+    c.fillStyle = shade(c, 0, y - s * 0.2, 0, y, ['#c34a31', '#8f2c1c', '#5a170f']); // 船身：船首是圓的
+    c.beginPath(); c.moveTo(x + s * 0.02, y - s * 0.17); c.lineTo(x + s * 0.99, y - s * 0.21); c.quadraticCurveTo(x + s * 1.0, y - s * 0.08, x + s * 0.9, y); c.lineTo(x + s * 0.08, y); c.quadraticCurveTo(x, y - s * 0.05, x + s * 0.02, y - s * 0.17); c.closePath(); c.fill();
+    c.fillStyle = '#2a0c08'; c.fillRect(x + s * 0.07, y - s * 0.022, s * 0.84, s * 0.022);
+    stroke(c, [[x + s * 0.03, y - s * 0.165], [x + s * 0.985, y - s * 0.205]], '#f1e6d6', s * 0.008);
+    [[0.16, 0.5, 0.3, 0.115], [0.22, 0.4, 0.405, 0.1], [0.3, 0.24, 0.49, 0.08]].forEach(function (deck, level) { // 一層一層的艙房
+      c.fillStyle = shade(c, 0, y - s * deck[2], 0, y - s * (deck[2] - deck[3]), ['#fbfcfd', '#d5dde6']); c.fillRect(x + s * deck[0], y - s * deck[2], s * deck[1], s * deck[3]);
+      for (var port = 0; port < Math.round(deck[1] * 26); port += 1) { c.fillStyle = (port + level) % 4 === 0 ? '#ffd98a' : '#27364e'; c.fillRect(x + s * (deck[0] + 0.02 + port * 0.036), y - s * (deck[2] - 0.03), s * 0.02, s * 0.03); }
+    });
+    c.fillStyle = shade(c, 0, y - s * 0.62, 0, y - s * 0.49, ['#d2513a', '#9c3323']); c.fillRect(x + s * 0.39, y - s * 0.62, s * 0.085, s * 0.135); // 煙囪
+    c.fillStyle = '#1c2434'; c.fillRect(x + s * 0.39, y - s * 0.62, s * 0.085, s * 0.025);
+    stroke(c, [[x + s * 0.68, y - s * 0.3], [x + s * 0.68, y - s * 0.66]], '#2a3140', s * 0.01); stroke(c, [[x + s * 0.63, y - s * 0.58], [x + s * 0.73, y - s * 0.58]], '#2a3140', s * 0.008);
+    [0.2, 0.3].forEach(function (boat) { c.fillStyle = '#ff8a3c'; c.beginPath(); c.roundRect(x + s * boat, y - s * 0.215, s * 0.07, s * 0.028, s * 0.012); c.fill(); });
+    for (var rail = 0; rail < 22; rail += 1) stroke(c, [[x + s * (0.72 + rail * 0.012), y - s * 0.2], [x + s * (0.72 + rail * 0.012), y - s * 0.225]], 'rgba(240,235,225,.7)', s * 0.003);
+    stroke(c, [[x + s * 0.72, y - s * 0.226], [x + s * 0.985, y - s * 0.236]], 'rgba(240,235,225,.8)', s * 0.004);
+  }
+  // 蕨類一樣的大葉子：從 (x, y) 往外長
+  // 漁船：深藍的船身、白色的駕駛艙、一根桅杆與吊桿，艙裡亮著燈。x 是船尾、y 是水線、s 是船長（和 ship 相同）
+  function boat(c, x, y, s) {
+    c.fillStyle = shade(c, 0, y - s * 0.16, 0, y, ['#2f5d8a', '#1b3a5c', '#0f2238']);
+    c.beginPath(); c.moveTo(x, y - s * 0.13); c.lineTo(x + s * 0.98, y - s * 0.19); c.quadraticCurveTo(x + s * 0.96, y - s * 0.05, x + s * 0.84, y); c.lineTo(x + s * 0.08, y); c.closePath(); c.fill();
+    stroke(c, [[x + s * 0.01, y - s * 0.125], [x + s * 0.97, y - s * 0.185]], '#f1e6d6', s * 0.012);
+    c.fillStyle = shade(c, 0, y - s * 0.36, 0, y - s * 0.15, ['#fbfcfd', '#cfd8e2']); c.fillRect(x + s * 0.5, y - s * 0.36, s * 0.24, s * 0.21); // 駕駛艙
+    c.fillStyle = '#ffd98a'; c.fillRect(x + s * 0.54, y - s * 0.32, s * 0.07, s * 0.07); c.fillRect(x + s * 0.64, y - s * 0.32, s * 0.07, s * 0.07); // 艙裡的燈
+    c.fillStyle = '#b8402c'; c.fillRect(x + s * 0.49, y - s * 0.385, s * 0.26, s * 0.03);
+    stroke(c, [[x + s * 0.3, y - s * 0.14], [x + s * 0.3, y - s * 0.62]], '#2a3140', s * 0.014); // 桅杆
+    stroke(c, [[x + s * 0.3, y - s * 0.55], [x + s * 0.08, y - s * 0.3]], '#2a3140', s * 0.01);  // 吊桿
+    stroke(c, [[x + s * 0.08, y - s * 0.3], [x + s * 0.08, y - s * 0.16]], 'rgba(230,235,240,.6)', s * 0.004);
+    soft(c, x + s * 0.3, y - s * 0.62, s * 0.05, s * 0.05, '#ffe9b0', 0.9); // 桅頂的燈
+  }
+  // 直升機：橘色的機身、尾桁、轉成一片的螺旋槳、底下的滑橇。x、y 是機身的中心，s 是整架的長度
+  function chopper(c, x, y, s) {
+    poly(c, [[x - s * 0.18, y - s * 0.04], [x - s * 0.62, y - s * 0.02], [x - s * 0.62, y + s * 0.02], [x - s * 0.16, y + s * 0.06]], '#c2571e'); // 尾桁
+    poly(c, [[x - s * 0.62, y - s * 0.12], [x - s * 0.56, y - s * 0.12], [x - s * 0.52, y + s * 0.02], [x - s * 0.62, y + s * 0.02]], '#a84717'); // 尾翼
+    c.fillStyle = shade(c, 0, y - s * 0.12, 0, y + s * 0.12, ['#f08a3c', '#c2571e']);
+    c.beginPath(); c.ellipse(x, y, s * 0.24, s * 0.12, 0, 0, 6.2832); c.fill(); // 機身
+    c.fillStyle = 'rgba(190,230,255,.85)'; c.beginPath(); c.ellipse(x + s * 0.12, y - s * 0.02, s * 0.1, s * 0.07, 0, 0, 6.2832); c.fill(); // 駕駛艙的玻璃
+    stroke(c, [[x, y - s * 0.12], [x, y - s * 0.18]], '#2a3140', s * 0.02);
+    c.fillStyle = 'rgba(40,48,64,.35)'; c.beginPath(); c.ellipse(x, y - s * 0.19, s * 0.52, s * 0.022, 0, 0, 6.2832); c.fill(); // 轉成一片的螺旋槳
+    stroke(c, [[x - s * 0.5, y - s * 0.19], [x + s * 0.5, y - s * 0.19]], 'rgba(40,48,64,.6)', s * 0.008);
+    stroke(c, [[x - s * 0.14, y + s * 0.19], [x + s * 0.2, y + s * 0.19]], '#2a3140', s * 0.014); // 滑橇
+    stroke(c, [[x - s * 0.08, y + s * 0.11], [x - s * 0.1, y + s * 0.19]], '#2a3140', s * 0.01);
+    stroke(c, [[x + s * 0.1, y + s * 0.11], [x + s * 0.14, y + s * 0.19]], '#2a3140', s * 0.01);
+    soft(c, x - s * 0.62, y - s * 0.05, s * 0.04, s * 0.04, '#ff4a3a', 0.9); // 尾燈
+  }
+  function frond(c, x, y, len, angle, color, light) { // light：朝光那一側的葉片與葉脈亮一點（不給就不畫）
+    var ex = x + Math.cos(angle) * len, ey = y + Math.sin(angle) * len;
+    curve(c, [[x, y], [x + Math.cos(angle - 0.25) * len * 0.5, y + Math.sin(angle - 0.25) * len * 0.5], [ex, ey]], color, len * 0.03);
+    for (var index = 1; index < 9; index += 1) {
+      var t = index / 9, px = x + (ex - x) * t, py = y + (ey - y) * t - Math.sin(t * 3.14) * len * 0.06, leaf = len * 0.24 * (1 - t * 0.6);
+      stroke(c, [[px, py], [px + Math.cos(angle + 1.2) * leaf, py + Math.sin(angle + 1.2) * leaf]], color, len * 0.035);
+      stroke(c, [[px, py], [px + Math.cos(angle - 1.2) * leaf, py + Math.sin(angle - 1.2) * leaf]], color, len * 0.035);
+      if (light) stroke(c, [[px, py], [px + Math.cos(angle - 1.2) * leaf * 0.9, py + Math.sin(angle - 1.2) * leaf * 0.9]], tint(light, 0.22), len * 0.009);
+    }
+    if (light) curve(c, [[x, y], [x + Math.cos(angle - 0.25) * len * 0.5, y + Math.sin(angle - 0.25) * len * 0.5], [ex, ey]], tint(light, 0.3), len * 0.008);
+  }
+  // ======== 繪製：材質與光影 ========
+  // 岩石、雪、冰、草地不是純色的色塊：先用雜訊算出表面的高低，再依左上方來的光算出每一點的明暗，存成一小張可以無縫重複的圖
+  // （128 是不亮不暗），畫的時候用 overlay 疊在底色上。雲和霧也是雜訊算的（一張白色、濃淡不一的圖）。
+  // 每一種材質整件作品只算一次，用到才算；算不出來（很舊的瀏覽器）就不疊，畫面退回純色。檔案裡仍然沒有圖片。
+  var TILE = 256, TILES = {};
+  function sheet(w, h) { var canvas = document.createElement('canvas'); canvas.width = Math.max(2, Math.round(w)); canvas.height = Math.max(2, Math.round(h)); return canvas; }
+  // 可以無縫重複的二維雜訊：px、py 是一個週期裡橫向與縱向的格數
+  function lattice(seed, px, py) {
+    var rnd = random(seed), grid = [];
+    for (var index = 0; index < px * py; index += 1) grid.push(rnd());
+    return function (x, y) {
+      var xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+      var sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+      var x0 = ((xi % px) + px) % px, x1 = (x0 + 1) % px, y0 = ((yi % py) + py) % py, y1 = (y0 + 1) % py;
+      return (grid[y0 * px + x0] * (1 - sx) + grid[y0 * px + x1] * sx) * (1 - sy) + (grid[y1 * px + x0] * (1 - sx) + grid[y1 * px + x1] * sx) * sy;
+    };
+  }
+  function fbm2(seed, px, py, octaves, rough) { // 回傳 f(u, v)：u、v 在 0 到 1 之間，值在 0 到 1 之間
+    var layers = [], amp = 1, total = 0;
+    for (var octave = 0; octave < octaves; octave += 1) { layers.push({n: lattice(seed + octave * 97, px << octave, py << octave), sx: px << octave, sy: py << octave, amp: amp}); total += amp; amp *= rough; }
+    return function (u, v) { var sum = 0; for (var index = 0; index < layers.length; index += 1) sum += layers[index].n(u * layers[index].sx, v * layers[index].sy) * layers[index].amp; return sum / total; };
+  }
+  // 每一種材質的配方：px、py 是大塊起伏在一張圖裡橫向與縱向各幾格（格數少的方向紋路比較長）；fine 細紋、crack 裂紋各佔多少；tilt、gain、lift 是光照的強弱
+  var RELIEF = {
+    rock: {seed: 4201, px: 6, py: 2, fine: 0.18, crack: 0.05, tilt: 8, gain: 270, lift: 60}, // 玄武岩：直向的紋路、很細的裂紋
+    snow: {seed: 88, px: 4, py: 3, fine: 0.06, crack: 0, tilt: 6, gain: 230, lift: 40},      // 雪：平緩的起伏
+    ice: {seed: 613, px: 3, py: 7, fine: 0.14, crack: 0, tilt: 11, gain: 300, lift: 50},     // 冰：橫向的層理（裂面另外畫成直的，不用彎彎的裂紋）
+    turf: {seed: 1507, px: 7, py: 6, fine: 0.3, crack: 0, tilt: 7, gain: 210, lift: 50}      // 草地：細碎的起伏
+  };
+  function relief(kind) {
+    if (kind in TILES) return TILES[kind];
+    TILES[kind] = null;
+    try {
+      var recipe = RELIEF[kind], tile = sheet(TILE, TILE), pen = tile.getContext('2d'), image = pen.createImageData(TILE, TILE);
+      var body = fbm2(recipe.seed, recipe.px, recipe.py, 5, 0.5), fine = fbm2(recipe.seed + 3, 24, 10, 3, 0.5), pits = fbm2(recipe.seed + 7, 5, 5, 2, 0.5);
+      var heights = new Float32Array(TILE * TILE), lx = -0.55, ly = -0.5, lz = 0.67, x, y;
+      for (y = 0; y < TILE; y += 1) for (x = 0; x < TILE; x += 1) {
+        var crack = recipe.crack ? Math.min(1, Math.abs(pits(x / TILE, y / TILE) * 2 - 1) / 0.03) : 1; // 只有很窄的一條線是裂紋
+        heights[y * TILE + x] = body(x / TILE, y / TILE) * 0.62 + fine(x / TILE, y / TILE) * recipe.fine + crack * crack * (3 - 2 * crack) * (recipe.crack || 0.2);
+      }
+      for (y = 0; y < TILE; y += 1) for (x = 0; x < TILE; x += 1) {
+        var left = heights[y * TILE + (x + TILE - 1) % TILE], right = heights[y * TILE + (x + 1) % TILE];
+        var up = heights[((y + TILE - 1) % TILE) * TILE + x], down = heights[((y + 1) % TILE) * TILE + x];
+        var nx = (left - right) * recipe.tilt, ny = (up - down) * recipe.tilt, len = Math.sqrt(nx * nx + ny * ny + 1);
+        var value = 128 + ((nx * lx + ny * ly + lz) / len - lz) * recipe.gain + (heights[y * TILE + x] - 0.5) * recipe.lift;
+        var at = (y * TILE + x) * 4;
+        image.data[at] = image.data[at + 1] = image.data[at + 2] = value < 0 ? 0 : value > 255 ? 255 : value;
+        image.data[at + 3] = 255;
+      }
+      pen.putImageData(image, 0, 0);
+      TILES[kind] = tile;
+    } catch (error) { TILES[kind] = null; }
+    return TILES[kind];
+  }
+  function fogTile() { // 雲與霧：白色，濃淡由雜訊決定
+    if ('fog' in TILES) return TILES.fog;
+    TILES.fog = null;
+    try {
+      var w = 512, h = 256, tile = sheet(w, h), pen = tile.getContext('2d'), image = pen.createImageData(w, h), n = fbm2(977, 4, 2, 5, 0.55);
+      for (var y = 0; y < h; y += 1) for (var x = 0; x < w; x += 1) {
+        var t = (n(x / w, y / h) - 0.4) / 0.32, at = (y * w + x) * 4;
+        t = t < 0 ? 0 : t > 1 ? 1 : t;
+        image.data[at] = image.data[at + 1] = image.data[at + 2] = 255;
+        image.data[at + 3] = Math.round(t * t * (3 - 2 * t) * 255);
+      }
+      pen.putImageData(image, 0, 0);
+      TILES.fog = tile;
+    } catch (error) { TILES.fog = null; }
+    return TILES.fog;
+  }
+  function fogUrl() { // 會飄的霧（樣式表的 .lw-fog）用的背景圖
+    if (!('fogUrl' in TILES)) { try { TILES.fogUrl = fogTile() ? fogTile().toDataURL('image/png') : ''; } catch (error) { TILES.fogUrl = ''; } }
+    return TILES.fogUrl;
+  }
+  function trace(c, points) { c.beginPath(); points.forEach(function (point, index) { if (index) c.lineTo(point[0], point[1]); else c.moveTo(point[0], point[1]); }); c.closePath(); }
+  // 把材質疊進一個多邊形裡：scale 是材質放大幾倍，ox、oy 是從哪裡開始鋪（每個面錯開，才不會看出重複）
+  function grainFill(c, points, tile, scale, ox, oy, alpha) {
+    if (!tile || !alpha) return;
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    points.forEach(function (point) { x0 = Math.min(x0, point[0]); x1 = Math.max(x1, point[0]); y0 = Math.min(y0, point[1]); y1 = Math.max(y1, point[1]); });
+    c.save();
+    trace(c, points); c.clip();
+    c.globalCompositeOperation = 'overlay'; c.globalAlpha = Math.min(1, alpha);
+    c.translate(ox, oy); c.scale(scale, scale);
+    c.fillStyle = c.createPattern(tile, 'repeat');
+    c.fillRect((x0 - ox) / scale, (y0 - oy) / scale, (x1 - x0) / scale, (y1 - y0) / scale);
+    c.restore();
+  }
+  // 一片雲或霧：取霧的材質的一段（from 是從哪裡取），上下淡出，染成指定的顏色；plume 是一團（蒸氣）：左右也淡出，才不會看到直直的邊
+  function veil(c, x, y, w, h, alpha, from, color, plume) {
+    var fog = fogTile();
+    if (!fog) return;
+    var temp = sheet(w / 2, h / 2), pen = temp.getContext('2d'), clear = 'rgba(0,0,0,0)', solid = 'rgba(0,0,0,1)';
+    pen.drawImage(fog, from % (fog.width * 0.45), 0, fog.width * 0.55, fog.height, 0, 0, temp.width, temp.height);
+    pen.globalCompositeOperation = 'destination-in';
+    pen.fillStyle = shade(pen, 0, 0, 0, temp.height, [clear, solid, solid, clear]);
+    pen.fillRect(0, 0, temp.width, temp.height);
+    if (plume) { pen.fillStyle = shade(pen, 0, 0, temp.width, 0, [clear, solid, clear]); pen.fillRect(0, 0, temp.width, temp.height); }
+    pen.globalCompositeOperation = 'source-in';
+    pen.fillStyle = color; pen.fillRect(0, 0, temp.width, temp.height);
+    c.save(); c.globalAlpha = alpha; c.drawImage(temp, x, y, w, h); c.restore();
+  }
+  function toward(tone, color, amount) { var mixed = {}; Object.keys(tone).forEach(function (key) { mixed[key] = mix(tone[key], color, amount); }); return mixed; }
+  function ridgeAt(points, x) { // terrain() 回傳的稜線在 x 這個位置的高度
+    var step = points[1][0] - points[0][0], index = Math.max(0, Math.min(points.length - 1, Math.round((x - points[0][0]) / step)));
+    return points[index][1];
+  }
+  function edgeAt(points, y) { // 一條由上往下的邊在 y 這個高度的 x
+    for (var index = 1; index < points.length; index += 1) {
+      if (y <= points[index][1]) { var span = points[index][1] - points[index - 1][1] || 1, t = (y - points[index - 1][1]) / span; return points[index - 1][0] + (points[index][0] - points[index - 1][0]) * t; }
+    }
+    return points[points.length - 1][0];
+  }
+  function ring(x, y, rx, ry) { var points = []; for (var index = 0; index < 28; index += 1) points.push([x + Math.cos(index / 28 * 6.2832) * rx, y + Math.sin(index / 28 * 6.2832) * ry]); return points; }
+  function dense(points, per) { // 把 curve() 畫的那條平滑曲線算成一串密的點（要沿著曲線放東西時用）
+    var out = [points[0]], from = points[0];
+    for (var index = 1; index < points.length - 1; index += 1) {
+      var ctrl = points[index], to = [(ctrl[0] + points[index + 1][0]) / 2, (ctrl[1] + points[index + 1][1]) / 2];
+      for (var part = 1; part <= per; part += 1) { var t = part / per, u = 1 - t; out.push([u * u * from[0] + 2 * u * t * ctrl[0] + t * t * to[0], u * u * from[1] + 2 * u * t * ctrl[1] + t * t * to[1]]); }
+      from = to;
+    }
+    out.push(points[points.length - 1]);
+    return out;
+  }
+  // 一棵樹：圓圓的樹冠由幾團疊起來，底下暗、朝光的右上方亮，腳下有一小片影子
+  function bush(c, rnd, x, y, s, dark, body, light) {
+    var index;
+    soft(c, x + s * 0.2, y + s * 0.15, s * 1.1, s * 0.22, '#0c2a1c', 0.3);
+    for (index = 0; index < 5; index += 1) oval(c, x + (rnd() - 0.5) * s * 1.1, y - s * (0.25 + rnd() * 0.5), s * (0.42 + rnd() * 0.2), s * (0.36 + rnd() * 0.16), dark);
+    for (index = 0; index < 5; index += 1) oval(c, x + (rnd() - 0.4) * s * 0.9, y - s * (0.45 + rnd() * 0.5), s * (0.32 + rnd() * 0.16), s * (0.26 + rnd() * 0.12), body);
+    for (index = 0; index < 4; index += 1) oval(c, x + s * (0.05 + rnd() * 0.4), y - s * (0.7 + rnd() * 0.35), s * (0.14 + rnd() * 0.1), s * (0.1 + rnd() * 0.07), light);
+  }
+  function moss(c, rnd, hexagon, cx, cy, wide, cap) { // 柱頂的苔：不規則的一片，還有幾撮垂到前緣下面
+    var greens = ['#4f9d5e', '#7fc77a', '#3c7d4c', '#a4d98a'], index;
+    c.save(); trace(c, hexagon); c.clip();
+    for (index = 0; index < 9; index += 1) soft(c, cx + (rnd() - 0.5) * wide * 0.8, cy + (rnd() - 0.5) * cap * 1.4, wide * (0.12 + rnd() * 0.2), cap * (0.3 + rnd() * 0.5), greens[index % 4], 0.5 + rnd() * 0.4);
+    dots(c, rnd, 26, cx - wide * 0.45, cy - cap * 0.8, cx + wide * 0.45, cy + cap * 0.8, wide * 0.012, ['rgba(200,240,170,.7)', 'rgba(40,90,50,.6)']);
+    c.restore();
+    for (index = 0; index < 4; index += 1) { var mx = cx + (rnd() - 0.5) * wide * 0.5; stroke(c, [[mx, cy + cap], [mx + wide * 0.01, cy + cap + wide * (0.05 + rnd() * 0.12)]], 'rgba(70,140,85,.75)', wide * 0.03); }
+  }
+  // 一根六角石柱：三個看得到的側面（受光、正面、背光）順著頂面的前緣接上去；一節一節的橫向節理、水痕、稜線的亮邊；
+  // 左邊的柱子比較高時，影子落在這一根的頂面與左側。tone = {lit, front, dark, cap, rim 受光的邊, deep 最暗處}；
+  // o = {fall 側面由亮到暗的距離, texture 材質多明顯, joint 節理多明顯, moss 長苔的機率, rim 亮邊的強度, drop 比左邊那根低多少}
+  function column(c, tile, rnd, px, top, wide, bottom, tone, o) {
+    var cap = wide * 0.2, a = px, b = px + wide * 0.27, d = px + wide * 0.73, e = px + wide, thin = Math.max(1, wide * 0.016);
+    var faces = [[[a, top], [b, top + cap], [b, bottom], [a, bottom]], [[b, top + cap], [d, top + cap], [d, bottom], [b, bottom]], [[d, top + cap], [e, top], [e, bottom], [d, bottom]]];
+    var colors = [tone.lit, tone.front, tone.dark], scale = wide * 1.7 / TILE;
+    faces.forEach(function (face, index) {
+      poly(c, face, shade(c, 0, top, 0, top + o.fall, [colors[index], mix(colors[index], tone.deep, 0.75)]));
+      grainFill(c, face, tile, scale, px + rnd() * 300, top + rnd() * 300, o.texture);
+    });
+    if (o.texture) for (var wet = 0; wet < 2; wet += 1) { // 從柱頂往下流的水痕
+      var wx = b + rnd() * (d - b) * 0.8;
+      c.fillStyle = shade(c, 0, top + cap, 0, top + cap + o.fall * (0.3 + rnd() * 0.5), ['rgba(10,16,22,.3)', 'rgba(10,16,22,0)']);
+      c.fillRect(wx, top + cap, wide * (0.04 + rnd() * 0.07), o.fall * 0.8);
+    }
+    var y = top + cap + wide * (0.45 + rnd() * 0.9);
+    while (o.joint && y < bottom && y < top + o.fall * 1.6) { // 玄武岩柱是一節一節疊起來的
+      var jog = (rnd() - 0.5) * wide * 0.06;
+      stroke(c, [[a, y - cap + jog], [b, y + jog], [d, y + jog * 0.4], [e, y - cap]], tint('#000000', o.joint), thin * 1.3);
+      stroke(c, [[a, y - cap + jog + thin * 1.6], [b, y + jog + thin * 1.6], [d, y + jog * 0.4 + thin * 1.6]], tint(tone.rim, o.joint * 0.5), thin * 0.8);
+      y += wide * (0.5 + rnd() * 1.3);
+    }
+    stroke(c, [[b, top + cap], [b, bottom]], tint('#000000', 0.26), thin);
+    stroke(c, [[d, top + cap], [d, bottom]], tint('#000000', 0.34), thin);
+    stroke(c, [[b - thin, top + cap + thin], [b - thin, top + cap + o.fall * 0.45]], tint(tone.rim, 0.22 * o.rim), thin * 0.8);
+    var hexagon = [[a, top], [b, top - cap], [d, top - cap], [e, top], [d, top + cap], [b, top + cap]];
+    poly(c, hexagon, shade(c, a, top - cap, e, top + cap, [mix(tone.cap, '#ffffff', 0.2), tone.cap, mix(tone.cap, tone.deep, 0.28)]));
+    grainFill(c, hexagon, tile, scale * 0.8, px + rnd() * 100, top + rnd() * 100, o.texture * 0.9);
+    if (o.moss && rnd() < o.moss) moss(c, rnd, hexagon, px + wide * 0.5, top, wide, cap);
+    stroke(c, [[a, top], [b, top - cap], [d, top - cap]], tint(tone.rim, Math.min(1, 0.7 * o.rim)), thin);   // 頂面後緣：受光
+    stroke(c, [[a, top], [b, top + cap], [d, top + cap], [e, top]], tint('#000000', 0.36), thin * 1.2);       // 頂面前緣：一道暗線
+    stroke(c, [[a, top + thin * 1.8], [b, top + cap + thin * 1.8], [d, top + cap + thin * 1.8]], tint(tone.rim, Math.min(1, 0.28 * o.rim)), thin * 0.8);
+    if (o.drop > wide * 0.08) {
+      var reach = Math.min(wide, o.drop * 0.8), shadow = c.createLinearGradient(a, 0, a + reach, 0);
+      shadow.addColorStop(0, 'rgba(8,14,20,.5)'); shadow.addColorStop(1, 'rgba(8,14,20,0)');
+      c.save(); trace(c, [[a, top], [b, top - cap], [d, top - cap], [e, top], [e, bottom], [a, bottom]]); c.clip();
+      poly(c, [[a, top - cap], [a + reach, top - cap], [a + reach * 0.25, top + cap + o.drop * 1.3], [a, top + cap + o.drop * 1.3]], shadow);
+      c.restore();
+    }
+  }
+  // 一排石柱：寬窄、高低、顏色都差一點；spot = [x, 寬, 柱頂的高度] 是指定某個位置要有一根夠寬的柱子（人站在上面）
+  function row(c, tile, rnd, n, o) {
+    var x = o.x0, last = null;
+    while (x < o.x1) {
+      var wide = o.wide[0] + rnd() * (o.wide[1] - o.wide[0]), top = o.top + n(x / o.scale + o.shift, 3) * o.amp;
+      if (o.spot && x <= o.spot[0] && x + wide > o.spot[0]) { wide = o.spot[0] - x + o.spot[1]; top = o.spot[2]; }
+      column(c, tile, rnd, x, top, wide, o.bottom, toward(o.tone, rnd() < 0.5 ? '#8c8478' : '#6f8296', rnd() * 0.14),
+             {fall: o.fall, texture: o.texture, joint: o.joint, moss: o.moss, rim: o.rim, drop: last === null ? 0 : top - last});
+      last = top; x += wide * 0.97;
+    }
+  }
+  // 一座從水面隆起的山（島、遠處的冰島）：兩頭貼著水面、中間高，稜線用雜訊起伏（pace 越小起伏越平緩）。回傳稜線的點（由左到右，間隔相等）
+  function mound(c, n, x0, x1, base, height, shift, fill, pace) {
+    var points = [];
+    for (var index = 0; index <= 80; index += 1) {
+      var t = index / 80;
+      points.push([x0 + (x1 - x0) * t, base - height * Math.sin(t * 3.1416) * (0.55 + 0.45 * (1 - Math.abs(n(index * (pace || 0.3) + shift, 4) * 2 - 1)))]);
+    }
+    poly(c, points.concat([[x1, base], [x0, base]]), fill);
+    return points;
+  }
+  var STONE = {lit: '#9aa7b3', front: '#7d8996', dark: '#59636f', cap: '#bcc8d2', rim: '#f2fbfb', deep: '#222a33'};      // 中景的石柱
+  var STONE_NEAR = {lit: '#3a434e', front: '#272e37', dark: '#161b22', cap: '#566270', rim: '#b8e3dc', deep: '#06080b'}; // 最前面的石柱：背光，只有邊緣映著天色
+
+  // ======== 繪製：每一種場景 ========
+  // 每個函式拿到三層畫布的筆（far、mid、near；有夜間視角的另有 glow），舞台的寬 W、高 H，以及這個場景自己的亂數 rnd、雜訊 n 與附加畫面。
+  // 畫布比舞台大（寬 1.3 倍，高 1.3 倍或 2.3 倍），多出來的部分捲動或切換視角時才會露出來。
+  var PAINT = {
+    apartment: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, wx = W * 0.06, wy = H * 0.1, ww = W * 0.24, wh = H * 0.36, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#1b2444', '#141b33', '#0b1020']);
+      soft(c, W * 0.42, H * 0.46, W * 0.46, H * 0.42, '#5fa8ff', 0.2); // 電視的冷光
+      soft(c, W * 0.95, H * 0.68, W * 0.3, H * 0.36, '#ffb866', 0.26); // 小夜燈的暖光
+      fillV(c, wx, wy, ww, wh, ['#0b1736', '#1f3566', '#4a5a88']); // 窗外的夜空
+      stars(c, r, 30, wx, wy, wx + ww, wy + wh * 0.45, W * 0.001);
+      for (index = 0; index < 10; index += 1) { // 遠處的樓與亮著的窗
+        var bx = wx + ww * index / 10, bh = wh * (0.22 + r() * 0.5);
+        c.fillStyle = index % 2 ? '#0a1226' : '#0f1a34';
+        c.fillRect(bx, wy + wh - bh, ww / 10 + 1, bh);
+        for (var lit = 0; lit < 12; lit += 1) {
+          if (r() < 0.42) { c.fillStyle = r() < 0.7 ? 'rgba(255,214,140,.9)' : 'rgba(170,205,255,.85)'; c.fillRect(bx + ww / 10 * (0.16 + 0.46 * (lit % 2)), wy + wh - bh + bh * (0.07 + Math.floor(lit / 2) * 0.15), ww / 10 * 0.2, bh * 0.06); }
+        }
+      }
+      c.strokeStyle = '#33405f'; c.lineWidth = W * 0.007; c.strokeRect(wx, wy, ww, wh);
+      c.fillStyle = '#33405f'; c.fillRect(wx + ww / 2 - W * 0.003, wy, W * 0.006, wh); c.fillRect(wx - W * 0.012, wy + wh, ww + W * 0.024, H * 0.02);
+      [wx - W * 0.04, wx + ww + W * 0.004].forEach(function (cx) { // 窗簾
+        c.fillStyle = shade(c, cx, 0, cx + W * 0.036, 0, ['#2b3558', '#3b4972', '#242d4c']);
+        c.fillRect(cx, wy - H * 0.02, W * 0.036, wh + H * 0.1);
+        for (var fold = 1; fold < 4; fold += 1) stroke(c, [[cx + W * 0.009 * fold, wy - H * 0.02], [cx + W * 0.009 * fold, wy + wh + H * 0.08]], 'rgba(10,14,30,.35)', W * 0.0015);
+      });
+      [0.1, 0.165, 0.235].forEach(function (px, order) { // 窗台上的盆栽
+        var base = wy + wh;
+        c.fillStyle = shade(c, 0, base - H * 0.035, 0, base, ['#9a5d43', '#6d3f2c']);
+        c.beginPath(); c.roundRect(W * (px - 0.013), base - H * 0.035, W * 0.026, H * 0.035, W * 0.003); c.fill();
+        for (var leaf = 0; leaf < 7; leaf += 1) {
+          var ang = -2.6 + leaf * 0.35 + r() * 0.2, len = H * (0.05 + order * 0.012 + r() * 0.02);
+          c.fillStyle = leaf % 2 ? '#3f9a66' : '#2c7a50';
+          c.beginPath(); c.ellipse(W * px + Math.cos(ang) * len * 0.5, base - H * 0.035 + Math.sin(ang) * len * 0.5, len * 0.5, len * 0.17, ang, 0, 6.2832); c.fill();
+        }
+      });
+      c.fillStyle = shade(c, 0, H * 0.085, 0, H * 0.16, ['#e9eef4', '#b9c3d0']); // 冷氣
+      c.beginPath(); c.roundRect(W * 0.6, H * 0.085, W * 0.25, H * 0.075, W * 0.006); c.fill();
+      c.fillStyle = '#8590a0'; for (index = 0; index < 3; index += 1) c.fillRect(W * 0.615, H * (0.132 + index * 0.008), W * 0.22, H * 0.003);
+      c.fillStyle = '#7ee0c3'; c.fillRect(W * 0.815, H * 0.1, W * 0.018, H * 0.012);
+      for (index = 0; index < 5; index += 1) soft(c, W * (0.64 + index * 0.045), H * (0.21 + index % 2 * 0.03), W * 0.07, H * 0.07, '#dceeff', 0.07);
+
+      c = L.mid;
+      c.fillStyle = shade(c, 0, H * 0.585, 0, H * 0.68, ['#262f48', '#161c2e']); // 電視櫃與電視
+      c.beginPath(); c.roundRect(W * 0.24, H * 0.585, W * 0.36, H * 0.095, W * 0.004); c.fill();
+      c.fillStyle = '#05070d'; c.beginPath(); c.roundRect(W * 0.295, H * 0.335, W * 0.25, H * 0.25, W * 0.006); c.fill();
+      var sx = W * 0.303, sy = H * 0.348, sw = W * 0.234, sh = H * 0.21; // 螢幕裡的極地紀錄片
+      fillV(c, sx, sy, sw, sh * 0.62, ['#9fd0f2', '#e6f3fb']);
+      fillV(c, sx, sy + sh * 0.62, sw, sh * 0.38, ['#2f7fb0', '#0f3d68']);
+      berg(c, sx + sw * 0.28, sy + sh * 0.62, sw * 0.4, sh * 0.42, '#ffffff', '#b9d8ec');
+      berg(c, sx + sw * 0.72, sy + sh * 0.62, sw * 0.18, sh * 0.16, '#f4fbff', '#c3ddee');
+      poly(c, [[sx, sy], [sx + sw * 0.5, sy], [sx + sw * 0.2, sy + sh], [sx, sy + sh]], 'rgba(255,255,255,.07)');
+      soft(c, W * 0.42, H * 0.7, W * 0.2, H * 0.05, '#7fbfff', 0.25);
+      var tx = W * 0.655, ty = H * 0.49, tw = W * 0.21, th = H * 0.17; // 魚缸
+      c.fillStyle = shade(c, 0, ty + th, 0, H * 0.9, ['#222b44', '#121828']); c.fillRect(tx - W * 0.01, ty + th, tw + W * 0.02, H * 0.22);
+      soft(c, tx + tw / 2, ty + th / 2, tw * 0.9, th * 1.1, '#5ae0dc', 0.22);
+      fillV(c, tx, ty, tw, th, ['#7fe3e0', '#3fb3c4', '#1f6f8f']);
+      for (index = 0; index < 5; index += 1) curve(c, [[tx + tw * (0.1 + index * 0.07), ty + th], [tx + tw * (0.08 + index * 0.07), ty + th * 0.7], [tx + tw * (0.12 + index * 0.07), ty + th * (0.45 + r() * 0.2)]], index % 2 ? '#2f9a6a' : '#58c486', W * 0.004);
+      for (index = 0; index < 16; index += 1) oval(c, tx + tw * (0.03 + index * 0.062), ty + th * 0.97, W * 0.006, H * 0.006, index % 2 ? '#c9b48f' : '#8f7f66');
+      [[0.52, 0.42, 1, '#ff9d5a'], [0.34, 0.62, -1, '#ffd166']].forEach(function (fish) {
+        var fx = tx + tw * fish[0], fy = ty + th * fish[1], fs = W * 0.016 * fish[2], big = Math.abs(fs);
+        oval(c, fx, fy, big, big * 0.55, fish[3]);
+        poly(c, [[fx - fs * 0.8, fy], [fx - fs * 1.7, fy - big * 0.6], [fx - fs * 1.7, fy + big * 0.6]], fish[3]);
+        oval(c, fx + fs * 0.5, fy - big * 0.12, W * 0.0018, W * 0.0018, '#1a1208');
+      });
+      for (index = 0; index < 14; index += 1) { // 打氣機的泡泡
+        c.beginPath(); c.arc(tx + tw * (0.86 + Math.sin(index * 1.7) * 0.03), ty + th * (0.08 + index * 0.062), W * (0.002 + (index % 3) * 0.0012), 0, 6.2832);
+        c.strokeStyle = 'rgba(255,255,255,.85)'; c.lineWidth = 1; c.stroke();
+      }
+      c.strokeStyle = 'rgba(220,250,252,.75)'; c.lineWidth = W * 0.003; c.strokeRect(tx, ty, tw, th);
+      c.fillStyle = '#10141f'; c.fillRect(tx - W * 0.004, ty - H * 0.012, tw + W * 0.008, H * 0.014);
+      poly(c, [[tx + tw * 0.04, ty], [tx + tw * 0.2, ty], [tx + tw * 0.08, ty + th], [tx, ty + th], [tx, ty + th * 0.3]], 'rgba(255,255,255,.1)');
+      soft(c, W * 0.945, H * 0.7, W * 0.11, W * 0.11, '#ffcf8a', 0.75); // 小夜燈
+      c.fillStyle = '#f6e3c0'; c.beginPath(); c.arc(W * 0.945, H * 0.7, W * 0.016, 3.1416, 6.2832); c.fill();
+      c.fillStyle = '#c9b189'; c.fillRect(W * 0.94, H * 0.7, W * 0.01, H * 0.02);
+
+      c = L.near;
+      c.fillStyle = shade(c, 0, H * 0.76, 0, H * 1.3, ['#1a2238', '#0a0e19']); // 沙發
+      c.beginPath(); c.moveTo(-W * 0.05, H * 1.4); c.lineTo(-W * 0.05, H * 0.8);
+      c.bezierCurveTo(W * 0.1, H * 0.76, W * 0.32, H * 0.78, W * 0.42, H * 0.84);
+      c.bezierCurveTo(W * 0.6, H * 0.9, W * 0.9, H * 0.9, W * 1.35, H * 0.82);
+      c.lineTo(W * 1.35, H * 1.4); c.closePath(); c.fill();
+      curve(c, [[-W * 0.05, H * 0.8], [W * 0.12, H * 0.765], [W * 0.32, H * 0.785], [W * 0.42, H * 0.84]], 'rgba(140,170,220,.3)', H * 0.004);
+      c.fillStyle = shade(c, 0, H * 0.86, 0, H * 1.1, ['#7a573f', '#4a3222']); // 毛毯
+      c.beginPath(); c.moveTo(W * 0.46, H * 0.9); c.bezierCurveTo(W * 0.6, H * 0.84, W * 0.9, H * 0.86, W * 1.08, H * 0.92); c.lineTo(W * 1.12, H * 1.3); c.lineTo(W * 0.42, H * 1.3); c.closePath(); c.fill();
+      for (index = 0; index < 260; index += 1) {
+        var hx = W * (0.44 + r() * 0.66), hy = H * (0.88 + r() * 0.3);
+        curve(c, [[hx, hy], [hx + W * 0.004, hy + H * 0.012], [hx + W * 0.002, hy + H * 0.026]], r() < 0.5 ? 'rgba(150,112,82,.7)' : 'rgba(60,40,26,.7)', W * 0.002);
+      }
+      c.fillStyle = '#d9b49c'; c.beginPath(); c.ellipse(W * 0.215, H * 0.9, W * 0.05, H * 0.03, -0.2, 0, 6.2832); c.fill(); // 手與那杯冰水
+      fillV(c, W * 0.2, H * 0.79, W * 0.048, H * 0.105, ['rgba(220,240,252,.28)', 'rgba(170,215,240,.42)']);
+      c.strokeStyle = 'rgba(235,248,255,.7)'; c.lineWidth = W * 0.002; c.strokeRect(W * 0.2, H * 0.79, W * 0.048, H * 0.105);
+      [[0.206, 0.815, 0.2], [0.226, 0.83, -0.25], [0.212, 0.848, 0.4]].forEach(function (cube) {
+        c.save(); c.translate(W * cube[0] + W * 0.008, H * cube[1] + W * 0.008); c.rotate(cube[2]);
+        c.fillStyle = 'rgba(255,255,255,.8)'; c.fillRect(-W * 0.008, -W * 0.008, W * 0.016, W * 0.016); c.restore();
+      });
+      stroke(c, [[W * 0.205, H * 0.795], [W * 0.205, H * 0.885]], 'rgba(255,255,255,.55)', W * 0.0018);
+    },
+    harbor: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, sea = H * 0.64, index;
+      fillV(c, 0, 0, W * 1.3, sea, ['#1d2a4a', '#4a5f86', '#c98f7e', '#f6d2a8']);
+      soft(c, W * 0.95, sea, W * 0.5, H * 0.3, '#ffd9a0', 0.55); // 天邊將出的太陽
+      for (index = 0; index < 5; index += 1) cloud(c, r, W * (0.1 + index * 0.28), H * (0.12 + (index % 2) * 0.13), W * 0.34, index % 2 ? '#f0b9a0' : '#8a94b8', 0.3);
+      terrain(c, n, {x0: 0, x1: W * 1.3, y: sea, amp: H * 0.1, scale: W * 0.22, bottom: sea, fill: '#6a7696', shift: 3});
+      terrain(c, n, {x0: 0, x1: W * 1.3, y: sea, amp: H * 0.06, scale: W * 0.14, bottom: sea, fill: '#4a5878', shift: 9});
+      mist(c, 0, W * 1.3, sea - H * 0.01, H * 0.05, '#f6d2a8', 0.45);
+      poly(c, [[W * 1.016, sea - H * 0.2], [W * 1.034, sea - H * 0.2], [W * 1.04, sea], [W * 1.01, sea]], shade(c, W * 1.01, 0, W * 1.04, 0, ['#fbf6ee', '#c9c2b8'])); // 燈塔
+      c.fillStyle = '#b8452f'; c.fillRect(W * 1.013, sea - H * 0.13, W * 0.024, H * 0.03);
+      c.fillStyle = '#1d2433'; c.fillRect(W * 1.012, sea - H * 0.225, W * 0.026, H * 0.028);
+      rays(c, W * 1.025, sea - H * 0.212, W * 0.5, 2.9, 3.35, 3, '#fff0c0', 0.24);
+      soft(c, W * 1.025, sea - H * 0.212, W * 0.03, W * 0.03, '#fff6d8', 1);
+      water(c, r, 0, W * 1.3, sea, H * 1.3, ['#8f8fa6', '#3d5677', '#12233b'], '#ffe0b8', W * 0.95, '#ffd9a0');
+
+      c = L.mid;
+      [[0.05, 0.14, 0.3], [0.19, 0.24, 0.24]].forEach(function (crane) { // 碼頭的吊臂
+        var bx = W * crane[0], top = H * crane[1], reach = W * crane[2], foot = sea + H * 0.14;
+        stroke(c, [[bx, foot], [bx, top]], '#172030', W * 0.012);
+        stroke(c, [[bx + W * 0.03, foot], [bx + W * 0.03, top + H * 0.02]], '#172030', W * 0.006);
+        stroke(c, [[bx - W * 0.03, top + H * 0.03], [bx + reach, top - H * 0.02]], '#172030', W * 0.01);
+        for (var brace = 0; brace < 9; brace += 1) stroke(c, [[bx + (brace % 2 ? 0 : W * 0.03), foot - (foot - top) * brace / 9], [bx + (brace % 2 ? W * 0.03 : 0), foot - (foot - top) * (brace + 1) / 9]], '#172030', W * 0.003);
+        stroke(c, [[bx + reach * 0.8, top - H * 0.012], [bx + reach * 0.8, top + H * 0.2]], '#172030', W * 0.002);
+        c.fillStyle = '#c8452f'; c.fillRect(bx + reach * 0.8 - W * 0.012, top + H * 0.2, W * 0.024, H * 0.03);
+      });
+      ship(c, W * 0.42, sea + H * 0.07, W * 0.7);
+      fillV(c, W * 0.44, sea + H * 0.07, W * 0.65, H * 0.12, ['rgba(120,35,25,.5)', 'rgba(120,35,25,0)']); // 船在水裡的倒影
+      for (index = 0; index < 7; index += 1) soft(c, W * (0.72 + index * 0.03), sea - H * (0.39 + index * 0.035), W * (0.03 + index * 0.012), H * (0.03 + index * 0.01), '#d9dce6', 0.3 - index * 0.03); // 煙
+
+      c = L.near;
+      fillV(c, -W * 0.1, H * 0.84, W * 1.6, H * 0.6, ['#222a3c', '#0b0f18']);
+      stroke(c, [[-W * 0.1, H * 0.84], [W * 1.5, H * 0.84]], 'rgba(255,214,170,.35)', H * 0.004);
+      [0.08, 0.46, 0.8, 1.14].forEach(function (px) { c.fillStyle = '#0d1119'; c.beginPath(); c.roundRect(W * px, H * 0.795, W * 0.026, H * 0.05, W * 0.005); c.fill(); c.fillRect(W * px - W * 0.004, H * 0.8, W * 0.034, H * 0.012); });
+      curve(c, [[W * 0.093, H * 0.81], [W * 0.2, H * 0.86], [W * 0.34, H * 0.8]], '#3a4256', W * 0.003);
+      [[0.6, 0.06, '#3b4a66'], [0.665, 0.045, '#5b3f2a']].forEach(function (crate) { c.fillStyle = crate[2]; c.fillRect(W * crate[0], H * 0.84 - W * crate[1], W * crate[1], W * crate[1]); c.strokeStyle = 'rgba(0,0,0,.35)'; c.lineWidth = 1; c.strokeRect(W * crate[0], H * 0.84 - W * crate[1], W * crate[1], W * crate[1]); });
+      party(c, W * 0.2, H * 0.845, H * 0.125);
+      [[0.5, 0.2], [0.57, 0.15], [0.76, 0.27], [0.3, 0.33], [0.9, 0.12]].forEach(function (at) { curve(c, [[W * at[0], H * at[1]], [W * (at[0] + 0.012), H * (at[1] - 0.012)], [W * (at[0] + 0.022), H * at[1]], [W * (at[0] + 0.032), H * (at[1] - 0.012)], [W * (at[0] + 0.046), H * at[1]]], 'rgba(245,248,252,.9)', W * 0.0022); });
+    },
+    icesea: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, sea = H * 0.56, index;
+      fillV(c, 0, 0, W * 1.3, sea, ['#8fb2d2', '#cfe1ee', '#f3f1ea']);
+      soft(c, W * 0.86, sea - H * 0.1, W * 0.4, H * 0.3, '#fff3d6', 0.7);
+      for (index = 0; index < 4; index += 1) cloud(c, r, W * (0.15 + index * 0.33), H * (0.1 + (index % 2) * 0.12), W * 0.36, '#ffffff', 0.45);
+      [[0.06, 0.1, 0.06, 0.6], [0.3, 0.07, 0.04, 0.75], [0.88, 0.13, 0.08, 0.5], [1.12, 0.1, 0.05, 0.7]].forEach(function (far) { // 遠處的冰山：越遠越淡
+        berg(c, W * far[0], sea, W * far[1], H * far[2], mix('#ffffff', '#cfe1ee', far[3]), mix('#a9c9e0', '#cfe1ee', far[3]));
+      });
+      mist(c, 0, W * 1.3, sea - H * 0.012, H * 0.04, '#f3f1ea', 0.6);
+      fillV(c, 0, sea, W * 1.3, H * 1.8, ['#3b8fb8', '#1b5f8f', '#0b3058', '#041226']);
+      rays(c, W * 0.7, sea, H * 1.5, 1.2, 2.2, 7, '#bfe9ff', 0.12); // 透進水裡的光
+      dots(c, r, 120, 0, sea, W * 1.3, H * 2.3, W * 0.0012, ['rgba(220,240,255,.5)']);
+
+      c = L.mid;
+      var body = [[0.4, 0], [0.3, 0.22], [0.26, 0.5], [0.33, 0.78], [0.44, 1.0], [0.56, 1.06], [0.68, 0.9], [0.8, 0.6], [0.84, 0.3], [0.76, 0.1], [0.7, 0]].map(function (point) { return [W * point[0], sea + H * point[1]]; });
+      poly(c, body, shade(c, 0, sea, 0, sea + H * 1.06, ['rgba(214,243,255,.9)', 'rgba(120,196,236,.72)', 'rgba(46,120,180,.55)', 'rgba(18,60,110,.5)'])); // 水下的九成
+      [[0.4, 0, 0.44, 1.0], [0.52, 0.02, 0.56, 1.06], [0.62, 0.02, 0.68, 0.9], [0.3, 0.22, 0.56, 0.46], [0.26, 0.5, 0.8, 0.6]].forEach(function (facet) { stroke(c, [[W * facet[0], sea + H * facet[1]], [W * facet[2], sea + H * facet[3]]], 'rgba(255,255,255,.18)', W * 0.0018); });
+      poly(c, [[W * 0.52, sea], [W * 0.62, sea], [W * 0.68, sea + H * 0.9], [W * 0.56, sea + H * 1.06]], 'rgba(255,255,255,.1)');
+      berg(c, W * 0.4, sea, W * 0.3, H * 0.34, '#ffffff', '#b5d3ea', 0.5); // 水面上的一成
+      berg(c, W * 0.36, sea, W * 0.16, H * 0.16, '#f6fbff', '#c5deef', 0.4);
+      stroke(c, [[W * 0.36, sea], [W * 0.72, sea]], 'rgba(255,255,255,.9)', H * 0.004);
+      c.save(); c.translate(W * 0.78, sea + H * 0.74); c.rotate(-0.1); // 船底的巨影
+      c.fillStyle = 'rgba(5,18,36,.78)';
+      c.beginPath(); c.moveTo(-W * 0.3, 0); c.bezierCurveTo(-W * 0.2, -H * 0.1, W * 0.14, -H * 0.09, W * 0.26, -H * 0.01);
+      c.lineTo(W * 0.4, -H * 0.09); c.lineTo(W * 0.36, 0); c.lineTo(W * 0.41, H * 0.08); c.lineTo(W * 0.26, H * 0.012);
+      c.bezierCurveTo(W * 0.12, H * 0.07, -W * 0.2, H * 0.07, -W * 0.3, 0); c.closePath(); c.fill();
+      poly(c, [[-W * 0.1, H * 0.04], [-W * 0.02, H * 0.13], [W * 0.02, H * 0.05]], 'rgba(5,18,36,.7)');
+      c.fillStyle = 'rgba(120,170,200,.18)'; c.beginPath(); c.ellipse(-W * 0.06, H * 0.03, W * 0.2, H * 0.025, 0, 0, 6.2832); c.fill();
+      c.restore();
+      for (index = 0; index < 9; index += 1) { c.beginPath(); c.arc(W * (0.5 + index * 0.012 + r() * 0.02), sea + H * (0.7 - index * 0.07), W * (0.003 + r() * 0.004), 0, 6.2832); c.strokeStyle = 'rgba(220,245,255,.6)'; c.lineWidth = 1; c.stroke(); }
+
+      c = L.near;
+      c.fillStyle = shade(c, 0, sea - H * 0.26, 0, sea + H * 0.02, ['#c34a31', '#8f2c1c']); // 破冰船的船舷
+      c.beginPath(); c.moveTo(-W * 0.1, sea - H * 0.24); c.lineTo(W * 0.27, sea - H * 0.27); c.quadraticCurveTo(W * 0.3, sea - H * 0.1, W * 0.22, sea + H * 0.02); c.lineTo(-W * 0.1, sea + H * 0.02); c.closePath(); c.fill();
+      poly(c, [[-W * 0.1, sea + H * 0.02], [W * 0.22, sea + H * 0.02], [W * 0.16, sea + H * 0.24], [-W * 0.1, sea + H * 0.28]], shade(c, 0, sea, 0, sea + H * 0.3, ['rgba(60,16,12,.92)', 'rgba(20,8,10,.75)']));
+      stroke(c, [[-W * 0.1, sea - H * 0.235], [W * 0.268, sea - H * 0.265]], '#f1e6d6', H * 0.006);
+      c.fillStyle = shade(c, 0, sea - H * 0.4, 0, sea - H * 0.27, ['#fbfcfd', '#d5dde6']); c.fillRect(-W * 0.04, sea - H * 0.4, W * 0.2, H * 0.14);
+      for (index = 0; index < 5; index += 1) { c.fillStyle = index === 1 ? '#ffd98a' : '#27364e'; c.fillRect(W * (-0.02 + index * 0.036), sea - H * 0.36, W * 0.02, H * 0.035); }
+      for (index = 0; index < 14; index += 1) stroke(c, [[W * (index * 0.02), sea - H * 0.265], [W * (index * 0.02), sea - H * 0.3]], 'rgba(240,235,225,.7)', W * 0.0015);
+      stroke(c, [[-W * 0.02, sea - H * 0.3], [W * 0.27, sea - H * 0.3]], 'rgba(240,235,225,.8)', W * 0.002);
+      [[0.34, 0.07], [0.6, 0.05], [0.9, 0.09], [1.12, 0.06], [0.74, 0.03]].forEach(function (floe) { oval(c, W * floe[0], sea + H * 0.022, W * floe[1] * 0.96, H * 0.012, 'rgba(150,205,235,.55)'); oval(c, W * floe[0], sea + H * 0.012, W * floe[1], H * 0.012, '#f8fcfe'); });
+    },
+    storm: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#070a12', '#1b2434', '#3e4a5c']);
+      for (index = 0; index < 9; index += 1) cloud(c, r, W * (index * 0.16), H * (0.06 + (index % 3) * 0.09), W * 0.42, index % 2 ? '#0a0e18' : '#4b5870', 0.5);
+      soft(c, W * 0.86, H * 0.16, W * 0.3, H * 0.2, '#cfe2ff', 0.25); // 雲後的閃電
+      terrain(c, n, {x0: W * 0.5, x1: W * 1.35, y: H * 0.56, amp: H * 0.5, scale: W * 0.16, ridged: true, rough: 0.6, fade: W * 0.22, bottom: H * 0.8, shift: 5,
+                     fill: shade(c, 0, H * 0.06, 0, H * 0.8, ['#f1f7fb', '#9fb6c8', '#4a5f75', '#25303e']), rim: 'rgba(255,255,255,.8)', rimW: H * 0.004});
+      mist(c, 0, W * 1.3, H * 0.62, H * 0.12, '#55637a', 0.5);
+
+      c = L.mid;
+      c.save(); c.translate(W * 0.5, H * 0.6); c.rotate(-0.12); c.translate(-W * 0.5, -H * 0.6);
+      terrain(c, n, {x0: -W * 0.2, x1: W * 1.5, y: H * 0.7, amp: H * 0.09, scale: W * 0.1, ridged: true, bottom: H * 1.6, shift: 1,
+                     fill: shade(c, 0, H * 0.6, 0, H * 1.0, ['#2a3a4f', '#131c2a']), rim: 'rgba(225,238,248,.4)', rimW: H * 0.003});
+      c.save(); c.translate(W * 0.16, H * 0.77); c.rotate(0.27); ship(c, 0, 0, W * 0.62); c.restore();
+      terrain(c, n, {x0: -W * 0.2, x1: W * 1.5, y: H * 0.82, amp: H * 0.1, scale: W * 0.12, ridged: true, bottom: H * 1.6, shift: 7,
+                     fill: shade(c, 0, H * 0.72, 0, H * 1.1, ['#1c2838', '#0c121c']), rim: 'rgba(225,238,248,.45)', rimW: H * 0.003});
+      c.restore();
+      dots(c, r, 260, 0, H * 0.6, W * 1.3, H * 0.9, W * 0.0018, ['rgba(235,244,250,.5)', 'rgba(235,244,250,.25)']); // 浪花
+      for (index = 0; index < 8; index += 1) soft(c, W * (0.05 + index * 0.17), H * (0.7 + (index % 3) * 0.05), W * 0.1, H * 0.035, '#dfeaf3', 0.2); // 浪頭的水霧
+
+      c = L.near;
+      c.save(); c.translate(W * 0.5, H * 0.92); c.rotate(-0.07); c.translate(-W * 0.5, -H * 0.92);
+      c.fillStyle = '#ff8a3c'; // 救生艇
+      c.beginPath(); c.moveTo(W * 0.62, H * 0.865); c.lineTo(W * 0.8, H * 0.865); c.quadraticCurveTo(W * 0.79, H * 0.91, W * 0.75, H * 0.91); c.lineTo(W * 0.66, H * 0.91); c.quadraticCurveTo(W * 0.63, H * 0.91, W * 0.62, H * 0.865); c.closePath(); c.fill();
+      stroke(c, [[W * 0.62, H * 0.868], [W * 0.8, H * 0.868]], '#ffd0a8', H * 0.005);
+      terrain(c, n, {x0: -W * 0.2, x1: W * 1.5, y: H * 0.95, amp: H * 0.09, scale: W * 0.14, ridged: true, bottom: H * 1.6, shift: 13,
+                     fill: shade(c, 0, H * 0.86, 0, H * 1.2, ['#101824', '#05080e']), rim: 'rgba(225,238,248,.5)', rimW: H * 0.004});
+      c.restore();
+    },
+    beach: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 0.7, ['#232a4a', '#5a5f8a', '#b69aa6', '#e9cdb8']);
+      for (index = 0; index < 4; index += 1) cloud(c, r, W * (0.1 + index * 0.36), H * (0.08 + (index % 2) * 0.1), W * 0.4, '#d9b3b5', 0.3);
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.42, amp: H * 0.2, scale: W * 0.3, bottom: H * 0.68, shift: 2, fill: mix('#7fa9cc', '#b69aa6', 0.45)}); // 遠的冰崖
+      mist(c, 0, W * 1.3, H * 0.44, H * 0.1, '#e9cdb8', 0.35);
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.5, amp: H * 0.3, scale: W * 0.22, ridged: true, rough: 0.55, bottom: H * 0.68, shift: 6,
+                     fill: shade(c, 0, H * 0.2, 0, H * 0.68, ['#f4fbfe', '#a9daf0', '#4f9fd0', '#1f5f95']), rim: 'rgba(255,255,255,.95)', rimW: H * 0.005});
+      for (index = 0; index < 60; index += 1) { var cx = W * 1.3 * r(), cy = H * (0.3 + r() * 0.12); stroke(c, [[cx, cy], [cx + W * (r() - 0.5) * 0.01, H * 0.66]], 'rgba(255,255,255,' + (0.08 + r() * 0.16) + ')', W * 0.0015); } // 冰崖的直紋
+      fillV(c, 0, H * 0.56, W * 1.3, H * 0.12, ['rgba(20,60,110,0)', 'rgba(15,45,90,.55)']); // 崖腳的陰影
+
+      c = L.mid;
+      fillV(c, -W * 0.05, H * 0.66, W * 1.4, H * 0.7, ['#2b2b36', '#17171d', '#0b0b0f']); // 黑沙灘
+      fillV(c, -W * 0.05, H * 0.66, W * 1.4, H * 0.06, ['rgba(150,190,220,.5)', 'rgba(150,190,220,0)']); // 濕沙的反光
+      water(c, r, -W * 0.05, W * 0.52, H * 0.64, H * 0.72, ['#6f8fb0', '#2f4a6a'], '#e9cdb8');
+      [[0.7, 0.012], [0.716, 0.008], [0.735, 0.005]].forEach(function (foam, order) { curve(c, [[-W * 0.05, H * (foam[0] + 0.01)], [W * 0.12, H * foam[0]], [W * 0.3, H * (foam[0] + 0.014)], [W * (0.5 - order * 0.04), H * (foam[0] - 0.004)]], 'rgba(245,250,252,' + (0.9 - order * 0.25) + ')', H * foam[1]); });
+      [[0.86, 0.75, 0.07], [0.98, 0.72, 0.05], [0.45, 0.78, 0.035], [1.16, 0.77, 0.06]].forEach(function (ice) { berg(c, W * ice[0], H * ice[1], W * ice[2], W * ice[2] * 0.7, 'rgba(235,250,255,.92)', 'rgba(120,190,225,.85)'); }); // 擱在沙上的碎冰
+      penguin(c, W * 0.56, H * 0.75, H * 0.22); penguin(c, W * 0.635, H * 0.735, H * 0.19); penguin(c, W * 0.7, H * 0.76, H * 0.205);
+
+      c = L.near;
+      c.fillStyle = '#ff8a3c';
+      c.beginPath(); c.moveTo(W * 0.02, H * 0.8); c.lineTo(W * 0.17, H * 0.8); c.quadraticCurveTo(W * 0.16, H * 0.845, W * 0.13, H * 0.845); c.lineTo(W * 0.05, H * 0.845); c.quadraticCurveTo(W * 0.025, H * 0.845, W * 0.02, H * 0.8); c.closePath(); c.fill();
+      stroke(c, [[W * 0.02, H * 0.803], [W * 0.17, H * 0.803]], '#ffd0a8', H * 0.004);
+      party(c, W * 0.24, H * 0.835, H * 0.115);
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 1.0, amp: H * 0.05, scale: W * 0.2, bottom: H * 1.4, fill: '#06060a', shift: 21});
+    },
+    aurora: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#02061a', '#07173a', '#123a5e']);
+      stars(c, r, 260, 0, 0, W * 1.3, H * 0.72, W * 0.0011);
+      for (index = 0; index < 40; index += 1) soft(c, W * (0.2 + index * 0.02 + r() * 0.06), H * (0.5 - index * 0.011 + r() * 0.05), W * 0.05, W * 0.03, '#9fb6ff', 0.05); // 銀河
+      c.save(); c.globalCompositeOperation = 'lighter';
+      [[0.3, '#46ff9e', 0.5, 0], [0.42, '#5ff0d0', 0.36, 2.1], [0.2, '#b06cff', 0.22, 4.2]].forEach(function (band) { // 極光的光簾：一條一條往上淡出的細光
+        for (var x = -W * 0.05; x < W * 1.35; x += W * 0.004) {
+          var wave = Math.sin(x / W * 5.2 + band[3]) * 0.07 + Math.sin(x / W * 13 + band[3] * 2) * 0.025, base = H * (band[0] + wave), tall = H * (0.2 + 0.16 * n(x / (W * 0.05) + band[3], 3));
+          var veil = c.createLinearGradient(0, base - tall, 0, base + H * 0.03);
+          veil.addColorStop(0, tint(band[1], 0)); veil.addColorStop(0.75, tint(band[1], band[2] * 0.5 * (0.5 + n(x / (W * 0.02), 2)))); veil.addColorStop(1, tint(band[1], 0));
+          c.fillStyle = veil; c.fillRect(x, base - tall, W * 0.005, tall + H * 0.03);
+        }
+      });
+      c.restore();
+
+      c = L.mid;
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.4, y: H * 0.7, amp: H * 0.1, scale: W * 0.3, bottom: H * 1.4, shift: 4,
+                     fill: shade(c, 0, H * 0.6, 0, H * 1.1, ['#4f7f96', '#274a66', '#12263c']), rim: 'rgba(170,255,220,.5)', rimW: H * 0.004});
+      mist(c, 0, W * 1.35, H * 0.74, H * 0.1, '#46ff9e', 0.14); // 冰原映著綠光
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.4, y: H * 0.8, amp: H * 0.05, scale: W * 0.2, bottom: H * 1.4, shift: 11, fill: shade(c, 0, H * 0.75, 0, H * 1.1, ['#365a72', '#0f2032'])});
+
+      c = L.near;
+      soft(c, W * 0.3, H * 0.84, H * 0.22, H * 0.14, '#ffb866', 0.6);
+      poly(c, [[W * 0.215, H * 0.87], [W * 0.29, H * 0.75], [W * 0.365, H * 0.87]], shade(c, 0, H * 0.75, 0, H * 0.87, ['#ffd08a', '#e08a3a'])); // 帳篷
+      poly(c, [[W * 0.29, H * 0.75], [W * 0.365, H * 0.87], [W * 0.32, H * 0.87]], 'rgba(120,60,20,.45)');
+      poly(c, [[W * 0.272, H * 0.87], [W * 0.29, H * 0.8], [W * 0.306, H * 0.87]], '#3a2410');
+      party(c, W * 0.4, H * 0.875, H * 0.1);
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 0.97, amp: H * 0.05, scale: W * 0.25, bottom: H * 1.4, shift: 30, fill: '#081522'});
+    },
+    icefield: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, top = H * 0.58, flare = o.paint === 'flare', index, ice = relief('ice'), snow = relief('snow');
+      fillV(c, 0, 0, W * 1.3, top, ['#6f8399', '#aebccb', '#e6edf2']);
+      veil(c, 0, -H * 0.06, W * 1.3, H * 0.4, 0.85, 90, '#f4f7fa'); // 壓得很低的雲
+      veil(c, 0, H * 0.12, W * 1.3, H * 0.3, 0.4, 260, '#5d7087');  // 雲底的暗面
+      var back = terrain(c, n, {x0: 0, x1: W * 1.3, y: top, amp: H * 0.12, scale: W * 0.3, ridged: true, bottom: top, shift: 2, fill: '#c3d2de'});
+      grainFill(c, back.concat([[W * 1.3, top], [0, top]]), snow, W * 0.6 / TILE, 0, 0, 0.9);    // 遠處的冰丘：受光與背光
+      var front = terrain(c, n, {x0: 0, x1: W * 1.3, y: top, amp: H * 0.06, scale: W * 0.2, bottom: top, shift: 8, fill: '#dbe6ee'});
+      grainFill(c, front.concat([[W * 1.3, top], [0, top]]), snow, W * 0.4 / TILE, 70, 0, 0.8);
+      mist(c, 0, W * 1.3, top - H * 0.01, H * 0.06, '#eef3f6', 0.7);
+      veil(c, 0, top - H * 0.18, W * 1.3, H * 0.2, 0.7, 30, '#ffffff'); // 貼著冰面吹的雪
+      fillV(c, 0, top, W * 1.3, H * 1.8, ['#f1fafe', '#b5e0f4', '#5aa6d6', '#1f5f9a', '#0a2f5c']); // 冰面以下：一層一層的老冰
+      grainFill(c, [[0, top], [W * 1.3, top], [W * 1.3, H * 2.3], [0, H * 2.3]], ice, W * 0.55 / TILE, 0, top, 0.9); // 冰層的切面：有起伏、有層理
+      soft(c, W * 0.5, top + H * 0.75, W * 0.2, H * 0.85, '#d6f3ff', 0.4); // 光從裂縫照進冰裡：靠近裂縫的冰比較亮
+      for (index = 0; index < 16; index += 1) { var ly = top + H * (0.06 + index * 0.105); curve(c, [[0, ly], [W * 0.3, ly + H * 0.02 * Math.sin(index)], [W * 0.7, ly - H * 0.018], [W * 1.3, ly + H * 0.012]], 'rgba(255,255,255,' + (0.3 - index * 0.012) + ')', H * 0.003); }
+      for (index = 0; index < 30; index += 1) { // 冰裡的裂面：斜斜的一片，邊緣發亮
+        var sx = W * 1.3 * r(), sy = top + H * (0.08 + r() * 1.4), tall = H * (0.07 + r() * 0.22), lean = (r() - 0.5) * 0.9, thick = tall * (0.06 + r() * 0.12);
+        poly(c, [[sx, sy], [sx + thick, sy], [sx + thick + tall * lean, sy + tall], [sx + tall * lean, sy + tall]], shade(c, sx, sy, sx + thick, sy, ['rgba(240,252,255,' + (0.14 + r() * 0.16) + ')', 'rgba(240,252,255,0)']));
+        stroke(c, [[sx, sy], [sx + tall * lean, sy + tall]], 'rgba(255,255,255,' + (0.3 + r() * 0.35) + ')', Math.max(1, W * 0.0012));
+      }
+      dots(c, r, 260, 0, top + H * 0.05, W * 1.3, H * 2.3, W * 0.0016, ['rgba(255,255,255,.4)', 'rgba(210,240,255,.3)']); // 冰裡的氣泡
+      for (index = 0; index < 9; index += 1) { // 一串往上的氣泡
+        var bx = W * 1.3 * r(), by = top + H * (0.2 + r() * 1.2);
+        for (var bubble = 0; bubble < 7; bubble += 1) oval(c, bx + Math.sin(bubble * 1.7) * W * 0.004, by - bubble * H * 0.016, W * 0.0022 * (1 - bubble * 0.08), W * 0.0022 * (1 - bubble * 0.08), 'rgba(255,255,255,.4)');
+      }
+
+      c = L.mid;
+      var left = [[W * 0.468, top]], right = [], innerL = [[W * 0.49, top]], innerR = [];
+      for (index = 1; index <= 14; index += 1) { // 冰隙：往下越來越寬，再收窄
+        var depth = top + H * 0.108 * index, wide = W * (0.022 + 0.075 * Math.sin(index / 14 * 3.1416)) * (0.75 + n(index * 0.9, 2) * 0.6), mid = W * (0.5 + (n(index * 0.5 + 40, 3) - 0.5) * 0.09);
+        left.push([mid - wide, depth]); right.unshift([mid + wide, depth]);
+        innerL.push([mid - wide * 0.5, depth]); innerR.unshift([mid + wide * 0.62, depth]);
+      }
+      right.push([W * 0.532, top]); innerR.push([W * 0.512, top]);
+      var gap = left.concat(right);
+      poly(c, gap, shade(c, 0, top, 0, top + H * 1.55, ['#2d74ae', '#0f3f76', '#06203f', '#04241f']));
+      // 看得到裂縫另一側的冰壁：左邊受光、右邊背光，裂縫才有厚度
+      poly(c, left.concat(innerL.slice().reverse()), shade(c, 0, top, 0, top + H * 1.5, ['rgba(196,236,253,.8)', 'rgba(110,182,228,.5)', 'rgba(44,112,164,.28)', 'rgba(24,84,76,.2)']));
+      poly(c, right.concat(innerR.slice().reverse()), shade(c, 0, top, 0, top + H * 1.5, ['rgba(20,62,112,.55)', 'rgba(10,40,84,.5)', 'rgba(4,22,48,.4)', 'rgba(4,30,26,.3)']));
+      for (index = 0; index < 46; index += 1) { // 冰壁上一道一道的刮痕
+        var my = top + H * (0.06 + r() * 1.4), from = edgeAt(left, my), to = edgeAt(innerL, my);
+        stroke(c, [[from, my], [from + (to - from) * (0.4 + r() * 0.5), my + H * 0.004]], 'rgba(255,255,255,' + (0.1 + r() * 0.2) + ')', Math.max(1, H * 0.0018));
+      }
+      stroke(c, left, 'rgba(225,246,255,.8)', W * 0.003);
+      stroke(c, right, 'rgba(120,180,220,.35)', W * 0.002);
+      soft(c, W * 0.5, top + H * 1.5, W * 0.3, H * (flare ? 0.42 : 0.3), '#7dffb0', flare ? 0.85 : 0.5);
+      c.save(); trace(c, gap); c.clip();
+      veil(c, W * 0.34, top + H * 0.85, W * 0.32, H * 0.75, 0.55, 300, '#c9ffe0', true); // 從底下往上吹的暖霧
+      c.restore();
+      if (flare) { // 信號彈：紅光一路往下墜，照出底下的綠色
+        curve(c, [[W * 0.5, top], [W * 0.503, top + H * 0.5], [W * 0.506, top + H * 0.9]], 'rgba(255,170,130,.35)', W * 0.002);
+        soft(c, W * 0.506, top + H * 0.9, W * 0.3, H * 0.36, '#ff4630', 0.8);
+        soft(c, W * 0.506, top + H * 0.9, W * 0.04, W * 0.04, '#fff3e6', 1);
+        dots(c, r, 30, W * 0.44, top + H * 0.6, W * 0.57, top + H * 0.95, W * 0.0018, ['rgba(255,200,150,.9)']);
+      }
+
+      c = L.near;
+      [[-W * 0.05, W * 0.474, 3], [W * 0.526, W * 1.35, 17]].forEach(function (lip) { // 冰面上的積雪：有厚度，底下壓著一道藍色的影子
+        fillV(c, lip[0], top + H * 0.03, lip[1] - lip[0], H * 0.06, ['rgba(60,130,190,.42)', 'rgba(60,130,190,0)']);
+        var drift = terrain(c, n, {x0: lip[0], x1: lip[1], y: top + H * 0.005, amp: H * 0.03, scale: W * 0.12, bottom: top + H * 0.04, shift: lip[2], fill: '#fbfdfe'});
+        grainFill(c, drift.concat([[lip[1], top + H * 0.04], [lip[0], top + H * 0.04]]), snow, W * 0.22 / TILE, lip[2] * 9, 0, 1);
+      });
+      [W * 0.466, W * 0.534].forEach(function (mouth) { // 裂縫口往外懸著的雪簷
+        oval(c, mouth, top + H * 0.03, W * 0.013, H * 0.012, 'rgba(60,130,190,.4)');
+        oval(c, mouth, top + H * 0.018, W * 0.014, H * 0.016, '#ffffff');
+      });
+      for (index = 0; index < 9; index += 1) { // 裂縫口的冰柱：上面白、尖端透藍，一側有反光
+        var ix = W * (index < 5 ? 0.468 - index * 0.004 : 0.532 + (index - 5) * 0.004), tip = top + H * (0.06 + r() * 0.06);
+        poly(c, [[ix - W * 0.004, top + H * 0.03], [ix + W * 0.004, top + H * 0.03], [ix, tip]], shade(c, 0, top + H * 0.03, 0, tip, ['rgba(245,252,255,.95)', 'rgba(150,212,242,.6)']));
+        stroke(c, [[ix - W * 0.0015, top + H * 0.034], [ix - W * 0.0005, tip - H * 0.01]], 'rgba(255,255,255,.7)', Math.max(1, W * 0.0008));
+      }
+      party(c, W * 0.16, top, H * 0.115);
+      for (index = 0; index < 18; index += 1) { // 被風吹成一道一道的雪霧（不是一條條的線）
+        c.save(); c.translate(W * 1.3 * r(), H * (0.08 + r() * 0.5)); c.rotate(0.08 + r() * 0.1);
+        soft(c, 0, 0, W * (0.1 + r() * 0.16), H * (0.006 + r() * 0.012), '#ffffff', 0.22 + r() * 0.25);
+        c.restore();
+      }
+    },
+    coast: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, sea = H * 0.64, sun = W * 0.68, index;
+      var arches = [[0.22, 0.075, 0.2], [0.68, 0.1, 0.25], [1.08, 0.07, 0.18]];
+      fillV(c, 0, 0, W * 1.3, sea, ['#1c1a44', '#6a3f7a', '#e0706a', '#ffc27a']);
+      soft(c, sun, sea - H * 0.03, W * 0.5, H * 0.42, '#ffd28a', 0.85);
+      oval(c, sun, sea - H * 0.035, H * 0.055, H * 0.055, '#fff4d2');
+      for (index = 0; index < 5; index += 1) cloud(c, r, W * (0.05 + index * 0.3), H * (0.1 + (index % 2) * 0.14), W * 0.38, index % 2 ? '#ff9d7a' : '#7a4f8a', 0.34);
+      water(c, r, 0, W * 1.3, sea, H * 1.3, ['#e08a78', '#6a4a7e', '#1c1f48', '#0c1030'], '#ffd9a8', sun, '#ffe2a8');
+
+      c = L.mid;
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.36, amp: H * 0.2, scale: W * 0.2, ridged: true, rough: 0.55, bottom: H * 0.78, shift: 4,
+                     fill: shade(c, 0, H * 0.14, 0, H * 0.78, ['#fff1e6', '#e2b6c4', '#8f7fb8', '#3f3f78']), rim: 'rgba(255,224,170,.95)', rimW: H * 0.006});
+      for (index = 0; index < 40; index += 1) { var cx = W * 1.3 * r(), cy = H * (0.3 + r() * 0.1); stroke(c, [[cx, cy], [cx, H * 0.76]], 'rgba(255,255,255,' + (0.05 + r() * 0.1) + ')', W * 0.0015); }
+      c.globalCompositeOperation = 'destination-out'; // 在冰崖上挖出拱門，夕陽從後面那一層透過來
+      c.fillStyle = '#000000';
+      arches.forEach(function (arch) { c.beginPath(); c.ellipse(W * arch[0], H * 0.78, W * arch[1], H * arch[2], 0, 3.1416, 6.2832); c.fill(); });
+      c.globalCompositeOperation = 'source-over';
+      arches.forEach(function (arch) { c.beginPath(); c.ellipse(W * arch[0], H * 0.78, W * arch[1], H * arch[2], 0, 3.1416, 6.2832); c.strokeStyle = 'rgba(255,214,150,.9)'; c.lineWidth = H * 0.006; c.stroke(); }); // 拱門邊緣的受光
+
+      c = L.near;
+      [[0.02, 0.13], [0.48, 0.08], [0.9, 0.14], [1.2, 0.09]].forEach(function (ice) { berg(c, W * ice[0], H * 0.985, W * ice[1], W * ice[1] * 0.8, 'rgba(255,225,215,.95)', 'rgba(150,120,190,.95)'); });
+      party(c, W * 0.2, H * 0.835, H * 0.11);
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 0.99, amp: H * 0.03, scale: W * 0.2, bottom: H * 1.4, shift: 19, fill: '#0c0a20'});
+    },
+    icecave: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#041a38', '#0a3a6a', '#062444']);
+      soft(c, W * 0.5, H * 0.42, W * 0.6, H * 0.6, '#8fdcff', 0.85);
+      soft(c, W * 0.5, H * 0.98, W * 0.45, H * 0.4, '#7dffb0', 0.8); // 通道盡頭的綠光
+      rays(c, W * 0.5, -H * 0.05, H * 1.2, 1.1, 2.05, 6, '#bff0ff', 0.14);
+
+      c = L.mid;
+      [0, 1].forEach(function (side) { // 兩側的冰壁：一凹一凹的
+        var wall = [[side ? W * 1.35 : -W * 0.05, -H * 0.05]];
+        for (var step = 0; step <= 60; step += 1) {
+          var lean = 0.2 + 0.12 * n(step * 0.12 + side * 50, 4) + 0.035 * Math.abs(Math.sin(step * 0.55));
+          wall.push([side ? W * (1 - lean) : W * lean, H * 1.4 * step / 60 - H * 0.05]);
+        }
+        wall.push([side ? W * 1.35 : -W * 0.05, H * 1.35]);
+        poly(c, wall, shade(c, side ? W : 0, 0, side ? W * 0.7 : W * 0.3, 0, ['#020f24', '#0b3f72', '#2f86c4']));
+        stroke(c, wall.slice(1, -1), 'rgba(190,240,255,.75)', W * 0.003);
+      });
+      for (index = 0; index < 26; index += 1) { var fx = index % 2 ? W * (0.02 + r() * 0.2) : W * (0.78 + r() * 0.2), fy = H * 1.25 * r(), fs = W * (0.02 + r() * 0.04); poly(c, [[fx, fy], [fx + fs, fy + fs * 0.5], [fx + fs * 0.3, fy + fs * 1.8]], 'rgba(200,240,255,' + (0.06 + r() * 0.12) + ')'); }
+
+      c = L.near;
+      for (index = 0; index < 34; index += 1) { var ix = W * 1.3 * r(), long = H * (0.04 + r() * 0.2), thick = W * (0.006 + r() * 0.01); poly(c, [[ix - thick, -H * 0.02], [ix + thick, -H * 0.02], [ix, long]], shade(c, 0, 0, 0, long, ['rgba(235,250,255,.9)', 'rgba(150,215,245,.55)'])); }
+      fillV(c, -W * 0.1, H * 0.93, W * 1.6, H * 0.5, ['#0a2a4a', '#020d1c']);
+      soft(c, W * 0.5, H * 0.95, W * 0.3, H * 0.03, '#7dffb0', 0.45); // 濕地面的反光
+      party(c, W * 0.4, H * 0.945, H * 0.1);
+    },
+    valley: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index, ice = relief('ice'), turf = relief('turf');
+      var river = [[W * 0.64, H * 0.5], [W * 0.56, H * 0.6], [W * 0.62, H * 0.7], [W * 0.5, H * 0.82], [W * 0.56, H * 0.98], [W * 0.46, H * 1.35]];
+      var pools = [[0.25, 0.68, 0.075], [0.8, 0.62, 0.055], [0.74, 0.86, 0.085]];
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#9fd3ee', '#d9f0f4', '#eef7e6']);
+      soft(c, W * 0.62, H * 0.1, W * 0.6, H * 0.4, '#fffbe6', 0.8);
+      veil(c, 0, -H * 0.03, W * 1.3, H * 0.28, 0.6, 40, '#ffffff'); // 雲
+      rays(c, W * 0.62, -H * 0.1, H * 1.2, 0.9, 2.3, 16, '#fff6d0', 0.05);
+      var wall = terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.34, amp: H * 0.24, scale: W * 0.24, ridged: true, bottom: H * 0.62, shift: 3,
+                                fill: shade(c, 0, H * 0.1, 0, H * 0.62, ['#ffffff', '#c9e8f6', '#86bfe0']), rim: 'rgba(255,255,255,.95)', rimW: H * 0.004}); // 圍著谷地的冰牆
+      var face = wall.concat([[W * 1.35, H * 0.62], [-W * 0.05, H * 0.62]]);
+      grainFill(c, face, ice, W * 0.5 / TILE, 0, 0, 0.9); // 冰牆的切面：一塊一塊受光與背光
+      c.save(); trace(c, face); c.clip();
+      for (index = 0; index < 14; index += 1) { // 冰牆上往下裂的藍色冰溝：有點歪、有粗有細
+        var wx = W * 1.3 * r(), wy = H * (0.16 + r() * 0.24), fall = H * (0.05 + r() * 0.12), lean = W * (r() - 0.5) * 0.02;
+        stroke(c, [[wx, wy], [wx + lean * 0.6, wy + fall * 0.45], [wx + lean * 0.4, wy + fall * 0.7], [wx + lean, wy + fall]], 'rgba(70,140,190,' + (0.08 + r() * 0.14) + ')', W * (0.0015 + r() * 0.004));
+      }
+      c.restore();
+      [[[-W * 0.05, 0], [W * 0.14, 0], [W * 0.06, H * 0.74], [-W * 0.05, H * 0.9]], [[W * 0.86, 0], [W * 1.35, 0], [W * 1.35, H * 0.9], [W * 0.98, H * 0.74]]].forEach(function (cliff, side) { // 兩側近一點的冰崖
+        poly(c, cliff, shade(c, 0, 0, 0, H * 0.9, ['#dcf0fa', '#9fcfe8', '#699fc8'])); // 比後面的冰牆深一點，才分得出前後
+        grainFill(c, cliff, ice, W * 0.34 / TILE, side * 90, 0, 1);
+        stroke(c, side ? [cliff[0], cliff[3]] : [cliff[1], cliff[2]], 'rgba(255,255,255,.55)', W * 0.0022); // 朝谷地的那一道稜受光
+      });
+      mist(c, 0, W * 1.3, H * 0.5, H * 0.1, '#ffffff', 0.6);
+      veil(c, 0, H * 0.4, W * 1.3, H * 0.24, 0.7, 200, '#ffffff');
+
+      c = L.mid;
+      [[0.52, 0.06, '#8cc98a', 2], [0.6, 0.07, '#63b070', 9], [0.7, 0.07, '#479a5c', 15], [0.82, 0.06, '#357f4e', 23]].forEach(function (hill, order) { // 一層一層的草坡，中間隔著霧
+        var line = terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * hill[0], amp: H * hill[1], scale: W * 0.3, bottom: H * 1.4, shift: hill[3],
+                                  fill: shade(c, 0, H * (hill[0] - hill[1]), 0, H * (hill[0] + 0.2), [hill[2], mix(hill[2], '#1f4a36', 0.5)]), rim: 'rgba(235,255,210,.45)', rimW: H * 0.003});
+        grainFill(c, line.concat([[W * 1.35, H * 1.4], [-W * 0.05, H * 1.4]]), turf, W * (0.14 + order * 0.07) / TILE, order * 53, 0, 0.85); // 草坡的起伏：越近紋理越大
+        for (var clump = 0; clump < 6 + order * 2; clump += 1) { // 坡上零星的樹：越近越大，朝光的那一側比較亮
+          var tx = W * (-0.03 + 1.36 * r()), size = W * (0.009 + order * 0.0045) * (0.7 + r() * 0.7);
+          bush(c, r, tx, ridgeAt(line, tx) + size * (0.4 + r() * 2.2), size, mix(hill[2], '#123524', 0.45), mix(hill[2], '#1f5a3a', 0.15), mix(hill[2], '#eaffc0', 0.5));
+        }
+        if (order > 1) for (var blade = 0; blade < 150; blade += 1) { // 近的草坡：坡頂看得到一根根的草
+          var gx = W * (-0.05 + 1.4 * r()), gy = ridgeAt(line, gx), tall = H * (0.006 + r() * 0.012) * order;
+          stroke(c, [[gx, gy + tall * 0.3], [gx + tall * (r() - 0.5), gy - tall]], tint(mix(hill[2], '#e9ffc4', 0.3 + r() * 0.3), 0.8), Math.max(1, W * 0.0012));
+        }
+        mist(c, 0, W * 1.3, H * (hill[0] + 0.02), H * 0.03, '#ffffff', 0.22);
+      });
+      curve(c, river, 'rgba(18,70,58,.35)', W * 0.042); // 溪岸的陰影
+      curve(c, river, '#a9e3ec', W * 0.03); curve(c, river, 'rgba(255,255,255,.55)', W * 0.008); // 往谷底流的溪
+      var stream = dense(river, 10);
+      for (index = 0; index < 34; index += 1) { // 溪面的碎光：零零星星、長短不一
+        var spot = stream[Math.floor(r() * stream.length)], wide = W * (0.0015 + r() * 0.004), off = (r() - 0.5) * W * 0.018;
+        stroke(c, [[spot[0] + off - wide, spot[1] + (r() - 0.5) * H * 0.01], [spot[0] + off + wide, spot[1] + (r() - 0.5) * H * 0.004]], 'rgba(255,255,255,' + (0.25 + r() * 0.4) + ')', Math.max(1, H * 0.0016));
+      }
+      pools.forEach(function (pool, order) { // 溫泉：石灰華的池緣、邊緣淺中間深的水、水面的反光、往上的蒸氣
+        var px = W * pool[0], py = H * pool[1], rx = W * pool[2], ry = H * pool[2] * 0.42;
+        soft(c, px, py + ry * 0.5, rx * 1.6, ry * 2, '#0f3a2c', 0.4); // 池子陷在草地裡：周圍暗一圈
+        oval(c, px, py + H * 0.006, rx * 1.16, ry * 1.22, '#efe6d2');
+        grainFill(c, ring(px, py + H * 0.006, rx * 1.16, ry * 1.22), relief('rock'), rx * 1.2 / TILE, order * 40, 0, 0.9);
+        c.save(); c.translate(px, py); c.scale(1, ry / rx);
+        var water = c.createRadialGradient(0, -rx * 0.1, rx * 0.08, 0, 0, rx);
+        water.addColorStop(0, '#1b879f'); water.addColorStop(0.55, '#3fc4c0'); water.addColorStop(0.9, '#aef2e6'); water.addColorStop(1, '#e9fff8');
+        c.fillStyle = water; c.beginPath(); c.arc(0, 0, rx, 0, 6.2832); c.fill();
+        c.restore();
+        oval(c, px - rx * 0.3, py - ry * 0.3, rx * 0.4, ry * 0.24, 'rgba(255,255,255,.4)'); // 天空的倒影
+        for (var ripple = 0; ripple < 5; ripple += 1) { // 一圈一圈的水紋
+          c.beginPath(); c.ellipse(px + rx * 0.1, py + ry * 0.1, rx * (0.25 + ripple * 0.14), ry * (0.25 + ripple * 0.14), 0, 3.4 + ripple * 0.3, 5.2 + ripple * 0.35);
+          c.strokeStyle = 'rgba(255,255,255,' + (0.4 - ripple * 0.06) + ')'; c.lineWidth = Math.max(1, H * 0.0018); c.stroke();
+        }
+        veil(c, px - rx * 1.5, py - H * 0.3, rx * 3, H * 0.34, 0.85, order * 130, '#ffffff', true); // 蒸氣：雜訊做的一團，不是一顆顆圓
+        for (var puff = 0; puff < 5; puff += 1) soft(c, px + Math.sin(puff * 1.3) * W * 0.02, py - H * (0.03 + puff * 0.04), W * (0.03 + puff * 0.008), H * (0.03 + puff * 0.006), '#ffffff', 0.22 - puff * 0.03);
+      });
+      for (index = 0; index < 420; index += 1) { // 花：越近越大，近的看得出花瓣上的亮點與花心
+        var fx = W * 1.3 * r(), fy = H * (0.56 + Math.pow(r(), 0.8) * 0.6), fs = W * 0.0016 * (0.6 + (fy / H - 0.5) * 2.2), hue = ['#ff7eb6', '#ffd75e', '#ffffff', '#c59bff', '#ff9a6a'][Math.floor(r() * 5)];
+        stroke(c, [[fx, fy], [fx, fy + fs * 3]], 'rgba(40,110,70,.6)', fs * 0.5);
+        oval(c, fx, fy, fs * 1.3, fs * 1.3, hue);
+        if (fs > W * 0.0022) { oval(c, fx - fs * 0.4, fy - fs * 0.4, fs * 0.5, fs * 0.5, 'rgba(255,255,255,.55)'); oval(c, fx, fy + fs * 0.1, fs * 0.4, fs * 0.4, 'rgba(120,60,20,.35)'); }
+      }
+
+      c = L.near;
+      [[-0.02, 1.02, 2.2], [0.06, 1.0, 1.75], [0.14, 1.04, 1.3], [1.0, 1.0, 1.9], [1.1, 1.02, 1.4], [1.2, 0.98, 2.4], [1.28, 1.0, 1.7]].forEach(function (leaf, order) { frond(c, W * leaf[0], H * leaf[1], H * (0.28 + (order % 3) * 0.05), -leaf[2], order % 2 ? '#1f5a3a' : '#17482f', '#9fe0ae'); });
+      party(c, W * 0.3, H * 0.9, H * 0.105);
+
+      c = L.glow;
+      for (index = 0; index < 520; index += 1) { // 夜裡發光的植物
+        var gx2 = W * 1.3 * r(), gy2 = H * (0.52 + Math.pow(r(), 0.8) * 0.66), gs = W * 0.0014 * (0.6 + (gy2 / H - 0.5) * 2.2), glow = ['#82ffdc', '#beff82', '#ffaaf0', '#8fd0ff'][Math.floor(r() * 4)];
+        soft(c, gx2, gy2, gs * 6, gs * 6, glow, 0.5);
+        oval(c, gx2, gy2, gs, gs, '#ffffff');
+      }
+      pools.forEach(function (pool) { soft(c, W * pool[0], H * pool[1], W * 0.16, H * 0.12, '#5affe6', 0.7); });
+      curve(c, river, 'rgba(130,240,255,.75)', W * 0.012);
+      stars(c, r, 120, 0, 0, W * 1.3, H * 0.3, W * 0.0011);
+    },
+    columns: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, rock = relief('rock'), haze = '#c6e4de';
+      var flows = [[[0.66, 0.415], [0.52, 0.44], [0.62, 0.475], [0.47, 0.52], [0.58, 0.58], [0.5, 0.95]], [[0.9, 0.43], [0.78, 0.455], [0.7, 0.47], [0.62, 0.475]], [[0.3, 0.44], [0.4, 0.47], [0.44, 0.5], [0.47, 0.52]]];
+      var floor = [[0, H * 0.4], [W * 1.3, H * 0.4], [W * 1.3, H * 1.3], [0, H * 1.3]];
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#bfe3e6', '#a8d3c2', '#5f9a84', '#2f6a58']);
+      soft(c, W * 0.3, H * 0.1, W * 0.6, H * 0.4, '#fffbe6', 0.6);
+      veil(c, 0, -H * 0.04, W * 1.3, H * 0.4, 0.55, 0, '#ffffff'); // 雲
+      var ridge = terrain(c, n, {x0: 0, x1: W * 1.3, y: H * 0.34, amp: H * 0.14, scale: W * 0.3, ridged: true, bottom: H * 0.6, shift: 2, fill: '#d2ebf2'});
+      grainFill(c, ridge.concat([[W * 1.3, H * 0.6], [0, H * 0.6]]), relief('snow'), W * 0.7 / TILE, 0, 0, 0.9); // 遠山的受光與背光
+      mist(c, 0, W * 1.3, H * 0.4, H * 0.12, '#ffffff', 0.5);
+      poly(c, floor, shade(c, 0, H * 0.4, 0, H * 0.8, ['rgba(140,200,165,0)', '#86bf9b', '#4f8f74'])); // 柱林後面的谷地：遠處淡進霧裡
+      grainFill(c, floor, relief('turf'), W * 0.2 / TILE, 0, 0, 0.5);
+      flows.forEach(function (flow) { // 從柱頂看得到整座谷地的水往哪裡流：蜿蜒的溪，越近越寬
+        var path = dense(flow.map(function (point) { return [W * point[0], H * point[1]]; }), 8);
+        for (var part = 1; part < path.length; part += 1) {
+          var near = Math.max(0, Math.min(1, (path[part][1] - H * 0.41) / (H * 0.2)));
+          stroke(c, [path[part - 1], path[part]], 'rgba(214,244,248,.9)', W * (0.0016 + 0.008 * near));
+        }
+        stroke(c, path, 'rgba(255,255,255,.6)', Math.max(1, W * 0.0011));
+      });
+      [[-0.02, 0.33], [0.74, 1.32]].forEach(function (span, side) { // 谷地兩側遠處還有整片石柱：只剩輪廓與一點明暗
+        row(c, null, r, n, {x0: W * span[0], x1: W * span[1], wide: [W * 0.02, W * 0.034], top: H * 0.43, amp: H * 0.1, scale: W * 0.18, shift: 50 + side * 9, bottom: H * 1.3,
+                            tone: toward(STONE, haze, 0.72), fall: H * 0.3, texture: 0, joint: 0.06, rim: 0.5});
+      });
+      veil(c, 0, H * 0.36, W * 1.3, H * 0.3, 0.4, 150, '#eaf7f3');
+
+      c = L.mid;
+      row(c, rock, r, n, {x0: -W * 0.04, x1: W * 1.34, wide: [W * 0.036, W * 0.058], top: H * 0.4, amp: H * 0.22, scale: W * 0.22, shift: 3, bottom: H * 1.5,
+                          tone: toward(STONE, haze, 0.42), fall: H * 0.5, texture: 0.5, joint: 0.16, moss: 0.3, rim: 0.7}); // 後排：淡一點、藍一點
+      rays(c, W * 0.08, -H * 0.25, H * 2, 0.62, 1.12, 4, '#fff6d8', 0.2); // 光從左上方斜斜照進來
+      veil(c, 0, H * 0.42, W * 1.3, H * 0.42, 0.6, 60, '#e3f4ef');
+      row(c, rock, r, n, {x0: -W * 0.03, x1: W * 1.34, wide: [W * 0.05, W * 0.08], top: H * 0.46, amp: H * 0.26, scale: W * 0.16, shift: 0, bottom: H * 1.5,
+                          tone: STONE, fall: H * 0.62, texture: 0.8, joint: 0.3, moss: 0.5, rim: 1, spot: [W * 0.425, W * 0.11, H * 0.5]}); // 前排；人站的那一根比較寬
+      party(c, W * 0.452, H * 0.5, H * 0.08, [0, 1]);
+      mist(c, 0, W * 1.3, H * 0.88, H * 0.14, '#cfeee0', 0.4);
+      veil(c, 0, H * 0.7, W * 1.3, H * 0.36, 0.55, 220, '#d9f1e8');
+
+      c = L.near;
+      row(c, rock, r, n, {x0: -W * 0.06, x1: W * 1.36, wide: [W * 0.095, W * 0.145], top: H * 0.8, amp: H * 0.18, scale: W * 0.25, shift: 9, bottom: H * 1.5,
+                          tone: STONE_NEAR, fall: H * 0.5, texture: 1, joint: 0.5, rim: 1.25});
+    },
+    terraces: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#f6e9d6', '#e6ded0', '#b9d2cc', '#7fa8a6']);
+      soft(c, W * 0.75, H * 0.12, W * 0.6, H * 0.4, '#fff4d8', 0.7);
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.3, amp: H * 0.16, scale: W * 0.3, ridged: true, bottom: H * 0.6, shift: 5, fill: '#d9ecf2'});
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.34, amp: H * 0.08, scale: W * 0.22, bottom: H * 0.7, shift: 12, fill: '#d6c4a4'});
+      mist(c, 0, W * 1.3, H * 0.36, H * 0.1, '#ffffff', 0.5);
+
+      c = L.mid;
+      ['#f07a32', '#f5a63a', '#f3d35e', '#c5dd6a', '#7fd49a', '#4cc6bd', '#37a4cc', '#2b7fb8'].forEach(function (color, level) { // 一層一層的水池：越往下越大、顏色越冷；池緣是白色的鈣華
+        var x = W * (0.52 + Math.sin(level * 1.3) * 0.07), y = H * (0.32 + level * 0.092), rx = W * (0.15 + level * 0.075), ry = H * (0.036 + level * 0.006), lip = H * (0.03 + level * 0.004);
+        c.fillStyle = shade(c, 0, y, 0, y + lip * 2.4, ['#fbf6ea', '#d9cdb8', '#a9997f']);
+        c.beginPath(); c.ellipse(x, y + lip, rx * 1.035, ry * 1.25, 0, 0, 6.2832); c.fill();
+        for (var scallop = 0; scallop < 16; scallop += 1) {
+          var at = x - rx + rx * 2 * (scallop + 0.5) / 16;
+          oval(c, at, y + ry * Math.sqrt(Math.max(0, 1 - Math.pow((at - x) / rx, 2))) + lip * 0.9, rx * 0.075, lip * 0.7, 'rgba(251,246,234,.95)');
+        }
+        c.fillStyle = shade(c, x - rx, 0, x + rx, 0, [mix(color, '#ffffff', 0.25), color, mix(color, '#12303a', 0.25)]);
+        c.beginPath(); c.ellipse(x, y, rx, ry, 0, 0, 6.2832); c.fill();
+        oval(c, x - rx * 0.32, y - ry * 0.25, rx * 0.42, ry * 0.3, 'rgba(255,255,255,.35)');
+        for (var drip = 0; drip < 10; drip += 1) { var dx = x + rx * (r() * 1.7 - 0.85); stroke(c, [[dx, y + ry + lip], [dx, y + ry + lip + H * (0.02 + r() * 0.03)]], 'rgba(255,255,255,.7)', W * 0.0018); }
+      });
+
+      c = L.near;
+      for (index = 0; index < 18; index += 1) soft(c, W * 1.3 * r(), H * (0.15 + r() * 0.9), W * (0.07 + r() * 0.1), H * (0.05 + r() * 0.05), '#ffffff', 0.14);
+      party(c, W * 0.08, H * 0.97, H * 0.105, [0, 2]);
+    },
+    steamfall: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#3b5360', '#2c404c', '#17232b']);
+      for (index = 0; index < 16; index += 1) { var by = H * (0.2 + index * 0.07); curve(c, [[0, by], [W * 0.4, by + H * 0.02 * Math.sin(index * 1.7)], [W * 0.9, by - H * 0.015], [W * 1.3, by + H * 0.02]], 'rgba(0,0,0,' + (0.1 + (index % 3) * 0.05) + ')', H * (0.006 + (index % 2) * 0.006)); } // 岩壁的層理
+      for (index = 0; index < 40; index += 1) { var seam = W * 1.3 * r(); stroke(c, [[seam, H * (0.18 + r() * 0.3)], [seam + W * 0.008, H * (0.5 + r() * 0.5)]], 'rgba(160,200,215,.08)', W * 0.003); }
+      fillV(c, 0, 0, W * 1.3, H * 0.15, ['#f6fcfe', '#bfe1ef']); // 崖頂的冰牆
+      terrain(c, n, {x0: 0, x1: W * 1.3, y: H * 0.2, amp: H * 0.07, scale: W * 0.1, ridged: true, bottom: H * 0.13, shift: 3, fill: '#bfe1ef'});
+      for (index = 0; index < 30; index += 1) { var ix = W * 1.3 * r(); poly(c, [[ix - W * 0.005, H * 0.15], [ix + W * 0.005, H * 0.15], [ix, H * (0.19 + r() * 0.08)]], 'rgba(235,250,255,.85)'); }
+
+      c = L.mid;
+      soft(c, W * 0.5, H * 0.9, W * 0.45, H * 0.3, '#5ae6d7', 0.75);
+      c.fillStyle = shade(c, 0, H * 0.87, 0, H * 0.97, ['#a4f4e8', '#3fc4c0', '#1f8298']);
+      c.beginPath(); c.ellipse(W * 0.5, H * 0.92, W * 0.22, H * 0.05, 0, 0, 6.2832); c.fill();
+      for (index = 0; index < 110; index += 1) { // 蒸氣：從崖底往上爬，越高越散
+        var rise = index / 110, px = W * (0.5 + Math.sin(rise * 5.5) * 0.035 + (r() - 0.5) * (0.05 + rise * 0.2));
+        soft(c, px, H * (0.9 - rise * 0.82), W * (0.035 + rise * 0.085), H * (0.045 + rise * 0.06), '#ffffff', 0.3 - rise * 0.2);
+      }
+      c.save(); c.globalCompositeOperation = 'lighter'; // 霧裡的一道虹
+      ['#ff5a5a', '#ffb347', '#fff275', '#7dff9a', '#6ac8ff', '#b08cff'].forEach(function (hue, band) { c.beginPath(); c.arc(W * 0.5, H * 0.99, H * (0.66 - band * 0.011), 3.22, 6.2); c.strokeStyle = tint(hue, 0.1); c.lineWidth = H * 0.011; c.stroke(); });
+      c.restore();
+
+      c = L.near;
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.4, y: H * 0.99, amp: H * 0.26, scale: W * 0.16, rough: 0.55, gap: [W * 0.5, W * 0.34], bottom: H * 1.4, shift: 7,
+                     fill: shade(c, 0, H * 0.74, 0, H * 1.15, ['#2a3b45', '#131d23', '#070c0f']), rim: 'rgba(170,240,232,.55)', rimW: H * 0.004});
+      party(c, W * 0.84, H * 0.8, H * 0.105, [0, 3]);
+      dots(c, r, 40, W * 0.2, H * 0.14, W * 0.9, H * 0.55, W * 0.0018, ['rgba(220,245,255,.85)']);
+    },
+    saltflat: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, ground = H * 0.52, rows = 11, index;
+      fillV(c, 0, 0, W * 1.3, ground, ['#a9d9e6', '#d9eeec', '#f6f4ea']);
+      soft(c, W * 0.3, H * 0.16, W * 0.5, H * 0.36, '#fff6dc', 0.75);
+      for (index = 0; index < 4; index += 1) cloud(c, r, W * (0.2 + index * 0.33), H * (0.12 + (index % 2) * 0.1), W * 0.34, '#ffffff', 0.5);
+      terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: ground, amp: H * 0.2, scale: W * 0.26, ridged: true, bottom: ground, shift: 6,
+                     fill: shade(c, 0, H * 0.3, 0, ground, ['#ffffff', '#b9def0', '#8fc2de']), rim: 'rgba(255,255,255,.9)', rimW: H * 0.003});
+      mist(c, 0, W * 1.3, ground - H * 0.01, H * 0.06, '#f6f4ea', 0.75);
+
+      c = L.mid;
+      fillV(c, -W * 0.05, ground, W * 1.4, H * 0.9, ['#eef6f4', '#fbfdfc', '#dfeae8']); // 鹽殼像鏡子，映著天空
+      fillV(c, -W * 0.05, ground, W * 1.4, H * 0.16, ['rgba(140,200,225,.55)', 'rgba(140,200,225,0)']);
+      for (index = 0; index < rows; index += 1) { // 六角的鹽紋：越靠近地平線越小
+        var y0 = ground + H * 0.62 * Math.pow(index / rows, 1.9), y1 = ground + H * 0.62 * Math.pow((index + 1) / rows, 1.9), near = (index + 1) / rows, cell = W * (0.03 + 0.2 * Math.pow(near, 1.5));
+        for (var hx = -cell + (index % 2) * cell * 0.5 - W * 0.05; hx < W * 1.38; hx += cell) {
+          var jit = (r() - 0.5) * cell * 0.12, half = y0 + (y1 - y0) * 0.5;
+          stroke(c, [[hx, half], [hx + cell * 0.25 + jit, y0], [hx + cell * 0.75 + jit, y0], [hx + cell, half], [hx + cell * 0.75 - jit, y1], [hx + cell * 0.25 - jit, y1], [hx, half]], 'rgba(120,160,170,' + (0.18 + near * 0.4) + ')', Math.max(1, W * 0.0012 * (0.5 + near * 2)));
+        }
+      }
+      mammoth(c, W * 0.15, H * 0.68, H * 0.11, r);
+      deer(c, W * 0.8, H * 0.7, H * 0.13);
+      bird(c, W * 0.86, H * 0.3, W * 0.03); bird(c, W * 0.95, H * 0.22, W * 0.02, true); bird(c, W * 0.68, H * 0.2, W * 0.016);
+      turtle(c, W * 0.43, H * 0.73, H * 0.17, r);
+
+      c = L.near;
+      party(c, W * 0.58, H * 0.88, H * 0.115);
+      [[0.0, 0.07], [0.3, 0.045], [0.98, 0.08], [1.18, 0.06]].forEach(function (salt) { berg(c, W * salt[0], H * 1.01, W * salt[1], W * salt[1] * 0.9, '#ffffff', '#cfe4ea'); }); // 前景的鹽晶
+
+      c = L.glow;
+      deer(c, W * 0.8, H * 0.7, H * 0.13, true);
+      soft(c, W * 0.41, H * 0.63, H * 0.24, H * 0.14, '#a0ff96', 0.5);
+      [[0.86, 0.3], [0.95, 0.22], [0.68, 0.2]].forEach(function (at) { soft(c, W * at[0], H * at[1], W * 0.05, W * 0.05, '#c8f0ff', 0.9); });
+      stars(c, r, 140, 0, 0, W * 1.3, H * 0.34, W * 0.0011);
+    },
+    river: function (L, W, H, o) { // 地下暗河：洞頂的鐘乳石、溫的河水、岩壁上的微光；巨龜游在前面，遠處有光
+      var c = L.far, r = o.rnd, n = o.n, rock = relief('rock'), level = H * 0.62, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#041416', '#0a2a2c', '#06181b']);
+      soft(c, W * 1.08, H * 0.5, W * 0.5, H * 0.4, '#7dffdc', 0.4); // 水往有光的地方流
+      var back = terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.46, amp: H * 0.3, scale: W * 0.22, ridged: true, bottom: -H * 0.1, shift: 4,
+                                fill: shade(c, 0, 0, 0, H * 0.46, ['#020a0b', '#0d3032'])}); // 洞頂與後面的岩壁
+      grainFill(c, back.concat([[W * 1.35, -H * 0.1], [-W * 0.05, -H * 0.1]]), rock, W * 0.5 / TILE, 0, 0, 0.85);
+      dots(c, r, 150, 0, 0, W * 1.3, H * 0.5, W * 0.0013, ['rgba(140,255,225,.8)', 'rgba(200,255,160,.6)']); // 岩壁上細細的光
+      for (index = 0; index < 9; index += 1) soft(c, W * 1.3 * r(), H * 0.45 * r(), W * 0.02, W * 0.02, '#8fffe0', 0.25);
+      water(c, r, 0, W * 1.3, level, H * 1.3, ['#125257', '#0a3539', '#04161a'], '#9ffff0', W * 1.08, '#c9fff2');
+      veil(c, 0, level - H * 0.12, W * 1.3, H * 0.24, 0.4, 80, '#9fe8dc'); // 溫水上面的水氣
+
+      c = L.mid;
+      for (index = 0; index < 26; index += 1) { // 鐘乳石：一側映著水光
+        var sx = W * 1.3 * r(), long = H * (0.08 + r() * 0.26), wide = W * (0.008 + r() * 0.014);
+        poly(c, [[sx - wide, -H * 0.02], [sx + wide, -H * 0.02], [sx + wide * 0.2, long], [sx, long + H * 0.01]], shade(c, sx - wide, 0, sx + wide, 0, ['#1d4a4a', '#081e20']));
+        stroke(c, [[sx - wide * 0.6, 0], [sx - wide * 0.1, long * 0.9]], 'rgba(160,255,230,.25)', Math.max(1, W * 0.001));
+      }
+      for (index = 0; index < 5; index += 1) { // 巨龜游過的水紋
+        c.beginPath(); c.ellipse(W * 0.72, H * 0.77, W * (0.05 + index * 0.025), H * (0.012 + index * 0.006), 0, 0, 6.2832);
+        c.strokeStyle = 'rgba(190,255,240,' + (0.3 - index * 0.05) + ')'; c.lineWidth = Math.max(1, H * 0.002); c.stroke();
+      }
+      c.save(); c.globalAlpha = 0.95; turtle(c, W * 0.72, H * 0.76, H * 0.09, r); c.restore();
+      dots(c, r, 26, W * 0.08, H * 0.7, W * 1.22, H * 0.96, W * 0.003, ['rgba(240,255,250,.7)']); // 沒有眼睛的白魚
+
+      c = L.near;
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 0.99, amp: H * 0.07, scale: W * 0.18, bottom: H * 1.4, shift: 31, fill: '#020a0b', rim: 'rgba(150,255,225,.4)', rimW: H * 0.003});
+      for (index = 0; index < 6; index += 1) { var gx = W * (0.5 + index * 0.16 + r() * 0.05), tall = H * (0.1 + r() * 0.14); poly(c, [[gx - W * 0.02, H * 1.02], [gx, H * 1.02 - tall], [gx + W * 0.024, H * 1.02]], '#010607'); } // 岸邊的石筍
+      party(c, W * 0.2, H * 0.93, H * 0.11);
+    },
+    crystal: function (L, W, H, o) { // 晶洞：透明的晶柱橫七豎八；帶了相機時多一道閃光，整座洞亮起來
+      var c = L.far, r = o.rnd, n = o.n, flash = o.paint === 'flash', index;
+      function prism(pen, x, y, len, wide, angle, glow) { // 一根晶柱：兩個面一亮一暗，中間一道稜線反光，頂端削成尖的
+        pen.save(); pen.translate(x, y); pen.rotate(angle);
+        poly(pen, [[-wide, 0], [0, -wide * 0.3], [0, -len], [-wide, -len + wide * 0.9]], shade(pen, -wide, 0, 0, 0, [tint('#bfe6ff', Math.min(1, 0.2 * glow)), tint('#e8f6ff', Math.min(1, 0.55 * glow))]));
+        poly(pen, [[0, -wide * 0.3], [wide, 0], [wide, -len + wide * 0.9], [0, -len]], shade(pen, 0, 0, wide, 0, [tint('#8fc4f0', Math.min(1, 0.45 * glow)), tint('#3f6fb0', Math.min(1, 0.25 * glow))]));
+        stroke(pen, [[0, -wide * 0.3], [0, -len]], tint('#ffffff', Math.min(1, 0.7 * glow)), Math.max(1, wide * 0.06));
+        stroke(pen, [[-wide, 0], [-wide, -len + wide * 0.9], [0, -len], [wide, -len + wide * 0.9], [wide, 0]], tint('#dff2ff', Math.min(1, 0.35 * glow)), Math.max(1, wide * 0.03));
+        pen.restore();
+      }
+      fillV(c, 0, 0, W * 1.3, H * 1.3, flash ? ['#1c2c4a', '#31476e', '#16223c'] : ['#070d1c', '#101d38', '#060a16']);
+      grainFill(c, [[0, 0], [W * 1.3, 0], [W * 1.3, H * 1.3], [0, H * 1.3]], relief('rock'), W * 0.6 / TILE, 0, 0, 0.6);
+      soft(c, W * 0.55, H * 0.5, W * 0.6, H * 0.6, flash ? '#ffffff' : '#7fb8ff', flash ? 0.55 : 0.3);
+      for (index = 0; index < 16; index += 1) prism(c, W * 1.3 * r(), H * (0.3 + r() * 0.9), H * (0.3 + r() * 0.5), W * (0.012 + r() * 0.02), (r() - 0.5) * 2.2, flash ? 1 : 0.6);
+
+      c = L.mid;
+      for (index = 0; index < 11; index += 1) prism(c, W * (0.05 + index * 0.12 + r() * 0.05), H * (0.55 + r() * 0.7), H * (0.45 + r() * 0.55), W * (0.022 + r() * 0.03), (r() - 0.5) * 1.6, flash ? 1.25 : 0.9);
+      if (flash) { rays(c, W * 0.3, H * 0.86, H * 1.4, -2.6, -0.5, 9, '#ffffff', 0.2); soft(c, W * 0.3, H * 0.86, W * 0.14, W * 0.14, '#ffffff', 0.95); } // 閃光燈
+
+      c = L.near;
+      for (index = 0; index < 5; index += 1) prism(c, W * (0.02 + index * 0.3 + r() * 0.08), H * 1.32, H * (0.5 + r() * 0.4), W * (0.04 + r() * 0.03), (r() - 0.5) * 0.9, flash ? 1.3 : 0.75);
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 1.0, amp: H * 0.05, scale: W * 0.16, bottom: H * 1.4, shift: 23, fill: '#04070f', rim: 'rgba(170,215,255,.4)', rimW: H * 0.003});
+      party(c, W * 0.22, H * 0.95, H * 0.11);
+    },
+    lava: function (L, W, H, o) { // 熔岩管：一圈一圈往裡面縮的黑色管壁，裂縫裡透著暗紅的光，越裡面越亮
+      var c = L.far, r = o.rnd, n = o.n, index;
+      fillV(c, 0, 0, W * 1.3, H * 1.3, ['#3a1408', '#5a1c0c', '#2a0e06']);
+      soft(c, W * 0.6, H * 0.62, W * 0.4, H * 0.4, '#ff7a2a', 0.9); // 管子的盡頭還是亮的
+      soft(c, W * 0.6, H * 0.62, W * 0.13, H * 0.13, '#ffe2a0', 0.95);
+      for (index = 1; index <= 7; index += 1) { // 由遠到近的一圈圈管壁：一個比一個大，也一個比一個暗；內緣被裡面的光映紅
+        var size = Math.pow(index / 7, 1.4), hole = [];
+        for (var step = 0; step < 40; step += 1) {
+          var angle = step / 40 * 6.2832, jag = 1 + (n(step * 0.45 + index * 9, 3) - 0.5) * 0.3;
+          hole.push([W * 0.6 + Math.cos(angle) * W * 0.6 * size * jag, H * 0.62 + Math.sin(angle) * H * 0.58 * size * jag]);
+        }
+        c.beginPath(); c.rect(-W * 0.1, -H * 0.1, W * 1.5, H * 1.5);
+        hole.forEach(function (point, at) { if (at) c.lineTo(point[0], point[1]); else c.moveTo(point[0], point[1]); });
+        c.closePath();
+        c.fillStyle = mix('#6a240f', '#0a0403', size); c.fill('evenodd');
+        stroke(c, hole.concat([hole[0]]), tint('#ffb060', 0.6 * (1 - size * 0.7)), W * 0.003);
+      }
+      grainFill(c, [[0, 0], [W * 1.3, 0], [W * 1.3, H * 1.3], [0, H * 1.3]], relief('rock'), W * 0.5 / TILE, 0, 0, 0.7);
+      for (index = 0; index < 22; index += 1) { // 管壁上的裂縫：裡面還是紅的
+        var cx = W * 1.3 * r(), cy = H * 1.3 * r(), len = H * (0.05 + r() * 0.12), turn = r() * 6.28;
+        if (Math.abs(cx - W * 0.6) < W * 0.26 && Math.abs(cy - H * 0.62) < H * 0.26) continue; // 開口那裡不畫
+        curve(c, [[cx, cy], [cx + Math.cos(turn) * len * 0.5, cy + Math.sin(turn) * len * 0.5 + len * 0.1], [cx + Math.cos(turn) * len, cy + Math.sin(turn) * len]], 'rgba(255,120,50,.55)', W * 0.0022);
+        soft(c, cx, cy, len * 0.8, len * 0.5, '#ff5a1e', 0.18);
+      }
+
+      c = L.mid;
+      veil(c, 0, H * 0.3, W * 1.3, H * 0.6, 0.22, 140, '#ff9a5a'); // 熱氣
+
+      c = L.near;
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 1.0, amp: H * 0.06, scale: W * 0.16, bottom: H * 1.4, shift: 19, fill: '#050201', rim: 'rgba(255,150,80,.5)', rimW: H * 0.003});
+      party(c, W * 0.2, H * 0.95, H * 0.11);
+    },
+    cavern: function (L, W, H, o) { // 地底湖：看不到對岸，湖底規律地湧出氣泡。aglow：熄了燈，洞頂全是光點，倒映在湖面上
+      var c = L.far, r = o.rnd, n = o.n, aglow = o.paint === 'aglow', level = H * 0.6, index;
+      fillV(c, 0, 0, W * 1.3, level, aglow ? ['#020812', '#06162a', '#0a2238'] : ['#04121a', '#0b2a36', '#134452']);
+      var roof = terrain(c, n, {x0: -W * 0.05, x1: W * 1.35, y: H * 0.26, amp: H * 0.2, scale: W * 0.3, ridged: true, bottom: -H * 0.1, shift: 6,
+                                fill: shade(c, 0, 0, 0, H * 0.3, ['#010507', '#082028'])});
+      grainFill(c, roof.concat([[W * 1.35, -H * 0.1], [-W * 0.05, -H * 0.1]]), relief('rock'), W * 0.5 / TILE, 0, 0, 0.8);
+      if (aglow) { // 洞頂的光：成千上萬個小點，其中幾個特別亮
+        for (index = 0; index < 700; index += 1) {
+          var gx = W * 1.3 * r(), gy = H * 0.5 * Math.pow(r(), 1.5), size = W * 0.0011 * (0.6 + r());
+          oval(c, gx, gy, size, size, 'rgba(' + (r() < 0.3 ? '190,255,210' : '140,235,255') + ',' + (0.4 + r() * 0.6) + ')');
+          if (r() < 0.04) soft(c, gx, gy, W * 0.012, W * 0.012, '#9ff0ff', 0.5);
+        }
+      } else soft(c, W * 0.7, H * 0.5, W * 0.6, H * 0.3, '#5fd0c8', 0.25);
+      veil(c, 0, level - H * 0.2, W * 1.3, H * 0.26, aglow ? 0.25 : 0.5, 60, aglow ? '#7fd8ff' : '#bfeee6'); // 遠處的水氣：看不到對岸
+      water(c, r, 0, W * 1.3, level, H * 1.3, aglow ? ['#0a2a44', '#061a30', '#020a16'] : ['#145058', '#0b3440', '#04161e'], aglow ? '#aef0ff' : '#bff5ea');
+      if (aglow) for (index = 0; index < 260; index += 1) { // 光點落在水面上的倒影
+        var wx = W * 1.3 * r(), wy = level + (H * 1.3 - level) * Math.pow(r(), 1.8);
+        stroke(c, [[wx - W * 0.003, wy], [wx + W * 0.003, wy]], 'rgba(150,240,255,' + (0.25 + r() * 0.4) + ')', Math.max(1, H * 0.0016));
+      }
+
+      c = L.mid;
+      [0.34, 0.58, 0.83].forEach(function (at, order) { // 湖底湧上來的氣泡：水面一圈一圈的紋，中間一小簇白
+        var bx = W * at, by = level + H * (0.12 + order * 0.07);
+        for (var ring = 0; ring < 4; ring += 1) {
+          c.beginPath(); c.ellipse(bx, by, W * (0.02 + ring * 0.022), H * (0.006 + ring * 0.007), 0, 0, 6.2832);
+          c.strokeStyle = 'rgba(210,255,245,' + (0.5 - ring * 0.1) + ')'; c.lineWidth = Math.max(1, H * 0.002); c.stroke();
+        }
+        dots(c, r, 14, bx - W * 0.018, by - H * 0.008, bx + W * 0.018, by + H * 0.008, W * 0.003, ['rgba(235,255,250,.8)']);
+        soft(c, bx, by, W * 0.05, H * 0.02, '#bffff0', 0.2);
+      });
+
+      c = L.near;
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 0.99, amp: H * 0.06, scale: W * 0.2, bottom: H * 1.4, shift: 27, fill: '#03090c',
+                     rim: aglow ? 'rgba(140,235,255,.45)' : 'rgba(170,240,225,.4)', rimW: H * 0.003});
+      party(c, W * 0.24, H * 0.94, H * 0.11);
+    },
+    island: function (L, W, H, o) { // 無名的孤島：天快亮的海、遠處的冰島（你們是從那底下出來的）、一座黑色的小島
+      var c = L.far, r = o.rnd, n = o.n, sea = H * 0.62, index;
+      fillV(c, 0, 0, W * 1.3, sea, ['#1b2440', '#4a4a78', '#c97f86', '#ffc98f']);
+      soft(c, W * 0.8, sea, W * 0.5, H * 0.3, '#ffd9a0', 0.8);
+      veil(c, 0, H * 0.08, W * 1.3, H * 0.3, 0.45, 170, '#f3c7c4'); // 被晨光染紅的雲
+      var ice = mound(c, n, W * 0.04, W * 0.56, sea, H * 0.13, 14, '#b9c6dc');
+      grainFill(c, ice.concat([[W * 0.56, sea], [W * 0.04, sea]]), relief('snow'), W * 0.3 / TILE, 0, 0, 0.8);
+      mist(c, 0, W * 1.3, sea - H * 0.01, H * 0.05, '#ffe6d0', 0.5);
+      water(c, r, 0, W * 1.3, sea, H * 1.3, ['#6f6f96', '#3c4a78', '#1a2748', '#0b1228'], '#ffd9b0', W * 0.8, '#ffe9c0');
+
+      c = L.mid;
+      var rock = mound(c, n, W * 0.02, W * 0.98, H * 1.25, H * 0.44, 9, shade(c, 0, H * 0.78, 0, H * 1.25, ['#2c313f', '#12151d']), 0.06); // 島：一整塊平緩的黑色岩石
+      grainFill(c, rock.concat([[W * 0.98, H * 1.25], [W * 0.02, H * 1.25]]), relief('rock'), W * 0.3 / TILE, 0, 0, 0.9);
+      stroke(c, rock, 'rgba(255,214,170,.5)', H * 0.003); // 稜線映著晨光
+      [0, 1, 2, 3].forEach(function (member, place) { // 四個人站在島上：各自踩在腳下那一塊岩石上
+        var px = W * 0.38 + place * H * 0.05;
+        party(c, px, ridgeAt(rock, px) + H * 0.008, H * 0.085, [member]);
+      });
+      for (index = 0; index < 40; index += 1) soft(c, W * (0.04 + r() * 0.9), H * (0.93 + r() * 0.08), W * (0.01 + r() * 0.02), H * 0.006, '#ffffff', 0.3); // 浪打上岩石的白沫
+
+      c = L.near;
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 1.14, amp: H * 0.08, scale: W * 0.14, bottom: H * 1.4, shift: 33, fill: '#080a10', rim: 'rgba(255,214,170,.35)', rimW: H * 0.003});
+    },
+    voyage: function (L, W, H, o) { // 回程：身後的冰島、灰色的海、前面城市的燈；來接的是漁船（boat）、科考船（ship）或直升機（heli）
+      var c = L.far, r = o.rnd, n = o.n, sea = H * 0.6, index;
+      fillV(c, 0, 0, W * 1.3, sea, ['#27304e', '#5a5f86', '#b99aa0', '#f3c8a0']);
+      veil(c, 0, H * 0.06, W * 1.3, H * 0.32, 0.5, 220, '#e9d3d6');
+      mound(c, n, -W * 0.25, W * 0.3, sea, H * 0.08, 14, '#aebbd2'); // 身後的冰島，越來越小
+      for (index = 0; index < 34; index += 1) { // 前面的城市：一排高高低低的樓，窗裡有燈
+        var bx = W * (0.76 + index * 0.016), tall = H * (0.03 + r() * 0.1) * (0.5 + Math.min(1, index / 12)), wide = W * 0.013;
+        c.fillStyle = '#2b3350'; c.fillRect(bx, sea - tall, wide, tall);
+        for (var win = 0; win < 4; win += 1) if (r() < 0.6) { c.fillStyle = 'rgba(255,220,150,.9)'; c.fillRect(bx + wide * (0.2 + (win % 2) * 0.45), sea - tall * (0.3 + Math.floor(win / 2) * 0.4), wide * 0.2, tall * 0.08); }
+      }
+      soft(c, W * 1.04, sea, W * 0.4, H * 0.12, '#ffd9a0', 0.55);
+      mist(c, 0, W * 1.3, sea - H * 0.005, H * 0.04, '#f6dcc8', 0.5);
+      water(c, r, 0, W * 1.3, sea, H * 1.3, ['#6a6f92', '#3a466e', '#1b2646', '#0b1228'], '#ffe0c0', W * 1.04, '#ffe9c0');
+
+      c = L.mid;
+      if (o.paint === 'heli') {
+        chopper(c, W * 0.52, H * 0.32, W * 0.3);
+        for (index = 0; index < 4; index += 1) { // 螺旋槳把海面吹出一圈一圈的紋
+          c.beginPath(); c.ellipse(W * 0.52, H * 0.8, W * (0.05 + index * 0.035), H * (0.012 + index * 0.008), 0, 0, 6.2832);
+          c.strokeStyle = 'rgba(255,255,255,' + (0.4 - index * 0.08) + ')'; c.lineWidth = Math.max(1, H * 0.002); c.stroke();
+        }
+      } else {
+        var big = o.paint === 'ship', size = W * (big ? 0.38 : 0.2), left = W * 0.52 - size / 2, at = H * 0.8; // 船頭朝右，往城市開
+        for (index = 0; index < 26; index += 1) soft(c, left - W * 0.3 * r(), at + H * (r() - 0.3) * 0.03, W * (0.012 + r() * 0.03), H * 0.006, '#ffffff', 0.35); // 船尾拖出來的白浪
+        if (big) ship(c, left, at, size); else boat(c, left, at, size);
+      }
+
+      c = L.near;
+      for (index = 0; index < 60; index += 1) { // 近處的浪頭
+        var wx = W * 1.3 * r(), wy = H * (1.0 + r() * 0.3);
+        curve(c, [[wx - W * 0.03, wy], [wx, wy - H * 0.008], [wx + W * 0.03, wy]], 'rgba(255,255,255,' + (0.12 + r() * 0.2) + ')', Math.max(1, H * 0.003));
+      }
+    },
+    gateway: function (L, W, H, o) {
+      var c = L.far, r = o.rnd, n = o.n, lava = o.paint === 'lava', index;
+      var rock = lava ? ['#1a0d0a', '#070302'] : ['#0b2022', '#030a0b'], edge = lava ? 'rgba(255,150,80,.55)' : 'rgba(150,255,225,.5)';
+      fillV(c, 0, 0, W * 1.3, H * 1.3, lava ? ['#160a09', '#2a1410', '#0e0605'] : ['#07171a', '#123330', '#050f10']);
+      if (lava) { // 裂開的鹽殼，底下是還有餘溫的熔岩管
+        var crack = [[W * 0.47, -H * 0.02]], back = [];
+        for (index = 1; index <= 22; index += 1) {
+          var wide = W * (0.012 + index * 0.0075) * (0.7 + n(index * 0.6, 3) * 0.7), mid = W * (0.5 + (n(index * 0.3 + 20, 3) - 0.5) * 0.14);
+          crack.push([mid - wide, H * 0.064 * index]); back.unshift([mid + wide, H * 0.064 * index]);
+        }
+        soft(c, W * 0.5, H * 0.95, W * 0.7, H * 0.8, '#ff6a2a', 0.5);
+        poly(c, crack.concat(back, [[W * 0.53, -H * 0.02]]), shade(c, 0, 0, 0, H * 1.35, ['#5a1408', '#d6451c', '#ff9a3a', '#ffe08a']));
+        stroke(c, crack, 'rgba(255,220,150,.8)', W * 0.003);
+        for (index = 0; index < 14; index += 1) { var by = H * (0.2 + r() * 0.9), way = index % 2 ? 1 : -1; curve(c, [[W * 0.5, by], [W * (0.5 + way * (0.08 + r() * 0.1)), by - H * 0.04], [W * (0.5 + way * (0.2 + r() * 0.2)), by - H * (0.02 + r() * 0.1)]], 'rgba(255,140,60,.55)', W * 0.003); }
+      } else { // 溫泉後面的裂口：裡面有光，水往裡面流
+        var stream = [[W * 0.46, H * 1.35], [W * 0.5, H * 1.08], [W * 0.46, H * 0.94], [W * 0.5, H * 0.8]];
+        soft(c, W * 0.5, H * 0.5, W * 0.55, H * 0.6, '#7dffdc', 0.75);
+        c.fillStyle = shade(c, 0, H * 0.14, 0, H * 0.86, ['#e6fff6', '#7fe6d2', '#1f8f86', '#0a3f44']);
+        c.beginPath(); c.moveTo(W * 0.47, H * 0.14); c.bezierCurveTo(W * 0.58, H * 0.2, W * 0.63, H * 0.5, W * 0.57, H * 0.86); c.lineTo(W * 0.43, H * 0.86); c.bezierCurveTo(W * 0.38, H * 0.5, W * 0.4, H * 0.24, W * 0.47, H * 0.14); c.closePath(); c.fill();
+        rays(c, W * 0.5, H * 0.4, H * 0.9, 0.9, 2.25, 7, '#bffff0', 0.12);
+        curve(c, stream, '#8fdcec', W * 0.04); curve(c, stream, 'rgba(255,255,255,.6)', W * 0.01);
+      }
+
+      c = L.mid;
+      [0, 1].forEach(function (side) { // 兩側的岩壁
+        var wall = [[side ? W * 1.35 : -W * 0.05, -H * 0.05]];
+        for (var step = 0; step <= 50; step += 1) {
+          var lean = 0.3 + 0.14 * n(step * 0.14 + side * 70, 4) - 0.1 * Math.sin(step / 50 * 3.1416);
+          wall.push([side ? W * (1 - lean) : W * lean, H * 1.4 * step / 50 - H * 0.05]);
+        }
+        wall.push([side ? W * 1.35 : -W * 0.05, H * 1.35]);
+        poly(c, wall, shade(c, side ? W : 0, 0, side ? W * 0.66 : W * 0.34, 0, [rock[1], rock[0]]));
+        stroke(c, wall.slice(1, -1), edge, W * 0.003);
+      });
+      if (lava) {
+        terrain(c, n, {x0: -W * 0.1, x1: W * 1.4, y: H * 0.2, amp: H * 0.12, scale: W * 0.08, ridged: true, gap: [W * 0.5, W * 0.16], bottom: -H * 0.1, shift: 55,
+                       fill: shade(c, 0, 0, 0, H * 0.2, ['#f4f8f6', '#cfdad7', '#8f9c98']), rim: 'rgba(255,190,130,.7)', rimW: H * 0.004}); // 頂上裂開的鹽殼，底緣被熔岩映紅
+        dots(c, r, 60, W * 0.2, H * 0.2, W * 1.1, H * 0.9, W * 0.0016, ['rgba(240,244,242,.7)']); // 掉下來的鹽屑
+      } else { c.save(); c.globalAlpha = 0.95; turtle(c, W * 0.5, H * 0.86, H * 0.1, r); c.restore(); }
+
+      c = L.near;
+      party(c, W * 0.16, H * 0.93, H * 0.115);
+      terrain(c, n, {x0: -W * 0.1, x1: W * 1.5, y: H * 1.03, amp: H * 0.06, scale: W * 0.16, bottom: H * 1.4, shift: 41, fill: lava ? '#050201' : '#020707', rim: edge, rimW: H * 0.003});
+    }
+  };
+
+  // 顆粒：一小張半透明的黑白雜點，鋪在每個場景最上面，平滑的漸層才不會像塑膠。做不出來（很舊的瀏覽器）就不鋪
+  var GRAIN = (function () {
+    try {
+      var tile = document.createElement('canvas'), size = 128, rnd = random(20261112);
+      tile.width = tile.height = size;
+      var pen = tile.getContext('2d'), image = pen.createImageData(size, size);
+      for (var index = 0; index < size * size; index += 1) {
+        var bright = rnd() < 0.5 ? 0 : 255;
+        image.data[index * 4] = image.data[index * 4 + 1] = image.data[index * 4 + 2] = bright;
+        image.data[index * 4 + 3] = Math.round(rnd() * 26);
+      }
+      pen.putImageData(image, 0, 0);
+      return tile.toDataURL('image/png');
+    } catch (error) { return ''; }
+  })();
+
+  // ======== 畫面 ========
+  var picks = {};        // 每個抉擇選了什麼：唯一的狀態
+  var endingsSeen = {};  // 這次打開之後看過哪幾種結局（只記在記憶體裡，重新整理就沒有了）
+  var run = replay(picks);
+  var built = [];        // 已經建立在頁面上的場景（和 run.steps 一一對應）
+  var phase = 'play';    // play：進行中；rewind：倒捲中；wake：結算；done：關掉結算後自由瀏覽
+  var active = null, ticking = false, endTimer = null;
+
+  box.hidden = false;
+  var outline = document.querySelector('.lw-static');
+  if (outline) outline.hidden = true;
+  var hint = document.querySelector('.lw-start');
+  if (hint) hint.hidden = false;
+  if (CALM) root.className = 'is-calm';
+  root.setAttribute('data-state', 'play');
+
+  var particles = make('canvas', 'lw-particles');
+  var fixed = make('div', 'lw-fixed');
+  var hud = make('div', 'lw-hud');
+  var hudStage = make('span', 'lw-chip lw-hud-stage'), hudDepth = make('span', 'lw-chip lw-hud-depth'), hudTemp = make('span', 'lw-chip lw-hud-temp');
+  var hudAtlas = make('span', 'lw-chip lw-hud-atlas');
+  var trail = make('div', 'lw-trail'), trailToggle = make('button', 'lw-chip lw-trail-toggle', '走過的路'), trailList = make('div', 'lw-trail-list');
+  trailToggle.type = 'button';
+  trailToggle.setAttribute('aria-expanded', 'false');
+  trailList.hidden = true;
+  add(trail, trailToggle, trailList);
+  add(hud, hudStage, hudDepth, hudTemp, hudAtlas, trail);
+  var meters = make('div', 'lw-meters');
+  var meterViews = {};
+  CAST.forEach(function (member) {
+    var chip = make('span', 'lw-chip lw-meter'), bar = make('span', 'lw-meter-bar'), fill = make('i');
+    chip.setAttribute('data-who', member.id);
+    chip.setAttribute('data-c', member.color);
+    chip.title = member.role + '對你的' + METER.label;
+    add(bar, fill);
+    meterViews[member.id] = {fill: fill, value: make('span', 'lw-meter-value', '0')};
+    add(meters, add(chip, make('span', 'lw-meter-name', member.name), bar, meterViews[member.id].value));
+  });
+  add(fixed, hud, meters);
+  var track = make('div', 'lw-track');
+  var finale = make('div', 'lw-finale');
+  finale.hidden = true;
+  add(box, particles, fixed, track, finale);
+
+  function drawMeters() {
+    var span = METER.max - METER.min;
+    CAST.forEach(function (member) {
+      var value = run.state.meters[member.id], view = meterViews[member.id];
+      view.value.textContent = signed(value);
+      var zero = -METER.min / span * 100, here = (value - METER.min) / span * 100; // 從中間（0）往左或往右長
+      view.fill.style.left = Math.min(zero, here) + '%';
+      view.fill.style.width = Math.max(4, Math.abs(here - zero)) + '%';
+    });
+  }
+  function drawTrail() {
+    empty(trailList);
+    built.forEach(function (item) {
+      var stop = make('button', '', item.step.scene.title);
+      stop.type = 'button';
+      stop.setAttribute('data-scene', item.step.scene.id);
+      add(trailList, stop);
+    });
+    hudAtlas.textContent = '圖鑑 ' + run.atlas.length + '／' + DATA.atlas.length;
+  }
+
+  // 抉擇卡：還沒選是三個人的主張與選項；選了之後是結果、三個人的反應與升降，以及「改選」
+  function drawGate(item) {
+    var gate = item.step.scene.gate, pick = item.step.pick, card = item.gate;
+    empty(card);
+    if (!pick) {
+      card.removeAttribute('data-chosen');
+      add(card, make('p', 'lw-prompt', gate.prompt));
+      gate.claims.forEach(function (claim) { add(card, said('p', 'lw-claim', claim.who, claim.text)); });
+      var options = make('div', 'lw-options');
+      gate.options.forEach(function (option) {
+        var button = make('button', 'lw-option');
+        button.type = 'button';
+        button.setAttribute('data-option', option.id);
+        add(options, add(button, make('strong', '', option.label), option.hint ? make('span', 'lw-hint', option.hint) : null));
+      });
+      add(card, options);
+      return;
+    }
+    card.setAttribute('data-chosen', pick.option.id);
+    add(card, make('p', 'lw-picked', '你選了：' + pick.option.label), make('p', 'lw-result', pick.outcome.result));
+    CAST.forEach(function (member) { // 說哪一句看選完之後的信任
+      var lines = pick.outcome.reactions[member.id], change = (pick.outcome.delta || {})[member.id] || 0;
+      if (!lines && !change) return;
+      var line = said('p', 'lw-reaction', member.id, lines ? lines[band(pick.after.meters[member.id])] : '');
+      if (change) {
+        var mark = make('span', 'lw-delta', (change > 0 ? '▲ ' : '▼ ') + signed(change));
+        mark.setAttribute('data-way', change > 0 ? 'up' : 'down');
+        add(line, mark);
+      }
+      add(card, line);
+    });
+    var again = make('button', 'lw-rechoose', '改選');
+    again.type = 'button';
+    add(card, add(make('div', 'lw-after'), make('p', 'lw-go', item.step.scene.last ? '' : '往下捲，繼續。'), again));
+  }
+
+  function setView(item, id) {
+    var views = item.step.scene.views || [], view = views.filter(function (entry) { return entry.id === id; })[0];
+    var cam = view && view.cam ? view.cam : {x: 0, y: 0, s: 1};
+    item.view = id;
+    if (id) item.stage.setAttribute('data-view', id);
+    item.stage.className = view && view.night ? 'lw-stage is-night' : 'lw-stage';
+    item.cam.style.transform = 'translate(' + cam.x + '%, ' + cam.y + '%) scale(' + cam.s + ')';
+    item.buttons.forEach(function (button) { button.setAttribute('aria-pressed', button.getAttribute('data-view') === id ? 'true' : 'false'); });
+  }
+
+  // 建立一個場景的區塊（還不畫背景：捲到附近才畫）
+  function build(step, after) {
+    var scene = step.scene, look = step.look;
+    var item = {step: step, layers: {}, words: [], buttons: [], painted: false, view: null, progress: -1};
+    item.el = make('section', scene.gate ? 'lw-scene lw-has-gate' : 'lw-scene');
+    if (after && after.step.scene.gate) item.el.className += ' lw-after-gate'; // 抉擇之後接上來的場景不和前一個交疊（不蓋住抉擇卡）
+    item.el.setAttribute('data-id', scene.id);
+    item.el.setAttribute('data-kind', scene.kind);
+    item.el.setAttribute('data-progress', '0');
+    item.stage = make('div', 'lw-stage');
+    if (look.paint) item.stage.setAttribute('data-paint', look.paint);
+    item.cam = make('div', 'lw-cam');
+    ['far', 'mid', 'near'].forEach(function (name) {
+      if (name === 'near' && FOG[scene.kind] && fogUrl()) { // 會飄的霧：放在中景與近景之間；怎麼飄寫在樣式表（.lw-fog），這裡只給位置、濃淡與速度
+        item.fog = make('div', 'lw-fogs');
+        FOG[scene.kind].forEach(function (band) {
+          var fog = make('div', 'lw-fog');
+          fog.style.top = band.top * 100 + '%'; fog.style.height = band.tall * 100 + '%'; fog.style.opacity = band.alpha;
+          fog.style.backgroundImage = 'url(' + fogUrl() + ')';
+          fog.style.setProperty('--fog-time', band.time + 's');
+          add(item.fog, fog);
+        });
+        add(item.cam, item.fog);
+      }
+      item.layers[name] = make('canvas', 'lw-layer lw-' + name); add(item.cam, item.layers[name]);
+    });
+    add(item.cam, make('div', 'lw-shade'));
+    if (NIGHT[scene.kind]) { item.layers.glow = make('canvas', 'lw-layer lw-glow'); add(item.cam, item.layers.glow); }
+    var title = make('h2', 'lw-title', scene.title);
+    var words = make('div', 'lw-words');
+    var count = Math.max(look.text.length, scene.said.length);
+    for (var index = 0; index < count; index += 1) { // 旁白和同行者的話交錯出現
+      if (look.text[index]) item.words.push(add(words, make('p', 'lw-text', look.text[index])).lastChild);
+      if (scene.said[index]) item.words.push(add(words, said('p', 'lw-line', scene.said[index].who, scene.said[index].text)).lastChild);
+    }
+    if (scene.solo) { // 獨處時說的話：看這時候的信任
+      var solo = said('p', 'lw-line lw-solo-line', scene.solo.who, scene.solo.lines[band(step.at.meters[scene.solo.who])]);
+      item.words.push(add(words, solo).lastChild);
+    }
+    item.words.forEach(function (word, order) { if (word.className.indexOf('lw-line') === 0 && order % 4 === 3) word.setAttribute('data-side', 'r'); });
+    var grain = make('div', 'lw-grain');
+    if (GRAIN) grain.style.backgroundImage = 'url(' + GRAIN + ')';
+    add(item.stage, item.cam, make('div', 'lw-vignette'), grain, title);
+    item.stage.setAttribute('data-enter', '1');
+    if (scene.views && scene.views.length > 1) {
+      var views = make('div', 'lw-views');
+      scene.views.forEach(function (view) {
+        var button = make('button', 'lw-view', view.label);
+        button.type = 'button';
+        button.setAttribute('data-view', view.id);
+        item.buttons.push(button);
+        add(views, button);
+      });
+      add(item.stage, views);
+    }
+    add(item.stage, words);
+    if (scene.gate) {
+      item.gate = make('div', 'lw-gate');
+      item.gate.setAttribute('data-gate', scene.gate.id);
+      item.gate.hidden = true;
+      drawGate(item);
+      add(item.stage, item.gate);
+    }
+    add(item.el, item.stage);
+    item.stage.addEventListener('scroll', function () { item.stage.scrollLeft = item.stage.scrollTop = 0; }); // 舞台裡面永遠不捲動（見樣式表的說明）
+    setView(item, look.view);
+    return item;
+  }
+
+  // 讓頁面上的場景和 run.steps 一致：從第 from 個之後全部重建（改了第 from 個場景的抉擇時用）
+  function sync(from) {
+    while (built.length > from + 1) { var gone = built.pop(); track.removeChild(gone.el); }
+    if (from >= 0 && built[from]) { built[from].step = run.steps[from]; drawGate(built[from]); }
+    for (var index = built.length; index < run.steps.length; index += 1) {
+      var item = build(run.steps[index], built[built.length - 1]);
+      built.push(item);
+      add(track, item.el);
+    }
+    drawMeters();
+    drawTrail();
+    request();
+  }
+
+  function paint(item) {
+    var scene = item.step.scene, W = item.stage.clientWidth, H = item.stage.clientHeight;
+    item.size = [W, H];
+    if (!W || !H || !PAINT[scene.kind]) return;
+    var quality = Math.min(1, 1500 / (W * 1.3)), high = TALL[scene.kind] ? 2.3 : 1.3, pens = {};
+    Object.keys(item.layers).forEach(function (name) {
+      var canvas = item.layers[name];
+      canvas.width = Math.round(W * 1.3 * quality);
+      canvas.height = Math.round(H * high * quality);
+      canvas.style.width = W * 1.3 + 'px';
+      canvas.style.height = H * high + 'px';
+      pens[name] = canvas.getContext('2d');
+      pens[name].setTransform(quality, 0, 0, quality, 0, 0);
+    });
+    var seed = scene.id.length * 7919 + scene.id.charCodeAt(scene.id.length - 1) * 104729;
+    PAINT[scene.kind](pens, W, H, {rnd: random(seed), n: fractal(seed + 31), paint: item.step.look.paint});
+    item.painted = true;
+    item.el.classList.add('is-live'); // 畫出來的場景霧才飄（樣式表）；離開畫面就停
+  }
+  function unpaint(item) {
+    Object.keys(item.layers).forEach(function (name) { item.layers[name].width = item.layers[name].height = 0; });
+    item.painted = false;
+    item.el.classList.remove('is-live');
+  }
+
+  // ======== 微粒：固定在最上層，跟著目前的場景換樣子 ========
+  // 每一粒有自己的遠近（z）：遠的小、慢、淡，貼近鏡頭的大而快；雪貼得很近時畫成一小團糊掉的白（soft），風雪的速度一陣一陣地變。
+  var DUST = {
+    dust: {count: 40, color: 'rgba(255,240,210,.35)', size: [0.8, 2], vx: [3, 10], vy: [-4, 4]},
+    snow: {count: 90, color: 'rgba(255,255,255,.8)', size: [1, 2.6], vx: [-24, -6], vy: [40, 90], soft: true},
+    storm: {count: 150, color: 'rgba(255,255,255,.85)', size: [1, 2], vx: [-420, -260], vy: [220, 380], streak: 0.022, soft: true},
+    drip: {count: 14, color: 'rgba(170,225,255,.85)', size: [1.2, 2], vx: [0, 0], vy: [260, 380], streak: 0.03},
+    pollen: {count: 60, color: 'rgba(210,255,170,.8)', size: [1, 2.4], vx: [-8, 8], vy: [-14, -4], blink: true},
+    steam: {count: 22, color: 'rgba(255,255,255,.09)', size: [40, 110], vx: [-6, 6], vy: [-34, -14], puff: true},
+    firefly: {count: 46, color: 'rgba(190,255,120,.95)', size: [1.2, 2.4], vx: [-10, 10], vy: [-6, 6], blink: true},
+    ember: {count: 60, color: 'rgba(255,150,60,.9)', size: [1, 2.4], vx: [-10, 10], vy: [-70, -30], blink: true}
+  };
+  var dust = {mode: null, items: [], last: 0, pen: particles.getContext('2d')};
+  var PUFF = (function () { // 一小張邊緣淡出的白霧，蒸氣的微粒用它
+    var tile = document.createElement('canvas');
+    tile.width = tile.height = 96;
+    soft(tile.getContext('2d'), 48, 48, 48, 48, '#ffffff', 0.5);
+    return tile;
+  })();
+  function seedDust(mode) {
+    var kind = DUST[mode] || DUST.dust, rnd = Math.random;
+    dust.mode = mode;
+    dust.items = [];
+    for (var index = 0; index < kind.count; index += 1) {
+      var z = 0.35 + Math.pow(rnd(), 1.6) * 1.05; // 遠近：小於 1 是遠的，大於 1 是貼近鏡頭的；遠的比較多
+      dust.items.push({x: rnd(), y: rnd(), z: z, size: (kind.size[0] + rnd() * (kind.size[1] - kind.size[0])) * z, vx: (kind.vx[0] + rnd() * (kind.vx[1] - kind.vx[0])) * z,
+                       vy: (kind.vy[0] + rnd() * (kind.vy[1] - kind.vy[0])) * z, phase: rnd() * 6.28});
+    }
+  }
+  function drawDust(now) {
+    var W = particles.width, H = particles.height, kind = DUST[dust.mode] || DUST.dust, pen = dust.pen;
+    var step = Math.min(0.05, (now - dust.last) / 1000 || 0);
+    dust.last = now;
+    pen.clearRect(0, 0, W, H);
+    pen.fillStyle = pen.strokeStyle = kind.color;
+    dust.items.forEach(function (dot) {
+      dot.x += dot.vx * (kind.streak ? 1 + 0.25 * Math.sin(now / 900 + dot.phase) : 1) * step / W; dot.y += dot.vy * step / H;
+      if (dot.x < -0.05) dot.x = 1.05; if (dot.x > 1.05) dot.x = -0.05;
+      if (dot.y < -0.05) dot.y = 1.05; if (dot.y > 1.05) dot.y = -0.05;
+      pen.globalAlpha = (kind.blink ? 0.35 + 0.65 * Math.abs(Math.sin(now / 700 + dot.phase)) : 1) * Math.min(1, 0.3 + dot.z * 0.6);
+      if (kind.puff) { pen.globalAlpha = 0.16; pen.drawImage(PUFF, dot.x * W - dot.size, dot.y * H - dot.size, dot.size * 2, dot.size * 2); }
+      else if (kind.soft && dot.z > 1.05) { pen.globalAlpha = 0.7; pen.drawImage(PUFF, dot.x * W - dot.size * 2.4, dot.y * H - dot.size * 2.4, dot.size * 4.8, dot.size * 4.8); }
+      else if (kind.streak) {
+        pen.lineWidth = dot.size; pen.beginPath(); pen.moveTo(dot.x * W, dot.y * H); pen.lineTo(dot.x * W - dot.vx * kind.streak, dot.y * H - dot.vy * kind.streak); pen.stroke();
+      } else { pen.beginPath(); pen.arc(dot.x * W, dot.y * H, dot.size, 0, 6.2832); pen.fill(); }
+    });
+    pen.globalAlpha = 1;
+  }
+  function loop(now) {
+    if (root.getAttribute('data-in') === '1' && !document.hidden) drawDust(now);
+    window.requestAnimationFrame(loop);
+  }
+
+  // ======== 捲動 ========
+  function request() { if (!ticking) { ticking = true; window.requestAnimationFrame(frame); } }
+  function frame() {
+    ticking = false;
+    var vh = window.innerHeight, current = null;
+    built.forEach(function (item) {
+      var rect = item.el.getBoundingClientRect();
+      if (rect.bottom < -vh * 0.6 || rect.top > vh * 1.6) { if (item.painted) unpaint(item); return; } // 離畫面遠：釋放畫布（同時只留一兩個場景的畫布）
+      if (!item.painted || item.size[0] !== item.stage.clientWidth || item.size[1] !== item.stage.clientHeight) paint(item);
+      if (!item.size) return;
+      var total = item.el.offsetHeight - vh, p = total > 0 ? Math.max(0, Math.min(1, -rect.top / total)) : 0;
+      if (p < 0.001) p = 0; if (p > 0.999) p = 1;
+      if (rect.top <= vh * 0.5) current = item;
+      if (p === item.progress) return;
+      item.progress = p;
+      item.el.setAttribute('data-progress', p === 0 || p === 1 ? String(p) : p.toFixed(2));
+      if (p < ENTER) { item.stage.setAttribute('data-enter', '1'); item.stage.style.setProperty('--feather', Math.round((1 - p / ENTER) * vh * 0.3) + 'px'); }
+      else if (item.stage.hasAttribute('data-enter')) item.stage.removeAttribute('data-enter');
+      var gated = Boolean(item.gate) && p >= GATE_AT, span = item.gate ? GATE_AT - 0.1 : 0.82, shown = 0;
+      item.words.forEach(function (word, order) { if (p >= 0.05 + order / item.words.length * span) shown = order + 1; });
+      item.words.forEach(function (word, order) {
+        var on = order < shown, past = order < shown - KEEP;
+        var name = word.className.replace(/ is-(on|past)/g, '') + (on ? ' is-on' : '') + (past ? ' is-past' : '');
+        if (name !== word.className) word.className = name;
+      });
+      if (item.gate) {
+        item.gate.hidden = !gated;
+        if (gated) item.stage.setAttribute('data-gated', '1'); else item.stage.removeAttribute('data-gated');
+      }
+      var axis = item.step.scene.axis === 'x' ? 0 : 1;
+      Object.keys(item.layers).forEach(function (name) {
+        var move = -p * DEPTH[name] * item.size[axis];
+        item.layers[name].style.transform = axis ? 'translate3d(0,' + move + 'px,0)' : 'translate3d(' + move + 'px,0,0)';
+      });
+      if (item.fog) { var drift = -p * FOG_DEPTH * item.size[axis]; item.fog.style.transform = axis ? 'translate3d(0,' + drift + 'px,0)' : 'translate3d(' + drift + 'px,0,0)'; }
+    });
+    var first = built[0], last = built[built.length - 1];
+    var inside = first && first.el.getBoundingClientRect().top < vh * 0.6 && last.el.getBoundingClientRect().bottom > vh * 0.4;
+    root.setAttribute('data-in', inside || phase === 'wake' ? '1' : '0');
+    active = current || first;
+    if (active) { // 角落的讀數：階段、深度、氣溫
+      var scene = active.step.scene, at = Math.max(0, active.progress);
+      hudStage.textContent = scene.stage;
+      hudDepth.textContent = '深度 ' + signed(Math.round(lerp(scene.hud.depth, at))).replace('+', '') + ' m';
+      hudTemp.textContent = '氣溫 ' + signed(Math.round(lerp(scene.hud.temp, at))) + '°C';
+      if (!CALM && dust.mode !== scene.particles) seedDust(scene.particles);
+    }
+    // 走到最後一幕的底：停一下，讓人把最後幾句看完，然後倒捲回第一幕
+    var ended = phase === 'play' && run.complete && last && last.progress === 1;
+    if (ended && !endTimer) endTimer = window.setTimeout(function () { endTimer = null; if (phase === 'play' && last.progress >= 0.98) rewind(); }, 1200);
+    if (!ended && endTimer) { window.clearTimeout(endTimer); endTimer = null; }
+  }
+
+  // ======== 結尾：倒捲回第一幕（夢醒），顯示結算與這一次的結局 ========
+  function rewind() {
+    var from = window.scrollY, to = built[0].el.offsetTop, started = null;
+    phase = 'rewind';
+    root.setAttribute('data-state', 'rewind');
+    if (CALM) { window.scrollTo(0, to); return wake(); }
+    function tick(now) {
+      if (started === null) started = now;
+      var amount = Math.min(1, (now - started) / 2500), eased = amount < 0.5 ? 4 * amount * amount * amount : 1 - Math.pow(-2 * amount + 2, 3) / 2;
+      window.scrollTo(0, from + (to - from) * eased);
+      if (amount < 1) window.requestAnimationFrame(tick); else wake();
+    }
+    window.requestAnimationFrame(tick);
+  }
+  function wake() {
+    phase = 'wake';
+    root.setAttribute('data-state', 'wake');
+    if (run.ending) endingsSeen[run.ending] = true;
+    drawFinale();
+    finale.hidden = false;
+    request();
+  }
+  function drawFinale() {
+    var card = make('div', 'lw-finale-card'), wakeBox = make('div', 'lw-wake'), seen = {};
+    empty(finale);
+    DATA.finale.wake.forEach(function (text) { add(wakeBox, make('p', '', text)); });
+    var endings = DATA.finale.endings || [], ending = endings.filter(function (item) { return item.id === run.ending; })[0];
+    add(card, wakeBox);
+    if (ending) { // 這一次的結局：醒來之後的幾句話、名稱、為什麼是這一種
+      var endBox = make('div', 'lw-ending'), endText = make('div', 'lw-ending-text');
+      endBox.setAttribute('data-ending', ending.id);
+      ending.text.forEach(function (text) { add(endText, make('p', '', text)); });
+      add(card, add(endBox, endText, make('h2', 'lw-ending-title', ending.title), make('p', 'lw-ending-why', '為什麼是這個結局：' + ending.why)));
+    }
+    add(card, make('h2', 'lw-finale-title', DATA.title + '　' + DATA.finale.title));
+    run.steps.forEach(function (step) { seen[step.scene.id] = true; });
+    var map = make('ol', 'lw-map');
+    SCENES.forEach(function (scene) { // 走過的寫名字，沒走的是霧
+      var spot = make('li', '', seen[scene.id] ? scene.title : '？');
+      spot.setAttribute('data-scene', scene.id);
+      spot.setAttribute('data-state', seen[scene.id] ? 'seen' : 'fog');
+      add(map, spot);
+    });
+    add(card, make('h3', '', '夢的地圖'), map);
+    var list = make('ul', 'lw-atlas-list');
+    DATA.atlas.forEach(function (entry) {
+      if (run.atlas.indexOf(entry.id) < 0) return;
+      add(list, add(make('li'), make('b', '', entry.name), document.createTextNode(entry.note)));
+    });
+    add(card, make('h3', '', '看過的東西'), make('p', 'lw-atlas-count', '圖鑑 ' + run.atlas.length + '／' + DATA.atlas.length), list);
+    add(card, make('h3', '', '同行的人'));
+    CAST.forEach(function (member) {
+      var value = run.state.meters[member.id], lines = DATA.finale.farewell[member.id];
+      var line = said('p', 'lw-farewell', member.id, lines ? lines[band(value)] : '');
+      add(card, add(line, make('small', '', METER.label + ' ' + signed(value))));
+    });
+    (DATA.finale.notes || []).forEach(function (note) { if (holds(note.when, run.state)) add(card, make('p', 'lw-note', note.text)); }); // 條件成立才出現的一句（例如誰最晚回訊息）
+    if (endings.length) { // 一共有哪幾種結局：看過的寫名稱，沒看過的是霧
+      var marks = make('ol', 'lw-endings'), count = 0;
+      endings.forEach(function (item) {
+        var mark = make('li', '', endingsSeen[item.id] ? item.title : '？');
+        mark.setAttribute('data-ending', item.id);
+        mark.setAttribute('data-state', endingsSeen[item.id] ? 'seen' : 'fog');
+        if (item.id === run.ending) mark.setAttribute('data-now', '1');
+        if (endingsSeen[item.id]) count += 1;
+        add(marks, mark);
+      });
+      add(card, make('h3', '', '結局'), make('p', 'lw-endings-count', '結局 ' + count + '／' + endings.length), marks);
+    }
+    add(card, make('p', 'lw-next', DATA.finale.next));
+    var again = make('button', 'lw-again', '再走一次'), close = make('button', 'lw-close', '回去看走過的路');
+    again.type = close.type = 'button';
+    add(card, add(make('div', 'lw-finale-buttons'), again, close));
+    add(finale, card);
+  }
+
+  // ======== 操作 ========
+  function indexOfGate(card) {
+    for (var index = 0; index < built.length; index += 1) if (built[index].gate === card) return index;
+    return -1;
+  }
+  function restart(scroll) {
+    picks = {};
+    run = replay(picks);
+    phase = 'play';
+    root.setAttribute('data-state', 'play');
+    finale.hidden = true;
+    sync(-1);
+    if (scroll) window.scrollTo(0, 0);
+  }
+  box.addEventListener('click', function (event) {
+    var target = event.target.closest ? event.target.closest('button') : null;
+    if (!target) return;
+    var card = target.closest('.lw-gate'), index;
+    if (target.className === 'lw-option' && card) { // 選了：後面的場景接上去
+      index = indexOfGate(card);
+      picks[built[index].step.scene.gate.id] = target.getAttribute('data-option');
+      run = replay(picks);
+      sync(index);
+    } else if (target.className === 'lw-rechoose' && card) { // 改選：這個抉擇和之後的選擇都作廢
+      index = indexOfGate(card);
+      var kept = {};
+      built.slice(0, index).forEach(function (item) { if (item.step.pick) kept[item.step.scene.gate.id] = item.step.pick.option.id; });
+      picks = kept;
+      run = replay(picks);
+      if (phase !== 'play') { phase = 'play'; root.setAttribute('data-state', 'play'); }
+      sync(index);
+    } else if (target.className === 'lw-view') {
+      var holderScene = target.closest('.lw-scene');
+      built.forEach(function (item) { if (item.el === holderScene) setView(item, target.getAttribute('data-view')); });
+    } else if (target === trailToggle) {
+      trailList.hidden = !trailList.hidden;
+      trailToggle.setAttribute('aria-expanded', trailList.hidden ? 'false' : 'true');
+    } else if (target.parentNode === trailList) {
+      built.forEach(function (item) { if (item.step.scene.id === target.getAttribute('data-scene')) window.scrollTo(0, item.el.offsetTop); });
+      trailList.hidden = true;
+      trailToggle.setAttribute('aria-expanded', 'false');
+    } else if (target.className === 'lw-again') {
+      restart(true);
+    } else if (target.className === 'lw-close') {
+      phase = 'done';
+      root.setAttribute('data-state', 'done');
+      finale.hidden = true;
+      request();
+    }
+  });
+
+  function fit() {
+    particles.width = window.innerWidth;
+    particles.height = window.innerHeight;
+    request();
+  }
+  window.addEventListener('scroll', request, {passive: true});
+  window.addEventListener('resize', fit);
+  // 給自動測試與之後的工具讀目前的狀態（和 app/scroll_story.py 的 walk 同樣的欄位）
+  window.lwScroll = {state: function () {
+    return {scenes: run.steps.map(function (step) { return step.scene.id; }), flags: snapshot(run.state).flags, meters: snapshot(run.state).meters,
+            atlas: run.atlas.slice(), outcomes: JSON.parse(JSON.stringify(run.outcomes)), complete: run.complete, waiting: run.waiting, ending: run.ending};
+  }, particles: function () { // 微粒的種類與每一粒的遠近（自動測試看風雪有沒有遠近）
+    return {mode: dust.mode, depths: dust.items.map(function (dot) { return dot.z; })};
+  }};
+
+  sync(-1);
+  fit();
+  if (!CALM) window.requestAnimationFrame(loop);
+})();</script>
+</body>
+</html>

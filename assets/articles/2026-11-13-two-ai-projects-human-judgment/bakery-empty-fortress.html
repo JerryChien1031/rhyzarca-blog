@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-wT9n7qetz6SVP542Zorf3VAiS6PVwwpEo6GNg44cxBg='; script-src 'sha256-T17v2CoCEd2vI6LhbsGIldtKNPY0ryvraxYuww6mf98='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Life World play-2">
+<title>空城計：巷口麵包店的最後清晨</title>
+<style>/* Life World 離線播放器 play-2（互動版）的樣式。
+   前半段是 reader-3 的樣式，逐條原樣帶過來：人物顏色、陣營標籤、幕名與起承轉合、三種字體都和閱讀版一致。
+   每個播放器各自是完整的一份（不在匯出時拼接）：之後閱讀版換新版本，已經匯出與之後匯出的互動版都不受影響。
+   tests/test_work_export.py 會檢查 reader-3 的每一條規則都在這裡。
+   後半段（「互動版」之後）是這個播放器自己的：逐段揭開、選視角、限次偷看真心話、線索、關鍵抉擇與結局、結尾卡、下方的逐段按鈕列。 */
+:root{--bg:#fbfaf6;--fg:#23261f;--muted:#6b7468;--line:#e2e0d6;--accent:#2f6b4f;--card:#ffffff;--turn:#c0281f;--c1:#1f5fa8;--c2:#8a5a00;--c3:#b02a78;--c4:#0b7468;--c5:#7a3fa3;--c6:#436f10;--size:18px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;--serif:"Noto Serif TC","Noto Serif CJK TC","Source Han Serif TC","Songti TC","PMingLiU","MingLiU",serif}
+html[data-theme=dark]{--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]){--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}}
+html[data-size=s]{--size:16px}
+html[data-size=l]{--size:21px}
+html[data-size=xl]{--size:24px}
+[data-c="1"]{--c:var(--c1)}
+[data-c="2"]{--c:var(--c2)}
+[data-c="3"]{--c:var(--c3)}
+[data-c="4"]{--c:var(--c4)}
+[data-c="5"]{--c:var(--c5)}
+[data-c="6"]{--c:var(--c6)}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0 auto;padding:32px 20px 64px;max-width:760px;color:var(--fg);font:var(--size)/1.9 var(--sans);overflow-wrap:anywhere}
+h1{margin:4px 0 12px;font-size:1.7em;line-height:1.35}
+h2,h3,h4{margin:0;font-size:1em}
+p{margin:0}
+.lw-genre,.lw-label,.lw-side,.lw-kind{display:inline-block;padding:0 .6em;border:1px solid var(--line);border-radius:999px;font-family:var(--sans);font-size:.76em;font-style:normal;font-weight:400;line-height:1.7;letter-spacing:.04em;vertical-align:.08em}
+.lw-kicker{color:var(--muted);font-size:.78em;letter-spacing:.12em}
+.lw-tags{margin:6px 0 0;font-size:.78em}
+.lw-genre{border-color:var(--accent);color:var(--accent);font-size:1em}
+.lw-kicker .lw-genre{margin-left:.9em}
+.lw-premise{color:var(--muted)}
+.lw-label{margin-right:.7em;border-color:var(--accent);color:var(--accent)}
+.lw-meta{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;margin:20px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.86em}
+.lw-meta dt{color:var(--muted)}
+.lw-meta dd{margin:0;white-space:pre-wrap}
+.lw-name{color:var(--c,inherit);font-weight:600}
+.lw-group-name{font-weight:600}
+.lw-tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.lw-tools[hidden]{display:none}
+.lw-tools button{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font:inherit;font-size:.78em;cursor:pointer}
+.lw-tools button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.lw-tools button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lw-toc{margin:28px 0 0;padding:16px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-toc h2{color:var(--muted);font-size:.86em;letter-spacing:.12em}
+.lw-toc ol{margin:8px 0 0;padding:0;list-style:none}
+.lw-toc a{color:var(--accent);text-decoration:none}
+.lw-toc a:hover,.lw-toc a:focus-visible{text-decoration:underline}
+.lw-chapter+.lw-chapter{margin-top:72px;padding-top:28px;border-top:1px solid var(--line)}
+.lw-chapter-title{margin:44px 0 8px;font-size:1.35em;line-height:1.4}
+.lw-scene{margin:8px 0 0;color:var(--muted);font-size:.86em;white-space:pre-wrap}
+.lw-beat{margin:44px 0 0}
+.lw-beat-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;color:var(--accent);letter-spacing:.08em}
+.lw-beat-name{color:var(--fg);font-size:1.12em;letter-spacing:.02em}
+.lw-kind{border-color:currentColor;border-radius:4px}
+.lw-beat-turn .lw-beat-title{padding-bottom:6px;border-bottom:2px solid var(--turn);color:var(--turn)}
+.lw-beat-turn .lw-kind{border-color:var(--turn);background:var(--turn);color:var(--bg);font-weight:600}
+.lw-turn-mark{margin-left:auto;font-size:.78em;font-weight:400;letter-spacing:.3em}
+.lw-goal{color:var(--muted);font-size:.86em}
+.lw-seg{margin:22px 0 0;padding:0 0 0 16px;border-left:3px solid var(--c,var(--line))}
+.lw-who{color:var(--c,var(--accent));font-weight:600}
+.lw-side{margin-left:.6em;color:var(--muted);font-size:.72em}
+.lw-stage{color:var(--muted);font-size:.82em;font-style:italic}
+.lw-action{color:var(--muted);font-family:var(--serif)}
+.lw-line{font-weight:500;white-space:pre-wrap}
+html[data-stage=off] .lw-stage,html[data-stage=off] .lw-goal{display:none}
+.lw-chapter[data-form=narrative] .lw-seg{padding-left:14px;border-left-width:2px}
+.lw-chapter[data-form=narrative] .lw-action{color:inherit}
+.lw-chapter[data-form=narrative] .lw-who{margin-right:.5em;font-size:.86em}
+.lw-teaser{margin:56px 0 0;padding:18px 20px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--card)}
+.lw-teaser-label{color:var(--accent);font-size:.78em;font-weight:600;letter-spacing:.2em}
+.lw-teaser-text{margin:4px 0 0;font-family:var(--serif);font-size:1.08em}
+.lw-foot{margin:64px 0 0;padding:16px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:.78em}
+@media print{.lw-tools{display:none}body{max-width:none;padding:0}.lw-seg,.lw-teaser{break-inside:avoid}.lw-beat-title{break-after:avoid}.lw-chapter{break-before:page}.lw-chapter:first-of-type{break-before:auto}}
+/* ---- 互動版 ----
+   .lw-wait：逐段模式下還沒揭開的段落、幕、章、抉擇與結尾卡，以及當下不該出現的靜態區塊，由程式加上。只在螢幕上隱藏，列印時整篇都印得出來。
+   .lw-entry：開始之前的「你要以誰的視角入局」。每位人物的按鈕用他的顏色。
+   .lw-xray：真心話（每一段之後那位人物的情緒、立場、目標）。預設不顯示；那一段被打開（.lw-open：自己視角的，或花一次偷看的）才顯示。
+   .lw-peek：別人的真心話上的「偷看」按鈕，由程式加上；次數用完就按不動。
+   .lw-clue：線索詞。程式啟動後才是可以點的（role=button）：不顯眼的點狀底線；找到之後換成強調色。.lw-clue-note 是點了才出現的提示。
+   .lw-seen：同一個人的線索都找到時出現的「你看穿了他的底牌」。
+   .lw-choice：關鍵抉擇。.lw-choice-list／.lw-endings 是靜態的（沒有程式、全部顯示、列印）；.lw-choice-play 是程式做的按鈕與結局卡。
+   .lw-dim：人物篩選時其他人的段落。只變淡、不隱藏，上下文還看得到。
+   .lw-secrets／.lw-epilogues／.lw-endings：底牌、番外、另外兩個結局。原生的收合區塊，沒有程式也不會自己展開。
+   .lw-nav：逐段的按鈕列，貼在畫面下方（手機上拇指按得到）；按鈕高度至少 48px。 */
+[hidden]{display:none!important}
+@media screen{.lw-wait{display:none!important}}
+.lw-hint{margin:14px 0 0;color:var(--muted);font-size:.78em}
+.lw-tools button{min-height:40px}
+.lw-meta .lw-name[role=button]{border-bottom:1px dashed currentColor;cursor:pointer}
+.lw-meta .lw-name[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.lw-meta .lw-name[aria-pressed=true]{padding:1px .6em;border:0;border-radius:999px;background:var(--c,var(--accent));color:var(--bg)}
+.lw-beat,.lw-chapter,.lw-choice,.lw-end{scroll-margin-top:16px}
+.lw-seg{transition:opacity .2s}
+.lw-seg.lw-dim{opacity:.3}
+.lw-new,.lw-ending-card,.lw-seen,.lw-clue-note,html[data-mode=step] .lw-choice{animation:lw-in .3s ease-out}
+@keyframes lw-in{from{opacity:0;transform:translateY(10px)}}
+.lw-entry{margin:20px 0 0;padding:16px 20px;border:1px solid var(--accent);border-radius:12px;background:var(--card)}
+.lw-entry-title{font-size:1.05em}
+.lw-entry-note{margin:4px 0 0;color:var(--muted);font-size:.78em}
+.lw-entry-options{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 0}
+.lw-entry button[data-c]{border-color:var(--c);color:var(--c);font-weight:600}
+.lw-entry button[aria-pressed=true]{border-color:var(--c,var(--accent));background:var(--c,var(--accent));color:var(--bg)}
+.lw-xray{display:none;flex-wrap:wrap;gap:0 16px;margin:10px 0 0;padding:6px 12px;border:1px dashed var(--c,var(--line));border-radius:10px;color:var(--muted);font-family:var(--sans);font-size:.78em;font-style:normal;font-weight:400}
+.lw-seg.lw-open .lw-xray{display:flex}
+.lw-xray-label{color:var(--c,var(--accent));font-weight:600;letter-spacing:.14em}
+.lw-xray-key{margin-right:.5em;color:var(--fg);font-weight:600}
+.lw-peek{display:block;min-height:40px;margin:10px 0 0;padding:4px 14px;border:1px dashed var(--c,var(--line));border-radius:999px;background:transparent;color:var(--muted);font:inherit;font-family:var(--sans);font-size:.78em;font-style:normal;font-weight:400;cursor:pointer}
+.lw-peek[aria-disabled=true]{border-color:var(--line);opacity:.6;cursor:default}
+.lw-clue[role=button]{border-bottom:1px dotted var(--muted);cursor:pointer}
+.lw-clue[role=button]:hover{border-bottom-color:var(--accent)}
+.lw-clue[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.lw-clue.lw-found{border-bottom:2px solid var(--accent);color:var(--accent);cursor:default}
+.lw-clue-note{margin:10px 0 0;padding:6px 12px;border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--card);color:var(--fg);font-family:var(--sans);font-size:.82em;font-style:normal;font-weight:400}
+.lw-seen{margin:10px 0 0;padding:12px 16px;border:1px solid var(--c,var(--accent));border-radius:12px;background:var(--card);font-style:normal}
+.lw-seen-title{color:var(--c,var(--accent));font-family:var(--sans);font-size:.82em;font-weight:600;letter-spacing:.06em}
+.lw-seen-text{margin:2px 0 0;color:var(--fg);font-family:var(--serif);font-weight:400;white-space:pre-wrap}
+.lw-choice{margin:44px 0 0;padding:18px 20px;border:2px solid var(--turn);border-radius:12px;background:var(--card)}
+.lw-choice:focus{outline:none}
+.lw-choice-kicker{color:var(--turn);font-size:.78em;font-weight:600;letter-spacing:.2em}
+.lw-choice-actor{margin:2px 0 0;color:var(--muted);font-size:.82em}
+.lw-choice-question{margin:6px 0 0;font-family:var(--serif);font-size:1.12em;font-weight:600}
+.lw-choice-list{margin:10px 0 0;padding:0 0 0 1.5em}
+.lw-choice-static{margin:8px 0 0;color:var(--muted);font-size:.78em}
+.lw-choice-options{display:flex;flex-direction:column;gap:10px;margin:14px 0 0}
+.lw-choice-lock{margin:10px 0 0;color:var(--turn);font-size:.82em;font-weight:600}
+.lw-choice-back{margin:12px 0 0}
+.lw-endings-seen{margin:10px 0 0;color:var(--muted);font-size:.78em}
+.lw-ending-card{margin:16px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.lw-ending{margin:12px 0 0;padding:0 0 0 14px;border-left:3px solid var(--accent)}
+.lw-ending[data-kind=bad]{border-left-color:var(--turn)}
+.lw-ending-card .lw-ending{margin:0}
+.lw-ending-kind{color:var(--accent);font-size:.78em;font-weight:600;letter-spacing:.2em}
+.lw-ending[data-kind=bad] .lw-ending-kind{color:var(--turn)}
+.lw-ending-pick{color:var(--muted);font-size:.82em}
+.lw-ending-text{margin:4px 0 0;font-family:var(--serif);white-space:pre-wrap}
+.lw-end{margin:56px 0 0}
+.lw-end>*+*{margin-top:20px}
+.lw-end .lw-teaser{margin-top:0}
+.lw-end .lw-end-kind+.lw-teaser{margin-top:12px}
+.lw-end-kind{width:max-content;max-width:100%;padding:2px 14px;border-radius:999px;background:var(--accent);color:var(--bg);font-size:.82em;font-weight:600;letter-spacing:.3em}
+.lw-secrets,.lw-pick,.lw-known,.lw-epilogues,.lw-endings{padding:14px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-endings{margin:12px 0 0;background:var(--bg)}
+.lw-secrets summary,.lw-epilogues summary,.lw-endings summary{padding:8px 0;color:var(--accent);font-weight:600;cursor:pointer}
+.lw-secrets summary:focus-visible,.lw-epilogues summary:focus-visible,.lw-endings summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.lw-secrets-note{color:var(--muted);font-size:.78em}
+.lw-secrets-chapter{margin:16px 0 0;color:var(--muted);font-size:.86em;letter-spacing:.08em}
+.lw-secret-list{margin:0;padding:0;list-style:none}
+.lw-secret{margin:12px 0 0;padding:0 0 0 14px;border-left:3px solid var(--c,var(--line))}
+.lw-secret .lw-name{display:block;font-size:.86em}
+.lw-secret-text{font-family:var(--serif);white-space:pre-wrap}
+.lw-known-title{color:var(--accent);font-size:.86em;font-weight:600}
+.lw-known-chapter{display:block;color:var(--muted);font-size:.72em}
+.lw-pick-title{font-size:1em}
+.lw-pick-options{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 0}
+.lw-pick-result{margin:10px 0 0;color:var(--accent);font-weight:600}
+.lw-pick-more{margin:14px 0 0}
+.lw-pick-more-title{color:var(--muted);font-size:.78em;letter-spacing:.2em}
+.lw-epilogue{margin:12px 0 0;padding:0 0 0 14px;border-left:3px solid var(--accent)}
+.lw-epilogue-chapter{color:var(--muted);font-size:.72em}
+.lw-epilogue-side{color:var(--accent);font-size:.82em;font-weight:600}
+.lw-epilogue-text{font-family:var(--serif);white-space:pre-wrap}
+.lw-ask{padding:14px 20px;border-left:4px solid var(--accent);font-family:var(--serif);font-size:1.08em}
+.lw-end-seen{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.lw-end-seen .lw-endings-seen{margin:0}
+.lw-nav{position:sticky;bottom:0;z-index:1;display:flex;align-items:center;gap:10px;margin:40px -20px 0;padding:12px 20px;border-top:1px solid var(--line);background:var(--bg)}
+.lw-nav-mid{flex:1;min-width:0;text-align:center}
+.lw-progress{color:var(--muted);font-size:.82em}
+.lw-status{color:var(--muted);font-size:.72em;line-height:1.5}
+.lw-nav button,.lw-pick button,.lw-again button,.lw-entry button,.lw-choice-play button,.lw-end-seen button{min-height:48px;padding:8px 22px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font:inherit;font-size:.86em;cursor:pointer}
+.lw-nav .lw-go,.lw-pick button[aria-pressed=true],.lw-option[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:var(--bg);font-weight:600}
+.lw-choice-play .lw-option{border-radius:14px;text-align:left;line-height:1.6}
+.lw-option[aria-disabled=true]{opacity:.5;cursor:default}
+.lw-option[aria-pressed=true][aria-disabled=true]{opacity:1}
+.lw-option.lw-locked{border-style:dashed}
+.lw-nav [data-play=start]{flex:1}
+.lw-nav button[aria-disabled=true]{opacity:.45;cursor:default}
+.lw-nav button:focus-visible,.lw-pick button:focus-visible,.lw-again button:focus-visible,.lw-entry button:focus-visible,.lw-choice-play button:focus-visible,.lw-end-seen button:focus-visible,.lw-peek:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:480px){.lw-nav button{padding:8px 16px}.lw-choice{padding:16px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lw-seg{transition:none}.lw-new,.lw-ending-card,.lw-seen,.lw-clue-note,html[data-mode=step] .lw-choice{animation:none}}
+@media print{.lw-nav,.lw-hint,.lw-entry,.lw-pick,.lw-again,.lw-peek,.lw-choice-play,.lw-end-kind,.lw-end-seen,.lw-known{display:none!important}.lw-seg.lw-dim{opacity:1}.lw-secret,.lw-choice,.lw-ending,.lw-epilogue{break-inside:avoid}.lw-clue{border:0!important;color:inherit!important}}</style>
+</head>
+<body>
+<header class="lw-head">
+<p class="lw-kicker">Life World 作品・互動版<span class="lw-genre">都市生活</span></p>
+<h1>空城計：巷口麵包店的最後清晨</h1>
+<p class="lw-premise"><span class="lw-label">開場</span>這是何以晴與杜承硯的故事。明天就是小麵包店付不出貨款的死期，最大供應商杜承硯今天突然上門看店，決定是否直接收回賒帳。店裡沒有任何籌碼，何以晴決定敞開大門、照常烤麵包做生意，讓杜承硯自己猜不透虛實。觀眾最想知道的問題是：這場空城計能否成功騙過精明的供應商，保住麵包店的未來？</p>
+<dl class="lw-meta"><dt>人物</dt><dd><div class="lw-group"><span class="lw-group-name">麵包店</span>：<span class="lw-name" data-c="1" data-p="1">何以晴</span></div><div class="lw-group"><span class="lw-group-name">供應商</span>：<span class="lw-name" data-c="2" data-p="2">杜承硯</span></div></dd><dt>場景</dt><dd>藍本：空城計，改編成日常生活。小店明天就付不出貨款，最大的供應商今天突然上門看店，要決定是否收回賒帳。店裡的人沒有任何籌碼，只能敞開大門、照常做生意，讓對方自己猜不透。何以晴是守店的人，她開的是巷口的小麵包店；杜承硯是上門的麵粉供應商。</dd><dt>完成</dt><dd>2026-11-11</dd></dl>
+<p class="lw-hint" hidden>先選一個人的視角入局。一次看一段：按「下一段」、空白鍵或 → 往下，← 回上一段。自己視角的真心話直接看得到，別人的只能偷看 2 次。故事走到轉折會停下來等你做決定，不同的選擇通往不同的結局。點人物的名字，其他人的段落會變淡；再點一次取消。</p>
+<div class="lw-tools" hidden><button type="button" data-tool="smaller" aria-label="字級縮小">A−</button><button type="button" data-tool="larger" aria-label="字級放大">A＋</button><button type="button" data-tool="theme">深色</button><button type="button" data-tool="stage" aria-pressed="true">場景提示</button><button type="button" data-tool="mode">全部顯示</button></div>
+<section class="lw-entry" data-peeks="2" hidden><h2 class="lw-entry-title">你要以誰的視角入局？</h2><p class="lw-entry-note">你會直接看到這個人每一段的真心話；其他人的只能偷看 2 次，用完就沒有了。選「旁觀」就每個人的都要偷看。</p><div class="lw-entry-options"><button type="button" data-view="1" data-c="1">何以晴</button><button type="button" data-view="2" data-c="2">杜承硯</button><button type="button" data-view="0">旁觀</button></div></section>
+</header>
+<main>
+<section class="lw-chapter" id="ch-1" data-form="narrative"><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 1 幕</span><span class="lw-kind">起</span><span class="lw-beat-name">敞開大門</span></h2><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">杜承硯推開玻璃門，手裡捏著一疊催款單，目光銳利地掃視空無一人的櫃檯，最後停在何以晴身上。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「這家店明天就是清償日，空氣裡倒是一點壓力也聞不到。我是來清點帳目的，不是來聽麵包香的。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜而帶有一絲懷疑</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>公事公辦，準備查核帳務與店鋪狀況</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>確認這家麵包店目前的真實財務與營運狀況</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">午後的陽光穿過玻璃門，把麵包店空蕩蕩的陳列架拉出長長的影子。</p><p class="lw-action">何以晴把最後一盤吐司穩穩放上木頭展示架，擦了擦沾滿麵粉的手，迎向杜承硯銳利的目光，神色從容地指了指窗邊唯一的空桌。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「杜大哥，你來得正好，剛出爐的白吐司還冒著熱氣呢。帳目的事我們坐下來慢慢對，店裡的營運計畫我正想跟你談談。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>表面鎮定，心裡暗自緊張</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持以營運和未來計畫來拖延清帳期限</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>穩住杜承硯，避免對方立刻盤點資產發現機器變賣</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">杜承硯沒有順著何以晴的手勢坐下，而是把催款單直接拍在木頭櫃檯上，手指點著上頭的紅色戳記，目光重新巡視一圈空蕩蕩的展示架與後方毫無藏匿空間的半開放廚房。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「坐就不必了，我不是來喝下午茶的。這張催款單上的數字明天就要結清，你如果要談營運計畫，先把這筆帳的來源與目前的流動資金交代清楚。要是店裡拿不出真金白銀，吐司香味再濃也沒用。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>公事公辦的緊繃與懷疑</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持先看帳目與現金流，拒絕被香氣或氣氛轉移焦點</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼對方正視即將到期的帳款與真實財務缺口</span></div></article></section><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 2 幕</span><span class="lw-kind">承</span><span class="lw-beat-name">照常營業</span></h2><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">木頭門被推開的瞬間，三四位圍著圍裙的街坊鄰居帶著寒氣擠進店裡，打破了原先僵持的氣氛。</p><p class="lw-action">何以晴快步走到工作台前，俐落地用夾子挑起一顆剛出爐、外皮烤得酥脆的小圓法放進小竹盤裡，連同熱騰騰的試吃紙巾一起推到杜承硯面前，正想開口解釋時，店門口的風鈴突然叮噹作響，一陣此起彼落的說話聲湧了進來。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「杜大哥，你先別急著拍桌子，帳目和現金我當然會給你看個清楚。你不是說光聞香味沒用嗎？來，這是今天剛出爐、加了新配方的蜂蜜黑麥小圓法，你先掰一小塊嚐嚐。只要你吃完覺得這味道留不住客人，明天這筆帳要收要留，我絕不攔你。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>外表保持鎮定與熱情，心跳卻因店外的人潮加速</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持先展現產品價值與人氣，不直接承認現金短缺</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>用突如其來的人潮轉移杜承硯對帳目的立即質疑</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">木門大開，外頭夾著冷意的風湧入店內，打斷了兩人原本的對質。</p><p class="lw-action">杜承硯皺眉看著湧進店裡的街坊，沒去碰竹盤裡的黑麥小圓法，而是退後半步讓出走道，順手將櫃檯上的催款單往自己胸前收回兩吋。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「吃麵包要是能抵掉這筆帳，我那車行早就不用愁零件錢了。不過既然人都到門口，我倒要看看你能變出什麼把戲。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>被打斷後的警戒與疑慮</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持先看帳目與現金流，不因突然出現的人潮而動搖立場</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>在人群湧入前逼對方給出真實的帳目與資金缺口數據</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">店內原本緊繃的空氣被此起彼落的招呼聲和麵包香氣打破，木質地板上多了一串雜沓卻熱鬧的腳步聲。</p><p class="lw-action">何以晴迅速轉身走向工作台，俐落地提起紙袋與夾子，無視杜承硯夾在胸前的催款單，迎向湧入櫃檯前排隊的熟客。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「王太太，早啊！今天特地保留了三條您最愛的紅豆吐司。杜大哥，你幫我拿著盤子招待大家一下，我馬上幫各位秤重包裝！」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>心跳雖然有些快，但藉著熟客的湧入重新掌握了現場節奏</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持先完成營業與接待，將帳目查核順理成章地延後</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>利用絡繹不絕的人潮建立現金流的假象，化解當下的催款危機</span></div></article></section><section class="lw-beat lw-beat-turn"><h2 class="lw-beat-title"><span class="lw-beat-no">第 3 幕</span><span class="lw-kind">轉</span><span class="lw-beat-name">琴聲與帳冊</span><span class="lw-turn-mark">轉折</span></h2><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">門口的街坊喧鬧聲瞬間退去，店內只剩下兩人沉重的呼吸聲。</p><p class="lw-action">杜承硯沒去接何以晴遞來的盤子，轉身走到櫃檯角落的檔案夾旁，手指勾起一疊壓在舊帳冊底下的紙張，抽出一張已經簽署但未送出的店面轉讓協議書，冷冷地拍在櫃面上。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「人潮來得快去得也快，你用不著拿這種熱鬧來打發我。帳上的缺口不是幾袋吐司能填滿的，今天不把合併的事談清楚，誰也走不出這扇門。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>震驚中帶著掌握主動的冷酷</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>不再糾結於短期的現金流，而是直接逼對方談妥店面重組與合併</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>利用翻出的轉讓協議書逼何以晴承認店面早已無路可走，進而談成收購</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">午後的陽光被轉角的高樓完全遮住，店內原本明亮的空間只剩櫃檯上方一盞昏黃的吊燈。</p><p class="lw-action">何以晴看見那張被拍在櫃面上的協議書，臉上的笑容瞬間收起。她沒有伸手去搶，而是停下正要打包吐司的手，深吸了一口氣，直直迎上杜承硯的目光，語氣低沉卻堅定地說出實情。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「這張轉讓書是我上個月預備的備案，不是現在的決定。杜大哥，你既然都看見了，那我也不瞞你——店裡最後一台揉麵機昨天已經變賣了，帳面上確實沒有現金。但我留著這間店不是為了頂讓給別人，只要給我一個月的時間，這筆貨款我一定全數清償。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>心跳雖然有些發冷，但將底牌掀開後反而感到一種卸下偽裝的平靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>不再隱瞞財務危機，坦承揉麵機已變賣的事實，但堅持爭取一個月的緩衝期</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>說服杜承硯放棄立即轉讓的念頭，爭取分期償還貨款的時間</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">杜承硯將那張轉讓協議書往何以晴的方向推了半寸，手指按在簽名欄的邊緣上，目光緊盯著對方的雙眼。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「一個月的時間太長，我的車行也得過冬。這張協議書既然已經簽了，就照我剛才說的辦，直接談店面重組與合併，否則你連這塊招牌都保不住。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜而堅決</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持以合併或收購來解決債務，不接受空口承諾</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼迫何以晴接受店面重組與合併的條件</span></div></article></section><aside class="lw-choice" aria-label="關鍵抉擇"><p class="lw-choice-kicker">關鍵抉擇</p><p class="lw-choice-actor">由 <span class="lw-name" data-c="2">杜承硯</span> 做決定</p><p class="lw-choice-question">面對何以晴拿出的轉讓協議書，杜承硯下一步該怎麼做？</p><ol class="lw-choice-list"><li data-option="a" data-kind="true">直接逼迫簽署合併協議</li><li data-option="b" data-kind="plain">拿走協議書回去請示總部</li><li data-option="c" data-kind="bad">當場撕毀協議書退讓一步</li></ol><p class="lw-choice-static">故事接下來走的是其中一條路；另外兩條路的結局收在下面。</p><details class="lw-endings"><summary>看另外兩個結局</summary><div class="lw-ending" data-option="b" data-kind="plain"><p class="lw-ending-kind">另一種結局</p><p class="lw-ending-pick">拿走協議書回去請示總部</p><p class="lw-ending-text">杜承硯把轉讓協議書收進公事包裡，轉身離開麵包店。等他回去請示總部時，何以晴早已利用這段空檔轉移了店內剩餘的器具，等總部主管回覆時，麵包店早已人去樓空，什麼也沒有留下。</p></div><div class="lw-ending" data-option="c" data-kind="bad"><p class="lw-ending-kind">壞結局</p><p class="lw-ending-pick">當場撕毀協議書退讓一步</p><p class="lw-ending-text">杜承硯見何以晴態度強硬，一時心軟將協議書當場撕碎，同意給她一個月寬限。結果何以晴根本拿不出錢，一個月後店鋪直接倒閉，杜承硯反而被總部追究放縱債務的責任。</p></div></details></aside><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 4 幕</span><span class="lw-kind">合</span><span class="lw-beat-name">最後的籌碼</span></h2><article class="lw-seg" data-c="1" data-p="1"><p class="lw-action">何以晴猛地拉開櫃檯下層生鏽的鐵質底櫃，從最深處抽出一份壓得平整、邊角泛黃的公文文件，毫不退讓地拍在杜承硯眼前的木桌上。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「杜大哥，你真以為我拿不出別的東西嗎？你看清楚，這是上個月發函的供應商總部財務危機評估報告。如果明天我的店跨了，你們總部在這邊的債務重整案也別想安穩過關。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>心跳雖然有些發冷，但將底牌掀開後反而感到一種卸下偽裝的平靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>不再隱瞞，以總部的危機反制對方的逼迫，堅持爭取一個月的緩衝期</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>用總部的財務漏洞逼杜承硯退讓，換取一個月的寬限期來保住麵包店</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">杜承硯的目光瞬間從協議書移到那份泛黃公文上，他臉色微變地抽過紙張快速掃過關鍵數字，隨即按在紙上抬頭死死盯著何以晴。</p><p class="lw-line"><span class="lw-who">杜承硯<span class="lw-side">供應商</span></span>「這份報告哪裡來的……你早盯上我們總部的底細了？好，不談收購，我們重新算這筆帳。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>震驚中帶有警惕</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>放棄強行併購，改以平等姿態談判雙邊債務的解法</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>確認總部危機外洩的程度並重新商議應對方案</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-action">何以晴將手掌覆在那份財務報告上，指尖因為用力而有些泛白，目光沒有退讓地迎上杜承硯審視的眼神。</p><p class="lw-line"><span class="lw-who">何以晴<span class="lw-side">麵包店</span></span>「我不是盯上誰，我只是想保住這家店。既然總部的現金流也卡在半路，我們就各退一步：貨款分四次結清，這份報告原封不動留在這裡，誰也不提頂讓的事。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>心跳雖然有些發快，但總算穩住局勢，不再退讓</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持以總部危機作為互不相逼的籌碼，爭取分期付款與保留店面</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>與杜承硯達成寬限一個月並分期清償的共識，保住麵包店</span></div></article></section></section>
+<section class="lw-end" aria-label="讀完之後"><p class="lw-end-kind" hidden>真結局</p><aside class="lw-teaser"><p class="lw-teaser-label">敬請期待下集</p><p class="lw-teaser-text">當兩份致命的底牌同時攤開，巷口麵包店的招牌究竟能不能懸掛到明天？</p></aside><details class="lw-secrets"><summary>看底牌</summary><p class="lw-secrets-note">每個人只有自己知道的事。會透露劇情，建議讀完再看。</p><ul class="lw-secret-list" data-ch="1"><li class="lw-secret" data-c="1" data-p="1"><span class="lw-name">何以晴</span><span class="lw-secret-text">何以晴其實已經把店裡最後一台揉麵機變賣，帳面上根本拿不出任何現金，全靠空架子撐場面。</span></li><li class="lw-secret" data-c="2" data-p="2"><span class="lw-name">杜承硯</span><span class="lw-secret-text">杜承硯的總部其實也面臨資金壓力，他今天來不是為了收回賒帳，而是想尋求合併或收購。</span></li></ul></details><div class="lw-pick" hidden><h2 class="lw-pick-title">你站哪一邊？</h2><div class="lw-pick-options"><button type="button" data-side="1">麵包店</button><button type="button" data-side="2">供應商</button></div><p class="lw-pick-result" role="status" hidden></p></div><details class="lw-epilogues"><summary>看番外</summary><div class="lw-epilogue" data-side="1"><p class="lw-epilogue-side">麵包店</p><p class="lw-epilogue-text">何以晴關上店門，將那份財務評估報告收回抽屜最深處。她擦了擦額頭的冷汗，看著架上剩下的半盤吐司，知道這場仗才剛開始。</p></div><div class="lw-epilogue" data-side="2"><p class="lw-epilogue-side">供應商</p><p class="lw-epilogue-text">杜承硯坐回車上的駕駛座，把那張簽署好的協議書扔在副駕駛座上。他看著後照鏡裡的巷口招牌，長長嘆了一口氣。</p></div></details><p class="lw-ask"><span class="lw-label">想一想</span>面對看似絕境卻依然處變不驚的對手，換作是你，會選擇硬碰硬還是退讓一步？</p><div class="lw-end-seen" hidden><p class="lw-endings-seen"></p><button type="button" data-play="rechoose">回到轉折點重選</button></div><div class="lw-again" hidden><button type="button" data-play="restart">從頭再看</button></div></section>
+</main>
+<nav class="lw-nav" aria-label="逐段閱讀" hidden><button type="button" data-play="prev">上一段</button><div class="lw-nav-mid"><p class="lw-progress"></p><p class="lw-status" hidden></p></div><button type="button" class="lw-go" data-play="next">下一段</button></nav>
+<footer class="lw-foot"><p>這是 AI 依人物設定生成的虛構演出，不代表真實人物或事實。</p><p>由 Life World 匯出・互動版 play-2</p></footer>
+<script type="application/json" id="lw-story">{"cast":[{"color":1,"name":"何以晴","role":null,"secret":"何以晴其實已經把店裡最後一台揉麵機變賣，帳面上根本拿不出任何現金，全靠空架子撐場面。","side":"麵包店"},{"color":2,"name":"杜承硯","role":null,"secret":"杜承硯的總部其實也面臨資金壓力，他今天來不是為了收回賒帳，而是想尋求合併或收購。","side":"供應商"}],"chapters":[{"beats":[{"goal":"","kind":"setup","no":1,"segments":[{"action":"杜承硯推開玻璃門，手裡捏著一疊催款單，目光銳利地掃視空無一人的櫃檯，最後停在何以晴身上。","color":2,"line":"這家店明天就是清償日，空氣裡倒是一點壓力也聞不到。我是來清點帳目的，不是來聽麵包香的。","no":1,"side":"供應商","speaker":"杜承硯","stage":"","state":{"emotion":"冷靜而帶有一絲懷疑","goal":"確認這家麵包店目前的真實財務與營運狀況","stance":"公事公辦，準備查核帳務與店鋪狀況"},"who":2},{"action":"何以晴把最後一盤吐司穩穩放上木頭展示架，擦了擦沾滿麵粉的手，迎向杜承硯銳利的目光，神色從容地指了指窗邊唯一的空桌。","color":1,"line":"杜大哥，你來得正好，剛出爐的白吐司還冒著熱氣呢。帳目的事我們坐下來慢慢對，店裡的營運計畫我正想跟你談談。","no":2,"side":"麵包店","speaker":"何以晴","stage":"午後的陽光穿過玻璃門，把麵包店空蕩蕩的陳列架拉出長長的影子。","state":{"emotion":"表面鎮定，心裡暗自緊張","goal":"穩住杜承硯，避免對方立刻盤點資產發現機器變賣","stance":"堅持以營運和未來計畫來拖延清帳期限"},"who":1},{"action":"杜承硯沒有順著何以晴的手勢坐下，而是把催款單直接拍在木頭櫃檯上，手指點著上頭的紅色戳記，目光重新巡視一圈空蕩蕩的展示架與後方毫無藏匿空間的半開放廚房。","color":2,"line":"坐就不必了，我不是來喝下午茶的。這張催款單上的數字明天就要結清，你如果要談營運計畫，先把這筆帳的來源與目前的流動資金交代清楚。要是店裡拿不出真金白銀，吐司香味再濃也沒用。","no":3,"side":"供應商","speaker":"杜承硯","stage":"","state":{"emotion":"公事公辦的緊繃與懷疑","goal":"逼對方正視即將到期的帳款與真實財務缺口","stance":"堅持先看帳目與現金流，拒絕被香氣或氣氛轉移焦點"},"who":2}],"title":"敞開大門"},{"goal":"","kind":"rise","no":2,"segments":[{"action":"何以晴快步走到工作台前，俐落地用夾子挑起一顆剛出爐、外皮烤得酥脆的小圓法放進小竹盤裡，連同熱騰騰的試吃紙巾一起推到杜承硯面前，正想開口解釋時，店門口的風鈴突然叮噹作響，一陣此起彼落的說話聲湧了進來。","color":1,"line":"杜大哥，你先別急著拍桌子，帳目和現金我當然會給你看個清楚。你不是說光聞香味沒用嗎？來，這是今天剛出爐、加了新配方的蜂蜜黑麥小圓法，你先掰一小塊嚐嚐。只要你吃完覺得這味道留不住客人，明天這筆帳要收要留，我絕不攔你。","no":4,"side":"麵包店","speaker":"何以晴","stage":"木頭門被推開的瞬間，三四位圍著圍裙的街坊鄰居帶著寒氣擠進店裡，打破了原先僵持的氣氛。","state":{"emotion":"外表保持鎮定與熱情，心跳卻因店外的人潮加速","goal":"用突如其來的人潮轉移杜承硯對帳目的立即質疑","stance":"堅持先展現產品價值與人氣，不直接承認現金短缺"},"who":1},{"action":"杜承硯皺眉看著湧進店裡的街坊，沒去碰竹盤裡的黑麥小圓法，而是退後半步讓出走道，順手將櫃檯上的催款單往自己胸前收回兩吋。","color":2,"line":"吃麵包要是能抵掉這筆帳，我那車行早就不用愁零件錢了。不過既然人都到門口，我倒要看看你能變出什麼把戲。","no":5,"side":"供應商","speaker":"杜承硯","stage":"木門大開，外頭夾著冷意的風湧入店內，打斷了兩人原本的對質。","state":{"emotion":"被打斷後的警戒與疑慮","goal":"在人群湧入前逼對方給出真實的帳目與資金缺口數據","stance":"堅持先看帳目與現金流，不因突然出現的人潮而動搖立場"},"who":2},{"action":"何以晴迅速轉身走向工作台，俐落地提起紙袋與夾子，無視杜承硯夾在胸前的催款單，迎向湧入櫃檯前排隊的熟客。","color":1,"line":"王太太，早啊！今天特地保留了三條您最愛的紅豆吐司。杜大哥，你幫我拿著盤子招待大家一下，我馬上幫各位秤重包裝！","no":6,"side":"麵包店","speaker":"何以晴","stage":"店內原本緊繃的空氣被此起彼落的招呼聲和麵包香氣打破，木質地板上多了一串雜沓卻熱鬧的腳步聲。","state":{"emotion":"心跳雖然有些快，但藉著熟客的湧入重新掌握了現場節奏","goal":"利用絡繹不絕的人潮建立現金流的假象，化解當下的催款危機","stance":"堅持先完成營業與接待，將帳目查核順理成章地延後"},"who":1}],"title":"照常營業"},{"goal":"","kind":"turn","no":3,"segments":[{"action":"杜承硯沒去接何以晴遞來的盤子，轉身走到櫃檯角落的檔案夾旁，手指勾起一疊壓在舊帳冊底下的紙張，抽出一張已經簽署但未送出的店面轉讓協議書，冷冷地拍在櫃面上。","color":2,"line":"人潮來得快去得也快，你用不著拿這種熱鬧來打發我。帳上的缺口不是幾袋吐司能填滿的，今天不把合併的事談清楚，誰也走不出這扇門。","no":7,"side":"供應商","speaker":"杜承硯","stage":"門口的街坊喧鬧聲瞬間退去，店內只剩下兩人沉重的呼吸聲。","state":{"emotion":"震驚中帶著掌握主動的冷酷","goal":"利用翻出的轉讓協議書逼何以晴承認店面早已無路可走，進而談成收購","stance":"不再糾結於短期的現金流，而是直接逼對方談妥店面重組與合併"},"who":2},{"action":"何以晴看見那張被拍在櫃面上的協議書，臉上的笑容瞬間收起。她沒有伸手去搶，而是停下正要打包吐司的手，深吸了一口氣，直直迎上杜承硯的目光，語氣低沉卻堅定地說出實情。","color":1,"line":"這張轉讓書是我上個月預備的備案，不是現在的決定。杜大哥，你既然都看見了，那我也不瞞你——店裡最後一台揉麵機昨天已經變賣了，帳面上確實沒有現金。但我留著這間店不是為了頂讓給別人，只要給我一個月的時間，這筆貨款我一定全數清償。","no":8,"side":"麵包店","speaker":"何以晴","stage":"午後的陽光被轉角的高樓完全遮住，店內原本明亮的空間只剩櫃檯上方一盞昏黃的吊燈。","state":{"emotion":"心跳雖然有些發冷，但將底牌掀開後反而感到一種卸下偽裝的平靜","goal":"說服杜承硯放棄立即轉讓的念頭，爭取分期償還貨款的時間","stance":"不再隱瞞財務危機，坦承揉麵機已變賣的事實，但堅持爭取一個月的緩衝期"},"who":1},{"action":"杜承硯將那張轉讓協議書往何以晴的方向推了半寸，手指按在簽名欄的邊緣上，目光緊盯著對方的雙眼。","color":2,"line":"一個月的時間太長，我的車行也得過冬。這張協議書既然已經簽了，就照我剛才說的辦，直接談店面重組與合併，否則你連這塊招牌都保不住。","no":9,"side":"供應商","speaker":"杜承硯","stage":"","state":{"emotion":"冷靜而堅決","goal":"逼迫何以晴接受店面重組與合併的條件","stance":"堅持以合併或收購來解決債務，不接受空口承諾"},"who":2}],"title":"琴聲與帳冊"},{"goal":"","kind":"payoff","no":4,"segments":[{"action":"何以晴猛地拉開櫃檯下層生鏽的鐵質底櫃，從最深處抽出一份壓得平整、邊角泛黃的公文文件，毫不退讓地拍在杜承硯眼前的木桌上。","color":1,"line":"杜大哥，你真以為我拿不出別的東西嗎？你看清楚，這是上個月發函的供應商總部財務危機評估報告。如果明天我的店跨了，你們總部在這邊的債務重整案也別想安穩過關。","no":10,"side":"麵包店","speaker":"何以晴","stage":"","state":{"emotion":"心跳雖然有些發冷，但將底牌掀開後反而感到一種卸下偽裝的平靜","goal":"用總部的財務漏洞逼杜承硯退讓，換取一個月的寬限期來保住麵包店","stance":"不再隱瞞，以總部的危機反制對方的逼迫，堅持爭取一個月的緩衝期"},"who":1},{"action":"杜承硯的目光瞬間從協議書移到那份泛黃公文上，他臉色微變地抽過紙張快速掃過關鍵數字，隨即按在紙上抬頭死死盯著何以晴。","color":2,"line":"這份報告哪裡來的……你早盯上我們總部的底細了？好，不談收購，我們重新算這筆帳。","no":11,"side":"供應商","speaker":"杜承硯","stage":"","state":{"emotion":"震驚中帶有警惕","goal":"確認總部危機外洩的程度並重新商議應對方案","stance":"放棄強行併購，改以平等姿態談判雙邊債務的解法"},"who":2},{"action":"何以晴將手掌覆在那份財務報告上，指尖因為用力而有些泛白，目光沒有退讓地迎上杜承硯審視的眼神。","color":1,"line":"我不是盯上誰，我只是想保住這家店。既然總部的現金流也卡在半路，我們就各退一步：貨款分四次結清，這份報告原封不動留在這裡，誰也不提頂讓的事。","no":12,"side":"麵包店","speaker":"何以晴","stage":"","state":{"emotion":"心跳雖然有些發快，但總算穩住局勢，不再退讓","goal":"與杜承硯達成寬限一個月並分期清償的共識，保住麵包店","stance":"堅持以總部危機作為互不相逼的籌碼，爭取分期付款與保留店面"},"who":1}],"title":"最後的籌碼"}],"form":"narrative","genre":"都市生活","interactive":{"clues":[],"decision":{"actor":{"color":2,"name":"杜承硯","who":2},"after":9,"after_beat":3,"options":[{"ending":"","id":"a","kind":"true","label":"直接逼迫簽署合併協議","needs_clue":false},{"ending":"杜承硯把轉讓協議書收進公事包裡，轉身離開麵包店。等他回去請示總部時，何以晴早已利用這段空檔轉移了店內剩餘的器具，等總部主管回覆時，麵包店早已人去樓空，什麼也沒有留下。","id":"b","kind":"plain","label":"拿走協議書回去請示總部","needs_clue":false},{"ending":"杜承硯見何以晴態度強硬，一時心軟將協議書當場撕碎，同意給她一個月寬限。結果何以晴根本拿不出錢，一個月後店鋪直接倒閉，杜承硯反而被總部追究放縱債務的責任。","id":"c","kind":"bad","label":"當場撕毀協議書退讓一步","needs_clue":false}],"question":"面對何以晴拿出的轉讓協議書，杜承硯下一步該怎麼做？"},"epilogues":[{"side":"麵包店","text":"何以晴關上店門，將那份財務評估報告收回抽屜最深處。她擦了擦額頭的冷汗，看著架上剩下的半盤吐司，知道這場仗才剛開始。"},{"side":"供應商","text":"杜承硯坐回車上的駕駛座，把那張簽署好的協議書扔在副駕駛座上。他看著後照鏡裡的巷口招牌，長長嘆了一口氣。"}],"question":"面對看似絕境卻依然處變不驚的對手，換作是你，會選擇硬碰硬還是退讓一步？"},"no":1,"premise":"這是何以晴與杜承硯的故事。明天就是小麵包店付不出貨款的死期，最大供應商杜承硯今天突然上門看店，決定是否直接收回賒帳。店裡沒有任何籌碼，何以晴決定敞開大門、照常烤麵包做生意，讓杜承硯自己猜不透虛實。觀眾最想知道的問題是：這場空城計能否成功騙過精明的供應商，保住麵包店的未來？","scene":"藍本：空城計，改編成日常生活。小店明天就付不出貨款，最大的供應商今天突然上門看店，要決定是否收回賒帳。店裡的人沒有任何籌碼，只能敞開大門、照常做生意，讓對方自己猜不透。何以晴是守店的人，她開的是巷口的小麵包店；杜承硯是上門的麵粉供應商。","secrets":[{"color":1,"name":"何以晴","secret":"何以晴其實已經把店裡最後一台揉麵機變賣，帳面上根本拿不出任何現金，全靠空架子撐場面。","who":1},{"color":2,"name":"杜承硯","secret":"杜承硯的總部其實也面臨資金壓力，他今天來不是為了收回賒帳，而是想尋求合併或收購。","who":2}],"teaser":"當兩份致命的底牌同時攤開，巷口麵包店的招牌究竟能不能懸掛到明天？","title":"空城計：巷口麵包店的最後清晨"}],"format":"lw-play.v2","title":"空城計：巷口麵包店的最後清晨"}</script>
+<script>(function () {
+  // Life World 離線播放器 play-2（互動版）。內容已經完整寫在頁面裡；這段程式把它變成有東西可猜、選擇會改變結局的版本：
+  // 1. 入局：開始之前先選一個人的視角（或旁觀）。他的每一段真心話直接看得到；別人的要「偷看」，次數有限，用完就沒有了。
+  // 2. 逐段模式（預設）：先藏起還沒讀到的段落，按「下一段」、空白鍵或 → 一次揭開一段，← 收回。
+  //    章名、幕名跟著那一章（幕）的第一段出現；「全部顯示」可以切到整篇閱讀，再按回到逐段。
+  // 3. 線索：原文裡有些詞可以點。點到會顯示提示並記入計數；同一個人的線索都找到，就直接看穿他的底牌。
+  // 4. 關鍵抉擇：揭開到指定那一幕的最後一段，「下一段」停住，出現抉擇。選真結局才繼續揭開原本的後續；
+  //    選另外兩個會在原地顯示那個結局的旁白，可以回到轉折點重選。真結局可能要先找到線索才能選。看過哪些結局記在這個瀏覽器。
+  // 5. 結尾卡（走完真結局才出現）：下集預告、底牌（看穿的直接顯示，其餘按「看底牌」）、你站哪一邊（選了顯示那一邊的番外與提問）、從頭再看。
+  // 6. 人物篩選：點開頭的人物名字，其他人的段落變淡（不隱藏，上下文還在）。
+  // 所有文字（選項、結局、提示、底牌、番外）都已經在頁面裡，這裡只決定什麼時候顯示、把靜態的清單換成按鈕；不從別處取得內容。
+  // 這段程式沒有執行時（預覽工具、被停用），頁面就是整篇可讀的文章：抉擇是一個靜態區塊，底牌、番外、另外兩個結局仍然收合。
+  // 所以「藏起來」都由這裡動手，不寫死在頁面裡。沒有任何連線；偏好與看過的結局存在這個瀏覽器，存不了（例如直接點開的檔案被限制）也照常使用。
+  var root = document.documentElement;
+  var tools = document.querySelector('.lw-tools');
+  if (!tools) return;
+
+  function list(selector, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(selector)); }
+  function hit(event, selector) { return event.target && event.target.closest ? event.target.closest(selector) : null; }
+  function read(key) { try { return window.localStorage.getItem(key); } catch (error) { return null; } }
+  function write(key, value) { try { window.localStorage.setItem(key, value); } catch (error) { /* 存不了不影響閱讀 */ } }
+  function readObject(key) {
+    try {
+      var value = JSON.parse(read(key) || 'null');
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+    } catch (error) { return {}; }
+  }
+  // 程式新增的元素一律用 textContent 放文字：頁面裡的內容不會被當成標籤再解析一次
+  function make(tag, name, text) {
+    var element = document.createElement(tag);
+    if (name) element.className = name;
+    if (text) element.textContent = text;
+    if (tag === 'button') element.type = 'button';
+    return element;
+  }
+  function empty(element) { while (element.firstChild) element.removeChild(element.firstChild); }
+  function digits(value) { return /^\d+$/.test(value || '') ? value : ''; }
+  function press(event) { return event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar'; }
+
+  // ---- 閱讀偏好 ----
+  // 字級、深淺色、場景提示和閱讀版共用同一個鍵：同一個瀏覽器裡兩種檔案的設定一致。
+  var KEY = 'lw-reader-prefs';
+  var SIZES = ['s', 'm', 'l', 'xl'];
+  var prefs = {theme: '', size: 'm', stage: 'on'};
+  var saved = readObject(KEY);
+  Object.keys(prefs).forEach(function (key) { if (typeof saved[key] === 'string') prefs[key] = saved[key]; });
+
+  function isDark() {
+    var theme = root.getAttribute('data-theme');
+    if (theme) return theme === 'dark';
+    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+
+  function apply() {
+    if (prefs.theme === 'dark' || prefs.theme === 'light') root.setAttribute('data-theme', prefs.theme);
+    else root.removeAttribute('data-theme');
+    root.setAttribute('data-size', SIZES.indexOf(prefs.size) < 0 ? 'm' : prefs.size);
+    root.setAttribute('data-stage', prefs.stage === 'off' ? 'off' : 'on');
+    var stage = tools.querySelector('[data-tool=stage]');
+    if (stage) stage.setAttribute('aria-pressed', prefs.stage === 'off' ? 'false' : 'true');
+    var theme = tools.querySelector('[data-tool=theme]');
+    if (theme) theme.textContent = isDark() ? '淺色' : '深色';
+    write(KEY, JSON.stringify(prefs));
+  }
+
+  // ---- 頁面上的東西 ----
+  var main = document.querySelector('main');
+  var segs = list('main .lw-seg');
+  var total = segs.length;
+  var nav = document.querySelector('.lw-nav');
+  var end = document.querySelector('.lw-end');
+  var secrets = document.querySelector('.lw-secrets');
+  var entry = document.querySelector('.lw-entry'); // 選視角；沒有任何人物狀態的舊作品沒有這一塊，改用「開始」
+  var endKind = document.querySelector('.lw-end-kind');
+  var endSeen = document.querySelector('.lw-end-seen');
+  var modeButton = tools.querySelector('[data-tool=mode]');
+  var startButton = nav && nav.querySelector('[data-play=start]');
+  var prevButton = nav && nav.querySelector('[data-play=prev]');
+  var nextButton = nav && nav.querySelector('[data-play=next]');
+  var progress = nav && nav.querySelector('.lw-progress');
+  var status = nav && nav.querySelector('.lw-status');
+  // 沒有段落（或頁面不完整）就不進入逐段模式：整篇照常顯示
+  var stepping = Boolean(total && prevButton && nextButton && progress && (entry || startButton));
+  var mode = stepping ? 'step' : 'all';
+  var shown = 0; // 已經揭開幾段
+
+  // 每一章、每一幕從第幾段開始（依頁面順序，章排在它的幕前面）。章名、幕名跟著自己的第一段出現；
+  // 沒有段落的章跟著它後面的第一段出現（後面沒有段落就跟著最後一段）。
+  var heads = list('main .lw-chapter, main .lw-beat').map(function (element) {
+    var first = segs.indexOf(element.querySelector('.lw-seg'));
+    if (first < 0) {
+      first = total - 1;
+      for (var index = 0; index < total; index += 1) {
+        if (element.compareDocumentPosition(segs[index]) & 4) { first = index; break; } // 4＝這一段排在它後面
+      }
+    }
+    return {element: element, first: first};
+  });
+
+  function wait(element, on) { if (element) element.classList.toggle('lw-wait', on); }
+
+  // ---- 視角與偷看 ----
+  // view：null＝還沒選、0＝旁觀、n＝第 n 位人物（和段落上的 data-p 同一套號碼）。
+  // 自己視角的真心話直接打開；別人的每一段前面加一顆「偷看」，按一次少一次。次數寫在頁面裡（兩位人物 2 次、三位以上 3 次）。
+  var view = null;
+  var viewButtons = entry ? list('button[data-view]', entry) : [];
+  var peeksTotal = entry ? Number(entry.getAttribute('data-peeks')) || 0 : 0;
+  var peeksLeft = peeksTotal;
+  var xrays = [];
+  segs.forEach(function (seg) {
+    var box = seg.querySelector('.lw-xray');
+    if (!box) return;
+    var button = make('button', 'lw-peek');
+    button.setAttribute('data-play', 'peek');
+    seg.insertBefore(button, box);
+    xrays.push({seg: seg, button: button, peeked: false});
+  });
+
+  function drawXray() {
+    xrays.forEach(function (item) {
+      var open = item.peeked || (view > 0 && item.seg.getAttribute('data-p') === String(view));
+      item.seg.classList.toggle('lw-open', open);
+      item.button.hidden = open;
+      item.button.textContent = peeksLeft > 0 ? '偷看他此刻在想什麼（剩 ' + peeksLeft + ' 次）' : '偷看的次數用完了';
+      // 用完只標成不能按（不用 disabled）：和「下一段」一樣，焦點留在上面時鍵盤照常可以翻頁
+      item.button.setAttribute('aria-disabled', peeksLeft > 0 ? 'false' : 'true');
+    });
+  }
+
+  // ---- 線索 ----
+  // 線索詞在頁面裡是一般文字（.lw-clue）；有這段程式才變成可以點的。它的提示寫在同一段裡（.lw-clue-note，先藏著），
+  // data-who 是這則線索指向第幾位人物的底牌。沒有對應提示的詞不算線索。
+  var clues = [];
+  var seen = []; // 已經看穿的底牌：{item: 結尾卡裡那一則底牌, card: 段落裡「你看穿了…」的那張卡}
+  list('main .lw-clue').forEach(function (span) {
+    var seg = span.closest('.lw-seg');
+    var id = span.getAttribute('data-clue');
+    var note = null;
+    list('.lw-clue-note', seg || span).forEach(function (item) { if (!note && item.getAttribute('data-clue') === id) note = item; });
+    if (!seg || !note) return;
+    var clue = {span: span, seg: seg, chapter: span.closest('.lw-chapter'), note: note, who: note.getAttribute('data-who'), found: false};
+    span.setAttribute('role', 'button');
+    span.setAttribute('tabindex', '0');
+    span.setAttribute('aria-pressed', 'false');
+    span.addEventListener('keydown', function (event) {
+      if (!press(event)) return;
+      event.preventDefault(); // 焦點在線索詞上：空白鍵是「點它」，不是下一段
+      findClue(clue);
+    });
+    clues.push(clue);
+  });
+
+  function clueFound(chapter) { return clues.some(function (clue) { return clue.found && clue.chapter === chapter; }); }
+
+  // 這則線索指向的那一張底牌（結尾卡裡收合的清單，依章分開）。章號與人物號碼只接受數字，才拿去組選擇器。
+  function secretOf(clue) {
+    var chapter = digits(clue.chapter ? clue.chapter.id.replace('ch-', '') : '');
+    var who = digits(clue.who);
+    if (!secrets || !chapter || !who) return null;
+    return secrets.querySelector('.lw-secret-list[data-ch="' + chapter + '"] .lw-secret[data-p="' + who + '"]');
+  }
+
+  function findClue(clue) {
+    if (clue.found) return;
+    clue.found = true;
+    clue.span.classList.add('lw-found');
+    clue.span.setAttribute('aria-pressed', 'true');
+    clue.note.hidden = false;
+    // 同一章裡指向同一個人的線索都找到了：看穿他的底牌，直接顯示在剛點的這一段下面
+    var all = clues.every(function (other) { return other.found || other.chapter !== clue.chapter || other.who !== clue.who; });
+    var item = all ? secretOf(clue) : null;
+    if (item) {
+      var name = item.querySelector('.lw-name');
+      var text = item.querySelector('.lw-secret-text');
+      var card = make('aside', 'lw-seen');
+      if (item.getAttribute('data-c')) card.setAttribute('data-c', item.getAttribute('data-c'));
+      card.appendChild(make('p', 'lw-seen-title', '你看穿了 ' + (name ? name.textContent : '') + ' 的底牌'));
+      card.appendChild(make('p', 'lw-seen-text', text ? text.textContent : ''));
+      clue.note.parentNode.insertBefore(card, clue.note.nextSibling);
+      seen.push({item: item, card: card});
+    }
+    draw();
+  }
+
+  // 結尾卡的底牌：已經看穿的直接列在「看底牌」上面（從收合的清單複製出來，原本那一則先藏起來，不重複出現），其餘照舊要按了才看得到。
+  var known = null;
+  var knownList = null;
+  var knownCount = -1;
+  if (secrets) {
+    known = make('div', 'lw-known');
+    known.hidden = true;
+    known.appendChild(make('p', 'lw-known-title', '你已經看穿的底牌'));
+    knownList = make('ul', 'lw-secret-list');
+    known.appendChild(knownList);
+    secrets.parentNode.insertBefore(known, secrets);
+  }
+
+  function drawKnown() {
+    if (!secrets || knownCount === seen.length) return; // 沒有變就不重畫
+    knownCount = seen.length;
+    empty(knownList);
+    var items = list('.lw-secret', secrets);
+    items.forEach(function (item) { item.hidden = false; });
+    seen.forEach(function (one) {
+      var copy = one.item.cloneNode(true);
+      var head = one.item.parentNode.previousElementSibling; // 多章節：標明是哪一章的底牌
+      if (head && head.classList.contains('lw-secrets-chapter')) copy.insertBefore(make('span', 'lw-known-chapter', head.textContent), copy.firstChild);
+      knownList.appendChild(copy);
+      one.item.hidden = true;
+    });
+    known.hidden = !seen.length;
+    // 某一章的底牌都看穿了，那一章的小標題一起收掉；全部都看穿了，「看底牌」整個不用了
+    list('.lw-secret-list', secrets).forEach(function (group) {
+      var left = list('.lw-secret', group).some(function (item) { return !item.hidden; });
+      var head = group.previousElementSibling;
+      group.hidden = !left;
+      if (head && head.classList.contains('lw-secrets-chapter')) head.hidden = !left;
+    });
+    secrets.hidden = !items.some(function (item) { return !item.hidden; });
+  }
+
+  // ---- 關鍵抉擇 ----
+  // 頁面裡的抉擇是靜態的：題目、選項清單（li 帶著代號、種類、要不要先找到線索）、另外兩個結局收在 details。
+  // 這裡替每個抉擇做一組可以按的（.lw-choice-play）：選項按鈕、少線索時的說明、選了另外兩個時的結局卡、回到轉折點重選、已看過幾個結局。
+  // 逐段模式顯示可以按的那一組、藏起靜態的；「全部顯示」相反（和沒有程式時一樣）。
+  // after：抉擇出現時已經揭開幾段（它前面那一幕的最後一段）；chapterEnd：它所在那一章的最後一段——走到那裡才算看過那一章的真結局。
+  // 多章節時每一章可以各有一個抉擇，依頁面順序一個一個來。
+  var ENDINGS_KEY = 'lw-play-endings:' + document.title; // 看過的結局記在這個瀏覽器；鍵帶著作品標題，不同作品不會互相覆蓋
+  var endingsSeen = readObject(ENDINGS_KEY);
+  var choices = list('main .lw-choice').map(function (element) {
+    var chapter = element.closest('.lw-chapter');
+    var choice = {element: element, chapter: chapter, after: 0, chapterEnd: total, picked: null, shownEnding: null, options: [],
+                  statics: list('.lw-choice-list, .lw-choice-static, .lw-endings', element)};
+    segs.forEach(function (seg, index) {
+      if (seg.compareDocumentPosition(element) & 4) choice.after = index + 1; // 4＝抉擇排在這一段後面
+      if (chapter && chapter.contains(seg)) choice.chapterEnd = index + 1;
+    });
+    var buttons = make('div', 'lw-choice-options');
+    list('.lw-choice-list li', element).forEach(function (item) {
+      var id = item.getAttribute('data-option');
+      var option = {id: id, kind: item.getAttribute('data-kind'), needsClue: item.hasAttribute('data-needs-clue'), ending: null,
+                    key: (chapter ? chapter.id : '') + ':' + id, button: make('button', 'lw-option', item.textContent)};
+      list('.lw-ending', element).forEach(function (one) { if (one.getAttribute('data-option') === id) option.ending = one; });
+      option.button.addEventListener('click', function () { choose(choice, option); });
+      buttons.appendChild(option.button);
+      choice.options.push(option);
+    });
+    choice.lock = make('p', 'lw-choice-lock', '還少一條線索——回頭找找');
+    choice.card = make('div', 'lw-ending-card');
+    choice.back = make('div', 'lw-choice-back');
+    var again = make('button', '', '回到轉折點重選');
+    again.setAttribute('data-play', 'rechoose');
+    choice.back.appendChild(again);
+    choice.count = make('p', 'lw-endings-seen');
+    choice.play = make('div', 'lw-choice-play');
+    [buttons, choice.lock, choice.card, choice.back, choice.count].forEach(function (part) { choice.play.appendChild(part); });
+    element.appendChild(choice.play);
+    element.setAttribute('tabindex', '-1'); // 可以用程式把焦點放上來（見 arrive），本身不在 Tab 的順序裡
+    return choice;
+  });
+
+  // 走到轉折點時把焦點放在抉擇卡上：鍵盤再按 Tab 就是第一個選項。不直接放在選項上——連按空白鍵翻頁的讀者會不小心按下去。
+  function arrive(choice) {
+    if (choice && choice.element.focus) choice.element.focus({preventScroll: true});
+  }
+
+  // 擋在目前進度上的抉擇（還沒選真結局的第一個，而且剛好揭開到它前面）；沒有就是 null
+  function waitingChoice() {
+    for (var index = 0; index < choices.length; index += 1) {
+      if (!isTrue(choices[index])) return choices[index].after === shown ? choices[index] : null;
+    }
+    return null;
+  }
+
+  function isTrue(choice) { return Boolean(choice.picked) && choice.picked.kind === 'true'; }
+  function resolved() { return choices.every(isTrue); }
+
+  // 逐段模式最多能揭開到第幾段：第一個還沒選真結局的抉擇擋在那裡（還沒選，或選了另外兩個結局）
+  function limit() {
+    for (var index = 0; index < choices.length; index += 1) {
+      if (!isTrue(choices[index])) return choices[index].after;
+    }
+    return total;
+  }
+
+  function waitingView() { return Boolean(entry) && view === null; } // 有視角可選卻還沒選：不能開始
+  function canAdvance() { return mode === 'step' && !waitingView() && shown < limit(); }
+
+  function seenText() {
+    var all = 0;
+    var have = 0;
+    choices.forEach(function (choice) {
+      choice.options.forEach(function (option) {
+        all += 1;
+        if (endingsSeen[option.key]) have += 1; // 只數這份檔案裡真的有的結局
+      });
+    });
+    return '已看過 ' + have + '／' + all + ' 個結局';
+  }
+
+  function markSeen(option) {
+    if (endingsSeen[option.key]) return;
+    endingsSeen[option.key] = 1;
+    write(ENDINGS_KEY, JSON.stringify(endingsSeen));
+  }
+
+  function drawChoice(choice, everything, counted) {
+    wait(choice.element, !everything && shown < choice.after);
+    choice.statics.forEach(function (part) { wait(part, !everything); });
+    choice.play.hidden = everything;
+    var here = !everything && shown === choice.after; // 讀者正站在轉折點上：可以選，也可以改選
+    var open = clueFound(choice.chapter);
+    var locked = false;
+    choice.options.forEach(function (option) {
+      var blocked = option.needsClue && !open; // 要先找到線索的選項：這一章一條線索都還沒找到就不能選
+      locked = locked || blocked;
+      option.button.setAttribute('aria-pressed', choice.picked === option ? 'true' : 'false');
+      option.button.setAttribute('aria-disabled', here && !blocked ? 'false' : 'true');
+      option.button.classList.toggle('lw-locked', blocked);
+    });
+    choice.lock.hidden = !locked;
+    var ending = choice.picked && !isTrue(choice) ? choice.picked.ending : null;
+    if (choice.shownEnding !== ending) { // 結局卡：把收合區塊裡那個結局複製出來；換了選擇才重做
+      empty(choice.card);
+      if (ending) choice.card.appendChild(ending.cloneNode(true));
+      choice.shownEnding = ending;
+    }
+    choice.card.hidden = !ending;
+    choice.back.hidden = !choice.picked || isTrue(choice);
+    choice.count.textContent = counted;
+  }
+
+  function viewName() {
+    var name = '';
+    viewButtons.forEach(function (button) { if (button.getAttribute('data-view') === String(view)) name = button.textContent; });
+    return name;
+  }
+
+  function drawStatus(done) {
+    if (!status) return;
+    var parts = [];
+    if (entry && view !== null) parts.push('視角：' + viewName());
+    if (xrays.length) parts.push('偷看剩 ' + peeksLeft + ' 次');
+    if (clues.length) parts.push('線索 ' + clues.filter(function (clue) { return clue.found; }).length + '／' + clues.length);
+    var stuck = done ? null : waitingChoice();
+    if (stuck) parts.push(stuck.picked ? '這條路到這裡結束' : '等你做決定'); // 停在轉折點：說明為什麼「下一段」按不動
+    status.textContent = parts.join('・');
+    status.hidden = !parts.length;
+  }
+
+  function draw() {
+    var everything = mode === 'all';
+    var done = everything || (shown >= total && resolved()); // 讀完＝全部揭開，而且每個抉擇都走了真結局
+    if (main && everything) main.removeAttribute('aria-live'); // 整篇一次出現時不要全部念一遍
+    segs.forEach(function (seg, index) { wait(seg, !everything && index >= shown); });
+    heads.forEach(function (head) { wait(head.element, !everything && head.first >= shown); });
+    // 真結局要真的走完那一章才算看過（另外兩個結局在選的當下就算）；「全部顯示」不算
+    if (!everything) choices.forEach(function (choice) { if (isTrue(choice) && shown >= choice.chapterEnd) markSeen(choice.picked); });
+    var counted = seenText();
+    choices.forEach(function (choice) { drawChoice(choice, everything, counted); });
+    wait(end, !done); // 結尾卡：讀完才出現
+    if (!done && secrets) secrets.open = false; // 結尾卡收起來時底牌也收合：再讀到最後要重新按才看得到
+    if (endKind) endKind.hidden = everything; // 「真結局」只對一路選過來的讀者說
+    if (endSeen) {
+      endSeen.hidden = everything;
+      endSeen.querySelector('.lw-endings-seen').textContent = counted;
+    }
+    drawXray();
+    drawKnown();
+    root.setAttribute('data-mode', mode);
+    if (modeButton) modeButton.textContent = everything ? '逐段閱讀' : '全部顯示'; // 按鈕寫的是按下去會變成什麼
+    if (!stepping) return;
+    nav.hidden = everything;
+    if (entry) entry.hidden = everything || shown > 0; // 選視角只在還沒開始的時候
+    viewButtons.forEach(function (button) {
+      button.setAttribute('aria-pressed', view !== null && button.getAttribute('data-view') === String(view) ? 'true' : 'false');
+    });
+    if (startButton) startButton.hidden = shown > 0;
+    prevButton.hidden = nextButton.hidden = shown === 0;
+    // 走不下去時「下一段」只標成不能按，不用 disabled：焦點留在被停用的按鈕上時，瀏覽器不會送出鍵盤事件，← 會失效
+    nextButton.setAttribute('aria-disabled', canAdvance() ? 'false' : 'true');
+    progress.textContent = shown === 0 ? '共 ' + total + ' 段' : '第 ' + shown + '／' + total + ' 段';
+    drawStatus(done);
+    if (main && !everything) main.setAttribute('aria-live', 'polite'); // 新揭開的段落讓螢幕報讀器念出來
+  }
+
+  function bring(element, top) {
+    if (!element || !element.scrollIntoView) return;
+    // 一般的段落放在畫面中間；新的一章（幕）或比畫面高的段落從開頭對齊，標題與第一行不會被切掉
+    var tall = element.getBoundingClientRect().height > window.innerHeight * 0.6;
+    element.scrollIntoView({block: top || tall ? 'start' : 'center'});
+  }
+
+  function advance() {
+    if (!canAdvance()) return false;
+    var index = shown;
+    shown += 1;
+    draw();
+    var target = segs[index];
+    for (var number = 0; number < heads.length; number += 1) {
+      if (heads[number].first === index) { target = heads[number].element; break; } // 這一段是某一章（幕）的第一段：章名、幕名一起進到畫面
+    }
+    list('.lw-new').forEach(function (item) { item.classList.remove('lw-new'); });
+    target.classList.add('lw-new');
+    // 走到停下來的地方（抉擇，或最後的結尾卡）也從開頭對齊：接在這一段下面的那張卡一起進到畫面
+    bring(target, target !== segs[index] || shown >= limit());
+    arrive(waitingChoice());
+    return true;
+  }
+
+  function focusStart() {
+    var first = entry ? viewButtons[0] : startButton;
+    if (first) first.focus({preventScroll: true});
+  }
+
+  function back() {
+    if (mode !== 'step' || shown <= 0) return false;
+    var inNav = nav.contains(document.activeElement);
+    shown -= 1;
+    // 退到抉擇之前：那個選擇不算了，再走到轉折點要重新選
+    choices.forEach(function (choice) { if (choice.after > shown) choice.picked = null; });
+    draw();
+    if (shown > 0) {
+      bring(segs[shown - 1]);
+    } else {
+      window.scrollTo(0, 0);
+      if (inNav) focusStart(); // 「上一段」收起來了，焦點交給開始的地方
+    }
+    return true;
+  }
+
+  // 從頭再看：回到選視角之前，偷看的次數與找到的線索都重來；看過哪些結局留著。
+  function restart() {
+    if (!stepping) return;
+    shown = 0;
+    mode = 'step';
+    view = null;
+    peeksLeft = peeksTotal;
+    xrays.forEach(function (item) { item.peeked = false; });
+    clues.forEach(function (clue) {
+      clue.found = false;
+      clue.span.classList.remove('lw-found');
+      clue.span.setAttribute('aria-pressed', 'false');
+      clue.note.hidden = true;
+    });
+    seen.forEach(function (one) { if (one.card.parentNode) one.card.parentNode.removeChild(one.card); });
+    seen = [];
+    choices.forEach(function (choice) { choice.picked = null; });
+    draw();
+    window.scrollTo(0, 0);
+    focusStart();
+  }
+
+  // 選視角：選了就開始（揭開第一段）。還沒往下讀之前可以改選。
+  function enter(next) {
+    view = next;
+    if (shown === 0 && advance()) nextButton.focus({preventScroll: true}); // 選視角的區塊收起來了，焦點交給「下一段」：鍵盤可以接著按
+    else draw();
+  }
+
+  function choose(choice, option) {
+    // 只有站在轉折點上才能選；要先找到線索的選項，還沒找到時按了沒有作用（下面那行字說明原因）
+    if (mode !== 'step' || shown !== choice.after) return;
+    if (option.needsClue && !clueFound(choice.chapter)) return;
+    choice.picked = option;
+    choices.forEach(function (other) { if (other.after > choice.after) other.picked = null; });
+    if (option.kind === 'true') {
+      draw();
+      if (!advance()) bring(end, true); // 真結局沒有後續段落：接下來就是結尾卡
+      nextButton.focus({preventScroll: true}); // 焦點交給「下一段」：空白鍵可以接著往下，不會又按到選項
+    } else {
+      markSeen(option);
+      draw();
+      bring(choice.card);
+    }
+  }
+
+  // 回到轉折點重選。抉擇卡上的那一顆回到它自己；結尾卡上的那一顆回到最後一個抉擇。偷看的次數與線索不重來。
+  function rechoose(button) {
+    var element = button.closest('.lw-choice');
+    var target = null;
+    choices.forEach(function (choice) { if (!element || choice.element === element) target = choice; });
+    if (!target || !stepping) return;
+    mode = 'step';
+    shown = target.after;
+    choices.forEach(function (choice) { if (choice.after >= target.after) choice.picked = null; });
+    draw();
+    bring(target.element, true);
+    arrive(target); // 剛才按的那一顆收起來了，焦點交給抉擇卡
+  }
+
+  document.addEventListener('click', function (event) {
+    var word = hit(event, '.lw-clue[role=button]');
+    if (word) {
+      clues.forEach(function (clue) { if (clue.span === word) findClue(clue); });
+      return;
+    }
+    var person = hit(event, 'button[data-view]');
+    if (person) {
+      enter(Number(person.getAttribute('data-view')) || 0);
+      return;
+    }
+    var button = hit(event, 'button[data-play]');
+    if (!button) return;
+    var what = button.getAttribute('data-play');
+    if (what === 'start') {
+      if (advance()) nextButton.focus({preventScroll: true}); // 「開始」收起來了，焦點交給「下一段」：鍵盤可以接著按
+    } else if (what === 'next') {
+      advance();
+    } else if (what === 'prev') {
+      back();
+    } else if (what === 'restart') {
+      restart();
+    } else if (what === 'rechoose') {
+      rechoose(button);
+    } else if (what === 'peek') {
+      xrays.forEach(function (item) {
+        if (item.button !== button || item.peeked || peeksLeft <= 0) return; // 次數用完就不能再看
+        item.peeked = true;
+        peeksLeft -= 1;
+      });
+      draw();
+    }
+  });
+
+  document.addEventListener('keydown', function (event) {
+    // 只在逐段模式接手：整篇閱讀時空白鍵照常捲動頁面
+    if (mode !== 'step' || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+    var space = event.key === ' ' || event.key === 'Spacebar';
+    if (!space && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+    // 焦點在按鈕、連結、收合區塊上時，空白鍵是「按下它」：交給瀏覽器，不要同時又翻一段
+    if (space && hit(event, 'button,a,summary,input,select,textarea,[role=button]')) return;
+    var left = event.key === 'ArrowLeft';
+    // 沒有得翻了（還沒選視角、停在抉擇、已經讀完）：交還給瀏覽器，空白鍵照常捲動頁面
+    if (left ? shown <= 0 : !canAdvance()) return;
+    event.preventDefault();
+    if (event.repeat) return; // 按住不放不連翻，免得一口氣把後面都揭開
+    if (left) back(); else advance();
+  });
+
+  tools.addEventListener('click', function (event) {
+    var button = hit(event, 'button[data-tool]');
+    if (!button) return;
+    var tool = button.getAttribute('data-tool');
+    if (tool === 'smaller' || tool === 'larger') {
+      var index = SIZES.indexOf(prefs.size);
+      if (index < 0) index = 1;
+      prefs.size = SIZES[Math.max(0, Math.min(SIZES.length - 1, index + (tool === 'larger' ? 1 : -1)))];
+    } else if (tool === 'theme') {
+      prefs.theme = isDark() ? 'light' : 'dark';
+    } else if (tool === 'stage') {
+      prefs.stage = prefs.stage === 'off' ? 'on' : 'off';
+    } else if (tool === 'mode' && stepping) {
+      mode = mode === 'all' ? 'step' : 'all'; // 進度與做過的選擇都留著：切回逐段時回到剛才讀到的地方
+      draw();
+      if (mode === 'step' && shown > 0) bring(segs[shown - 1]);
+    }
+    apply();
+  });
+
+  // ---- 人物篩選 ----
+  // 名字在頁面裡是一般文字；有這段程式才變成可以按的按鈕（滑鼠、Enter、空白鍵）。再按一次同一個名字取消。
+  var names = list('.lw-meta .lw-name[data-p]');
+  var chosen = '';
+
+  function focusOn(who) {
+    chosen = chosen === who ? '' : who;
+    names.forEach(function (name) { name.setAttribute('aria-pressed', name.getAttribute('data-p') === chosen ? 'true' : 'false'); });
+    segs.forEach(function (seg) { seg.classList.toggle('lw-dim', Boolean(chosen) && seg.getAttribute('data-p') !== chosen); });
+  }
+
+  names.forEach(function (name) {
+    name.setAttribute('role', 'button');
+    name.setAttribute('tabindex', '0');
+    name.setAttribute('aria-pressed', 'false');
+    name.addEventListener('click', function () { focusOn(name.getAttribute('data-p')); });
+    name.addEventListener('keydown', function (event) {
+      if (!press(event)) return;
+      event.preventDefault();
+      focusOn(name.getAttribute('data-p'));
+    });
+  });
+
+  // ---- 你站哪一邊 ----
+  // 選了之後顯示那一邊的番外（從收合的番外區塊複製出來）與給讀者的那句提問。選擇記在這個瀏覽器；鍵帶著作品標題，不同作品不會互相覆蓋。
+  // 沒有這一塊的作品（不到兩個陣營）：番外維持收合的區塊、提問直接在文章最後，和沒有程式時一樣。
+  var pick = document.querySelector('.lw-pick');
+  if (pick) {
+    var PICK_KEY = 'lw-play-pick:' + document.title;
+    var epilogues = document.querySelector('.lw-epilogues');
+    var ask = document.querySelector('.lw-ask');
+    var options = list('button[data-side]', pick);
+    var result = pick.querySelector('.lw-pick-result');
+    var more = make('div', 'lw-pick-more');
+    more.hidden = true;
+    pick.appendChild(more);
+    var side = function (name) {
+      var picked = null;
+      options.forEach(function (option) {
+        var on = option.textContent === name;
+        if (on) picked = option;
+        option.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      if (result) {
+        result.textContent = picked ? '你選了：' + name : '';
+        result.hidden = !picked;
+      }
+      empty(more);
+      if (picked && epilogues) {
+        list('.lw-epilogue', epilogues).forEach(function (item) {
+          if (item.getAttribute('data-side') !== picked.getAttribute('data-side')) return;
+          if (!more.firstChild) more.appendChild(make('p', 'lw-pick-more-title', '番外'));
+          more.appendChild(item.cloneNode(true));
+        });
+      }
+      more.hidden = !more.firstChild;
+      if (ask) ask.hidden = !picked;
+    };
+    side(read(PICK_KEY) || ''); // 上次選的陣營還在才顯示
+    pick.addEventListener('click', function (event) {
+      var option = hit(event, 'button[data-side]');
+      if (!option) return;
+      side(option.textContent);
+      write(PICK_KEY, option.textContent);
+    });
+    if (epilogues) epilogues.hidden = true; // 番外改由選邊帶出來
+    pick.hidden = false;
+  }
+
+  // ---- 目錄（多章節） ----
+  // 逐段模式下還沒揭開的章是藏起來的，連結跳不過去：先把到那一章第一段為止的內容揭開，瀏覽器再照常捲到那一章。
+  // 中間有還沒走真結局的抉擇就不能跳過去：揭開到那個轉折點、停在那裡。還沒選視角就跳章，當成旁觀。
+  var toc = document.querySelector('.lw-toc');
+  if (toc) {
+    toc.addEventListener('click', function (event) {
+      var link = hit(event, 'a[href^="#"]');
+      if (!link || mode !== 'step') return;
+      var chapter = document.getElementById(link.getAttribute('href').slice(1));
+      heads.forEach(function (head) {
+        if (head.element !== chapter || head.first < shown) return;
+        if (waitingView()) view = 0;
+        var stop = limit();
+        if (stop <= head.first) {
+          event.preventDefault();
+          shown = stop;
+          draw();
+          var blocked = waitingChoice();
+          if (blocked) {
+            bring(blocked.element, true);
+            arrive(blocked);
+          }
+        } else {
+          shown = head.first + 1;
+          draw();
+        }
+      });
+    });
+  }
+
+  apply();
+  draw();
+  tools.hidden = false;
+  if (modeButton && !stepping) modeButton.hidden = true;
+  list('.lw-again, .lw-hint').forEach(function (element) { element.hidden = !stepping; });
+})();</script>
+</body>
+</html>
