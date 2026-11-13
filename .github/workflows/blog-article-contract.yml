@@ -10,6 +10,11 @@ on:
       - 'scripts/check_blog_article_contract.py'
       - 'tests/test_blog_article_contract.py'
       - '.github/workflows/blog-article-contract.yml'
+      - '_data/blog_categories.json'
+      - 'assets/js/blogger.js'
+      - 'categories.md'
+      - 'docs/blog-taxonomy.md'
+      - 'tests/test_blog_taxonomy.py'
 
 permissions:
   contents: read
@@ -43,6 +48,11 @@ jobs:
 
       - name: Blogger sync and OAuth recovery regression tests (mocked, no credentials)
         run: python -m unittest discover -s tests -p 'test_blogger_recovery.py' -v
+
+      - name: Validate shared category names and article assignments
+        run: |
+          python -m unittest discover -s tests -p 'test_blog_taxonomy.py' -v
+          node --check assets/js/blogger.js
 
       - name: Validate changed article fields, images and official conversion
         env:

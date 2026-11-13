@@ -1,8 +1,8 @@
 ---
 blogger_post_id: '6028406612788388487'
 categories:
+- speculations
 - insights
-- architecture
 date: 2026-08-20 10:00:00 +0800
 description: 推論能力正在商品化，決定未來的不是 AGI 的能力上限，而是約束它的制度形狀。從純量目標的三重死刑、可觀測性分立，到全息治理沙盒與人類 20
   瓦濕件的道德定錨——一部人機共生的文明憲章。
@@ -16,6 +16,7 @@ tags:
 - Sovereign-OS
 - Antifragility
 title: 當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？
+permalink: "/insights/architecture/2026/08/20/constitution-delegates-and-governance-sandboxes/"
 ---
 
 ![AGI Constitutional Governance and Sovereign State Layer](/assets/images/posts/2026-08-20-constitution-delegates-and-governance-sandboxes_1.jpg)

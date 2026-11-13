@@ -2,7 +2,6 @@
 blogger_post_id: '1417675867966245296'
 categories:
 - insights
-- architecture
 date: 2026-08-18 09:00:00 +0800
 description: 面對人生轉折，為什麼我們總陷入慣性鬼打牆？當 Gemini Notebook 賦予 AI 專家見識，選項始於個人認知，而最終的取捨抉擇永遠來自個體的主權天賦。
 image: /assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg
@@ -15,6 +14,7 @@ tags:
 - Sense-Making
 - Sovereign-OS
 title: 聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦
+permalink: "/insights/architecture/2026/08/18/intelligence-vs-insight-gemini-notebook-changes-perception/"
 ---
 
 ![Intelligence vs Insight](/assets/images/posts/2026-08-18-intelligence-vs-insight-gemini-notebook-changes-perception_1.jpg)

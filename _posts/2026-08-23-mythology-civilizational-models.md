@@ -1,8 +1,8 @@
 ---
 blogger_post_id: '9100259439524101384'
 categories:
+- speculations
 - insights
-- epistemology
 date: 2026-08-23 06:00:00 +0800
 description: 為什麼能計算歲差、堆疊百萬噸巨石的遠古文明，卻同時住土坯房且用神話解釋世界？本文建立「小孩開大車（繼承型文明）」模型，推演技術斷層下的唯讀維運協議與政治黑箱；並以出土草稿鏈進行嚴格壓力測試，在現代
   AGI 困境中照見人類的認識論鏡像。
@@ -15,6 +15,7 @@ tags:
 - AGI
 - Civilizational-Models
 title: 神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗
+permalink: "/insights/epistemology/2026/08/22/mythology-civilizational-models/"
 ---
 
 ![The Child Driving the Titan Hero Cover](/assets/images/posts/2026-08-23-mythology-civilizational-models_1.jpg)
