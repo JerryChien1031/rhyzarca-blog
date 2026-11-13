@@ -1,0 +1,38 @@
+[
+  {
+    "id": "insights",
+    "name": "心得記錄",
+    "english": "Insights",
+    "aliases": [
+      "Epistemology",
+      "epistemology"
+    ],
+    "summary": "對知識、工具、工作與人機協作的觀察、評析和反思；分享觀點如何形成與改變。"
+  },
+  {
+    "id": "architecture",
+    "name": "實作探索",
+    "english": "Practice",
+    "aliases": [
+      "build-log",
+      "Architecture"
+    ],
+    "summary": "從構想、試驗到成果，分享把問題做出解法的過程。涵蓋可行性研究、設計製作、測試除錯、維護與實作回顧；不限個人或團隊，也不以完成或成功為門檻。"
+  },
+  {
+    "id": "embodied",
+    "name": "生活體驗",
+    "english": "Embodied",
+    "aliases": [
+      "life-and-trails"
+    ],
+    "summary": "以親身經歷為主，記錄生活、活動、旅行、學習、工作現場、環境與身體感受。"
+  },
+  {
+    "id": "speculations",
+    "name": "科學思辨",
+    "english": "Speculations",
+    "aliases": [],
+    "summary": "以問題、假說與思想實驗探索科學、技術、歷史與未來社會的可能性，釐清前提、推論與待驗證之處。"
+  }
+]

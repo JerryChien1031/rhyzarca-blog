@@ -1,8 +1,7 @@
 ---
 blogger_post_id: '5543664938342122398'
 categories:
-- Epistemology
-- Architecture
+- insights
 date: 2026-08-16 14:00:00 +0800
 layout: post
 tags:
@@ -10,6 +9,7 @@ tags:
 - AGI
 - Cognitive-Curvature
 title: 認知總帳：為什麼 AGI 時代最稀缺的不是知識，而是認知軌跡
+permalink: "/epistemology/architecture/2026/08/16/epistemic-ledger/"
 ---
 
 當 AGI 成為如電力一般的基礎設施時，客觀知識將不再稀缺。

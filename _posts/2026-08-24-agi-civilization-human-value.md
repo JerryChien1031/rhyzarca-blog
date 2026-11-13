@@ -1,8 +1,8 @@
 ---
 blogger_post_id: '6460462670817260460'
 categories:
+- speculations
 - insights
-- architecture
 date: 2026-08-24 16:00:00 +0800
 description: 推論算力與專業知識正在全面商品化，過去靠「資訊落差」築起的階級壁壘正加速瓦解。從第一性原理出發，深入剖析為何資訊開源與社會整體認知提升是唯一正解，並繪製後勞動時代以人為本的五大價值躍升藍圖。
 layout: post
@@ -14,6 +14,7 @@ tags:
 - Side-Effect-Budgeting
 - Sovereign-Mind
 title: 從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？
+permalink: "/insights/architecture/2026/08/24/agi-civilization-human-value/"
 ---
 
 ![From Information Arbitrage to Cognitive Commons](/assets/images/posts/2026-08-24-agi-civilization-human-value_1.jpg)
