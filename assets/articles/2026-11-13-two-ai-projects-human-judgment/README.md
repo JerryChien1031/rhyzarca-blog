@@ -11,7 +11,7 @@
 | `modern-hongmen-banquet.html` | `現代鴻門宴：會館裡的最後合約（互動版）.html` | `9a0236e9b912ca298c93908f8ff613d14e8e33aa` | 逐段閱讀、人物反應、真心話與結尾卡 |
 | `bakery-empty-fortress.html` | `空城計：巷口麵包店的最後清晨（互動版）.html` | `d68c9a4c366109d20f4affe6988a54ca6a8ccf78` | 互動故事作品，角色與劇情均屬虛構 |
 | `spring-under-ice-scroll.html` | `冰下之春（捲動劇情）.html` | `b820737a71e3c3ddac264e03995d7b79101f6fe0` | 捲動敘事作品，含完整離線播放器 |
-| `modern-hongmen-reader.html` | 由本目錄 `modern-hongmen-banquet.html` 的已公開劇情整理 | 衍生檔，不適用原始檔 SHA（請查看當次 Git Blob） | 本篇三類作品之一：純文字小說敘事／腳本式對話，4 幕 17 段；保留原正文，移除互動程式與角色狀態，**非產品原生 reader-3** |
+| `modern-hongmen-reader.html` | 由本目錄 `modern-hongmen-banquet.html` 的已公開劇情整理 | 衍生檔，不適用原始檔 SHA（請查看當次 Git Blob） | 先前為 Blog 製作的無腳本純閱讀整理版，4 幕 17 段，**非產品原生 reader-3**；目前 Blog 正文已改回展示原始 `play-1`，此檔保留供追溯 |
 
 ## 發布與嵌入方式
 
@@ -30,6 +30,6 @@
 
 - **規劃型互動**：`sea-town-route.html`
 - **情境型互動**：`spring-under-ice-scroll.html`
-- **純文字小說／腳本**：`modern-hongmen-reader.html`（從既有已公開作品整理的純閱讀示範，非原生 reader-3）
+- **小說／腳本（互動閱讀展示）**：`modern-hongmen-banquet.html`（原始 `play-1`，保留四幕文字劇情，並提供逐段閱讀及角色狀態互動；非純文字靜態頁）
 
-其餘原始離線作品 `modern-hongmen-banquet.html` 與 `bakery-empty-fortress.html` 仍完整留存於本篇資產資料夾，但不在 Blog 正文重複嵌入。三份 Demo 連結只指向 GitHub Pages 靜態 HTML，不提供 Repo 開發日誌、Commit 或原始碼導航。
+其他原始離線作品（例如 `bakery-empty-fortress.html`）仍完整留存於資產資料夾，不在 Blog 正文重複嵌入。`modern-hongmen-reader.html` 也保留為先前衍生展示，不再由正文連結。三份 Demo 連結只指向 GitHub Pages 靜態 HTML，不提供 Repo 開發日誌、Commit 或原始碼導航。
