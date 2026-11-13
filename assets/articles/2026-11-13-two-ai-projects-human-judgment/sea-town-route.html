@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-wOYdMearj/nXVxImeSIyMZLlVeXvtctiUmelXYKkzuw='; script-src 'sha256-fmVE6/7tdMGhyyIDZox3/AwFiW85Qx1xu9Cc6ypIByY='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Life World route-1">
+<title>海角小鎮一日遊</title>
+<style>/* Life World 離線播放器 route-1（回合制互動作品的路線播放器）的樣式。
+   每個播放器各自是完整的一份（不在匯出時拼接）：之後別的播放器換新版本，已經匯出的互動遊戲不受影響。
+   前半段（到 .lw-foot）是和閱讀版、互動版同一套的基礎：顏色、深淺色、字級、人物色號、頁首與工具列，讓三種檔案看起來是同一個系列。
+   後半段是這個播放器自己的，照程式的兩層分：
+   通用的——同行者的數值列（.lw-cast）、左欄走過的路（.lw-trail）、右欄目前的節點與反應（.lw-node）、選項卡（.lw-option）、
+            結局演出（.lw-finale：結局卡、最後一句話與願望、片尾字幕、特效）、列印用的行程表（.lw-print）；
+   行程題材的——示意地圖（.lw-map）。
+   沒有程式時只有 .lw-static（清單與收合的劇透區）；程式啟動後在 html 加上 data-play，靜態的部分才藏起來。 */
+:root{--bg:#fbfaf6;--fg:#23261f;--muted:#6b7468;--line:#e2e0d6;--accent:#2f6b4f;--card:#ffffff;--turn:#c0281f;--c1:#1f5fa8;--c2:#8a5a00;--c3:#b02a78;--c4:#0b7468;--c5:#7a3fa3;--c6:#436f10;--size:18px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;--serif:"Noto Serif TC","Noto Serif CJK TC","Source Han Serif TC","Songti TC","PMingLiU","MingLiU",serif}
+html[data-theme=dark]{--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]){--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}}
+html[data-size=s]{--size:16px}
+html[data-size=l]{--size:21px}
+html[data-size=xl]{--size:24px}
+[data-c="1"]{--c:var(--c1)}
+[data-c="2"]{--c:var(--c2)}
+[data-c="3"]{--c:var(--c3)}
+[data-c="4"]{--c:var(--c4)}
+[data-c="5"]{--c:var(--c5)}
+[data-c="6"]{--c:var(--c6)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0 auto;padding:32px 20px 64px;max-width:1080px;color:var(--fg);font:var(--size)/1.8 var(--sans);overflow-wrap:anywhere}
+h1{margin:4px 0 12px;font-size:1.7em;line-height:1.35}
+h2,h3,h4{margin:0;font-size:1em}
+p{margin:0}
+button{font:inherit}
+.lw-genre,.lw-label,.lw-tag{display:inline-block;padding:0 .6em;border:1px solid var(--line);border-radius:999px;font-family:var(--sans);font-size:.76em;font-style:normal;font-weight:400;line-height:1.7;letter-spacing:.04em;vertical-align:.08em}
+.lw-kicker{color:var(--muted);font-size:.78em;letter-spacing:.12em}
+.lw-genre{border-color:var(--accent);color:var(--accent);font-size:1em}
+.lw-kicker .lw-genre{margin-left:.9em}
+.lw-premise{max-width:760px;color:var(--muted)}
+.lw-label{margin-right:.7em;border-color:var(--accent);color:var(--accent)}
+.lw-meta{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;max-width:760px;margin:20px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.86em}
+.lw-meta dt{color:var(--muted)}
+.lw-meta dd{margin:0}
+.lw-name{color:var(--c,inherit);font-weight:600}
+.lw-tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.lw-tools button{min-height:40px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font-size:.78em;cursor:pointer}
+.lw-foot{margin:64px 0 0;padding:16px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:.78em}
+button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lw-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* ---- 沒有程式時的內容 ---- */
+html[data-play] .lw-static{display:none}
+.lw-static{max-width:760px}
+.lw-need{margin:24px 0 0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--card);font-size:.86em}
+.lw-static-title{margin:28px 0 0;color:var(--muted);font-size:.86em;letter-spacing:.12em}
+.lw-places{margin:0;padding:0;list-style:none}
+.lw-place{margin:12px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-place-name{font-size:1.08em}
+.lw-place-text{font-family:var(--serif)}
+.lw-place-facts{color:var(--muted);font-size:.82em}
+.lw-tag{margin-left:.6em;color:var(--muted)}
+.lw-spoilers{margin:28px 0 0;padding:14px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-spoilers summary{padding:8px 0;color:var(--accent);font-weight:600;cursor:pointer}
+.lw-spoiler-title{margin:18px 0 0;color:var(--muted);font-size:.86em;letter-spacing:.12em}
+.lw-spoiler-stop{margin:14px 0 0}
+.lw-spoiler-list,.lw-lines{margin:0;padding:0;list-style:none}
+.lw-spoiler-who{margin:8px 0 0;padding:0 0 0 14px;border-left:3px solid var(--line)}
+.lw-change{margin-left:.8em;color:var(--muted);font-size:.82em}
+.lw-wish-text{display:block;font-family:var(--serif)}
+.lw-lines li{font-family:var(--serif)}
+.lw-line-key{display:inline-block;min-width:5.5em;margin-right:.6em;color:var(--muted);font-family:var(--sans);font-size:.78em}
+/* ---- 遊戲畫面：通用的部分 ---- */
+html[data-phase=play] .lw-premise,html[data-phase=play] .lw-meta,html[data-phase=end] .lw-premise,html[data-phase=end] .lw-meta{display:none}
+.lw-game{margin:20px 0 0}
+.lw-cast{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;gap:6px 28px;margin:0 -20px;padding:10px 20px;border-bottom:1px solid var(--line);background:var(--bg)}
+.lw-meter{display:flex;align-items:center;gap:8px;min-width:0;font-size:.82em}
+.lw-meter-label{color:var(--muted);font-size:.9em}
+.lw-bar{position:relative;flex:0 0 auto;width:120px;height:10px;border-radius:999px;background:var(--line);overflow:hidden}
+.lw-bar-zero{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--muted)}
+.lw-bar-fill{position:absolute;top:0;bottom:0;background:var(--c,var(--accent));transition:left .6s ease,width .6s ease}
+.lw-meter-value{min-width:1.8em;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.lw-delta{font-size:.9em;font-weight:700;white-space:nowrap}
+.lw-delta.lw-up{color:var(--accent)}
+.lw-delta.lw-down{color:var(--turn)}
+.lw-meter .lw-delta{min-width:3em}
+.lw-cols{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:32px;align-items:start;margin:24px 0 0;scroll-margin-top:4.6em}
+html[data-phase=start] .lw-cols{grid-template-columns:minmax(0,760px)}
+.lw-trail{position:sticky;top:4.2em;max-height:calc(100vh - 5em);overflow-y:auto;padding:0 4px 4px 0}
+.lw-trail-toggle{display:none}
+.lw-trail-title{color:var(--muted);font-size:.78em;letter-spacing:.12em}
+.lw-trail-hint{margin:2px 0 0;color:var(--muted);font-size:.72em}
+.lw-trail-list{margin:10px 0 0 6px;padding:0;border-left:2px solid var(--line);list-style:none}
+.lw-step{position:relative;display:block;width:100%;padding:8px 10px 8px 16px;border:0;border-radius:0 10px 10px 0;background:transparent;color:var(--fg);font-size:.86em;line-height:1.5;text-align:left;cursor:pointer}
+.lw-step::before{content:"";position:absolute;left:-7px;top:.95em;width:12px;height:12px;border:2px solid var(--accent);border-radius:50%;background:var(--bg)}
+.lw-step[aria-current=step]{background:var(--card);cursor:default}
+.lw-step[aria-current=step]::before{background:var(--accent)}
+.lw-step:hover{background:var(--card)}
+.lw-step-time{margin-right:.7em;color:var(--muted);font-variant-numeric:tabular-nums}
+.lw-step-name{font-weight:600}
+.lw-step-among{display:block;color:var(--muted);font-size:.86em}
+.lw-now{min-width:0}
+.lw-start,.lw-node{padding:18px 22px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.lw-start{border-color:var(--accent)}
+.lw-start-title{font-size:1.2em}
+.lw-intro{margin:8px 0 0;padding:0 0 0 1.2em}
+.lw-start-note{margin:8px 0 0;color:var(--muted);font-size:.86em}
+.lw-start-go{margin:16px 0 0;text-align:center}
+.lw-go{min-height:48px;padding:8px 32px;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:var(--bg);font-size:.95em;font-weight:600;cursor:pointer}
+.lw-node-when{color:var(--muted);font-size:.82em;font-variant-numeric:tabular-nums}
+.lw-node-name{margin:2px 0 0;font-size:1.4em;line-height:1.4}
+.lw-node-name:focus{outline:none}
+.lw-node-text{margin:6px 0 0;font-family:var(--serif)}
+.lw-reactions{margin:14px 0 0;padding:0;list-style:none}
+.lw-reaction{margin:12px 0 0;padding:0 0 0 14px;border-left:3px solid var(--c,var(--line))}
+.lw-reaction-head{font-size:.86em}
+.lw-reaction-head .lw-delta{margin-left:.8em}
+.lw-reaction-text{font-family:var(--serif)}
+.lw-clock{margin:16px 0 0;padding:8px 14px;border-radius:10px;background:var(--bg);font-size:.86em;font-variant-numeric:tabular-nums}
+.lw-arrive{animation:lw-in .35s ease-out}
+@keyframes lw-in{from{opacity:0;transform:translateY(10px)}}
+.lw-options-title{margin:28px 0 0;font-size:1.08em}
+.lw-options-note{margin:4px 0 0;color:var(--muted);font-size:.82em}
+.lw-option-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:12px 0 0;padding:0;list-style:none}
+.lw-option{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;width:100%;height:100%;min-height:48px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);font-size:.86em;line-height:1.6;text-align:left;cursor:pointer}
+.lw-option:hover{border-color:var(--accent)}
+.lw-option[aria-disabled=true]{border-style:dashed;background:transparent;color:var(--muted);cursor:default}
+.lw-option[aria-disabled=true]:hover{border-color:var(--line)}
+.lw-option[aria-disabled=true] .lw-option-name,.lw-option[aria-disabled=true] .lw-option-rows{opacity:.6}
+.lw-option-name{display:block;font-size:1.16em;font-weight:600}
+.lw-option-name .lw-tag{font-weight:400}
+.lw-option-text{display:block;color:var(--muted);font-size:.92em}
+.lw-option-rows{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0 12px;margin:8px 0 0;font-variant-numeric:tabular-nums}
+.lw-key{color:var(--muted)}
+.lw-option-why{display:block;margin:8px 0 0;color:var(--turn);font-weight:600}
+.lw-option-home{border-color:var(--accent)}
+.lw-option-home .lw-option-name{color:var(--accent)}
+/* ---- 結局演出 ---- */
+.lw-finale>*+*{margin-top:20px}
+.lw-ending{padding:26px 22px;border:2px solid var(--accent);border-radius:16px;background:var(--card);text-align:center;animation:lw-in .6s ease-out}
+.lw-finale[data-ending=ok] .lw-ending{border-color:var(--line)}
+.lw-finale[data-ending=poor] .lw-ending{border-color:var(--muted)}
+.lw-ending-kind{display:inline-block;padding:2px 16px;border-radius:999px;background:var(--accent);color:var(--bg);font-size:.82em;font-weight:600;letter-spacing:.3em}
+.lw-finale[data-ending=ok] .lw-ending-kind,.lw-finale[data-ending=poor] .lw-ending-kind{background:var(--muted)}
+.lw-ending-title{margin:10px 0 0;font-size:1.7em;line-height:1.4}
+.lw-ending-title:focus{outline:none}
+.lw-ending-text{margin:8px 0 0;font-family:var(--serif);font-size:1.08em}
+.lw-ending-when{margin:10px 0 0;color:var(--muted);font-size:.82em}
+.lw-farewells{margin:0;padding:0;list-style:none}
+.lw-farewell{margin:14px 0 0;padding:12px 16px;border:1px solid var(--line);border-left:4px solid var(--c,var(--line));border-radius:12px;background:var(--card)}
+.lw-farewell-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;font-size:.86em}
+.lw-farewell-value{color:var(--muted);font-variant-numeric:tabular-nums}
+.lw-farewell-text{margin:4px 0 0;font-family:var(--serif);font-size:1.08em}
+.lw-wish{margin:8px 0 0;color:var(--muted);font-size:.86em}
+.lw-finale-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.lw-finale-tools button{min-height:48px;padding:8px 22px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font-size:.86em;cursor:pointer}
+.lw-finale-tools .lw-go{border-color:var(--accent);background:var(--accent);color:var(--bg)}
+.lw-finale-tools button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.lw-endings-seen{color:var(--muted);font-size:.82em}
+.lw-credits{position:relative;height:340px;overflow:hidden;border-radius:14px;background:#14160f;color:#efece2;text-align:center}
+.lw-credits-roll{padding:24px 20px;animation:lw-roll 30s linear forwards}
+@keyframes lw-roll{from{transform:translateY(340px)}to{transform:translateY(-100%)}}
+.lw-credits.lw-still{height:auto}
+.lw-credits.lw-still .lw-credits-roll{animation:none;transform:none}
+.lw-credits-title{font-family:var(--serif);font-size:1.5em;font-weight:600}
+.lw-credits-head{margin:22px 0 2px;color:#a9ad9f;font-size:.78em;letter-spacing:.3em}
+.lw-credits-end{margin:30px 0 0;color:#a9ad9f;font-size:.78em;letter-spacing:.3em}
+.lw-credits-skip{position:absolute;right:10px;bottom:10px;min-height:40px;padding:4px 14px;border:1px solid #5a5e52;border-radius:999px;background:#14160f;color:#efece2;font-size:.76em;cursor:pointer}
+.lw-table{margin:6px auto 0;border-collapse:collapse;font-size:.86em;font-variant-numeric:tabular-nums;text-align:left}
+.lw-table th,.lw-table td{padding:2px 12px}
+.lw-table th{font-weight:400;opacity:.7}
+.lw-fx{position:fixed;top:0;left:0;z-index:4;width:100%;height:100%;pointer-events:none}
+.lw-dusk{position:fixed;top:0;left:0;z-index:3;width:100%;height:100%;background:#000;opacity:0;pointer-events:none;transition:opacity 6s ease-in}
+.lw-dusk.lw-on{opacity:.3}
+/* 不好的結局：畫面褪色。濾鏡加在內容上而不是 body——body 一加濾鏡，固定在視窗上的特效畫布就會跟著頁面捲走 */
+.lw-head,main,.lw-foot{transition:filter 4s ease-in}
+html[data-mood=poor] .lw-head,html[data-mood=poor] main,html[data-mood=poor] .lw-foot{filter:grayscale(.85)}
+/* ---- 行程題材：示意地圖 ---- */
+.lw-map{display:block;width:100%;max-width:420px;height:auto;margin:14px auto 0;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.lw-trail .lw-map{max-width:none}
+.lw-map-route{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.lw-map-dot{fill:var(--bg);stroke:var(--muted);stroke-width:.9}
+.lw-map-dot.lw-been{fill:var(--accent);stroke:var(--accent)}
+.lw-map-home{fill:var(--fg);stroke:var(--bg);stroke-width:.6}
+.lw-map-here{fill:none;stroke:var(--turn);stroke-width:1.1}
+.lw-map-label{fill:var(--muted);font-family:var(--sans);font-size:4.6px}
+.lw-map-label.lw-been{fill:var(--fg);font-weight:600}
+/* ---- 列印：只印目前走出來的行程表 ---- */
+.lw-print{display:none}
+@media (max-width:760px){
+body{padding:24px 16px 56px}
+.lw-cast{margin:0 -16px;padding:8px 16px;gap:4px 16px}
+.lw-bar{width:72px}
+.lw-meter .lw-delta{min-width:0}
+.lw-cols{grid-template-columns:minmax(0,1fr);gap:14px;margin:14px 0 0}
+.lw-trail{position:static;max-height:none;overflow:visible;padding:0}
+.lw-trail-toggle{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);font-size:.86em;text-align:left;cursor:pointer}
+.lw-trail-body{display:none;padding:12px 0 0}
+.lw-trail[data-open="1"] .lw-trail-body{display:block}
+.lw-trail-title{display:none}
+.lw-start,.lw-node{padding:16px}
+.lw-option-list{grid-template-columns:minmax(0,1fr)}
+.lw-table th,.lw-table td{padding:2px 6px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lw-bar-fill{transition:none}.lw-arrive,.lw-ending{animation:none}.lw-credits-roll{animation:none;transform:none}.lw-credits{height:auto}.lw-head,main,.lw-foot{transition:none}.lw-dusk{transition:none}}
+@media print{
+.lw-tools,.lw-fx,.lw-dusk,html[data-play] .lw-game,html[data-play] .lw-static{display:none!important}
+html[data-play] .lw-print{display:block}
+html[data-play] .lw-premise,html[data-play] .lw-meta{display:grid}
+html[data-play] .lw-premise{display:block}
+.lw-head,main,.lw-foot{filter:none!important}
+body{max-width:none;padding:0}
+.lw-print-title{margin:24px 0 0;font-size:1.1em}
+.lw-print .lw-table{margin:8px 0 0;font-size:1em}
+.lw-print .lw-table th,.lw-print .lw-table td{padding:4px 16px 4px 0;border-bottom:1px solid #ccc}
+.lw-place,.lw-spoiler-who{break-inside:avoid}
+}</style>
+</head>
+<body>
+<header class="lw-head">
+<p class="lw-kicker">Life World 作品・互動遊戲<span class="lw-genre">行程</span></p>
+<h1>海角小鎮一日遊</h1>
+<p class="lw-premise"><span class="lw-label">開場</span>你帶著三位朋友從車站出發，要在晚上六點前回到這裡搭車。今天要在虛構的海邊小鎮裡看海、吃在地小吃、逛老街並找個地方坐坐，時間有限，得好好安排！</p>
+<dl class="lw-meta"><dt>同行</dt><dd><span class="lw-name" data-c="1">鄔向荃</span>、<span class="lw-name" data-c="2">杜承硯</span>、<span class="lw-name" data-c="3">羅映川</span></dd><dt>你扮演</dt><dd>你</dd><dt>行程</dt><dd>08:00 從車站出發，10 小時內要回到車站（18:00 前）</dd></dl>
+<div class="lw-tools" hidden><button type="button" data-tool="smaller" aria-label="字級縮小">A−</button><button type="button" data-tool="larger" aria-label="字級放大">A＋</button><button type="button" data-tool="theme">深色</button></div>
+</header>
+<main>
+<section class="lw-static">
+<p class="lw-need">這個互動遊戲需要執行程式才能玩：你每一步選要去哪裡，同行的人各自反應，最後走到不同的結局。請用瀏覽器直接打開這個檔案。下面是這趟行程的內容。</p>
+<h2 class="lw-static-title">起點</h2><div class="lw-place"><h3 class="lw-place-name">車站</h3><p class="lw-place-text">古樸的車站大廳，木造窗櫺透著早晨的光，四周有旅客來來往往，是這趟旅程的起點與終點。</p></div><h2 class="lw-static-title">可以去的地方（6 站）</h2><ol class="lw-places"><li class="lw-place"><h3 class="lw-place-name">海風魚丸攤</h3><p class="lw-place-text">緊鄰港口的小攤子，飄著濃郁的油蔥香，現場只有幾張塑膠板凳，提供現做熱騰騰的魚丸湯。</p><p class="lw-place-facts">營業 08:00–14:00・停留 45 分<span class="lw-tag">吃</span><span class="lw-tag">在地</span></p></li><li class="lw-place"><h3 class="lw-place-name">燈塔步道</h3><p class="lw-place-text">沿著岩壁修築的石階，沿途海風強勁，視野開闊，盡頭是一座白色的舊燈塔，適合遠眺海景。</p><p class="lw-place-facts">整天開放・停留 1 小時 30 分<span class="lw-tag">風景</span><span class="lw-tag">散步</span></p></li><li class="lw-place"><h3 class="lw-place-name">鹽田柑仔店</h3><p class="lw-place-text">保留著舊式木櫃與紅磚牆的雜貨舖，販賣古早味糖果與在地手作小物，店內空間狹小但充滿懷舊感。</p><p class="lw-place-facts">營業 09:00–18:00・停留 1 小時<span class="lw-tag">逛</span><span class="lw-tag">懷舊</span></p></li><li class="lw-place"><h3 class="lw-place-name">老街陶藝坊</h3><p class="lw-place-text">可以動手拉胚的安靜工作室，空氣中帶著淡淡土香，擺滿了各式素燒與上釉的作品。</p><p class="lw-place-facts">營業 10:00–17:00・停留 2 小時<span class="lw-tag">手作</span><span class="lw-tag">安靜</span></p></li><li class="lw-place"><h3 class="lw-place-name">海平線咖啡</h3><p class="lw-place-text">大片落地窗正對著沙灘，提供手沖咖啡與甜點，室內撥放著輕柔的爵士樂，座位舒適。</p><p class="lw-place-facts">營業 11:00–21:00・停留 1 小時 30 分<span class="lw-tag">坐坐</span><span class="lw-tag">看海</span></p></li><li class="lw-place"><h3 class="lw-place-name">防波堤市集</h3><p class="lw-place-text">聚集了各式攤車與街頭藝人的露天廣場，熱鬧滾滾，有烤魷魚的香味與吉他彈唱聲。</p><p class="lw-place-facts">營業 14:00–20:00・停留 1 小時 15 分<span class="lw-tag">熱鬧</span><span class="lw-tag">吃</span></p></li></ol>
+<details class="lw-spoilers"><summary>每一站的反應、每個人的願望與結局（會透露內容，建議玩過再看）</summary><h3 class="lw-spoiler-title">每一站的反應</h3><h4 class="lw-spoiler-stop">海風魚丸攤</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 +2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「冷得要命的湯，你打算用哪條規定證明它好喝？」</li><li><span class="lw-line-key">普通時</span>「這碗魚丸湯的油蔥，倒是把『在地』兩個字說得很具體。」</li><li><span class="lw-line-key">有好感時</span>「等一下，現做的意思是連魚丸也是剛捏的嗎？這我得吃兩碗。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 +1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「隨便啦，反正肚子餓了什麼都能吞。」他冷哼一聲，低頭用筷子戳著魚丸。</li><li><span class="lw-line-key">普通時</span>「這湯頭還行，油蔥放得剛好。」他喝了一口湯，拿塑膠板凳坐下。</li><li><span class="lw-line-key">有好感時</span>「這家連骨頭都熬進去了，難得。」他夾起一顆魚丸分了一半過來。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 +1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「你隨便點吧，我只是配合演出。」</li><li><span class="lw-line-key">普通時</span>「現做魚丸湯？行，先喝一碗再說。」</li><li><span class="lw-line-key">有好感時</span>「這家油蔥香得可以！我押這局穩了。」</li></ul></li></ul><h4 class="lw-spoiler-stop">燈塔步道</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 −1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「風大得連一句話都說不完整，這步道真適合考驗耐性。」</li><li><span class="lw-line-key">普通時</span>「視野是不錯，但風一直把頭髮吹進嘴裡，沒辦法好好看。」</li><li><span class="lw-line-key">有好感時</span>「好啦，這燈塔看過去的藍確實很寬，我不念了總行吧。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 −1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「風這麼大走這步道做什麼？浪費時間。」他把外套拉鍊拉到頂，臭著臉不動。</li><li><span class="lw-line-key">普通時</span>「風挺強的，走慢點吧。」他雙手插袋，看著遠處的白燈塔。</li><li><span class="lw-line-key">有好感時</span>「視野倒是不錯，算是沒白爬。」他扶著石欄，多看兩眼海平線才轉身。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 +2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「風大得像在趕人，走這步棋真無聊。」</li><li><span class="lw-line-key">普通時</span>「石階還蠻長的，上去看看視野吧。」</li><li><span class="lw-line-key">有好感時</span>「這條燈塔步道挑得漂亮，視野直接打開了！」</li></ul></li></ul><h4 class="lw-spoiler-stop">鹽田柑仔店</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 +1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「這空間小得連轉身都要先投票，妳想塞誰進來？」</li><li><span class="lw-line-key">普通時</span>「這些古早味糖果的包裝，拿來當排班表圖例應該挺荒謬的。」</li><li><span class="lw-line-key">有好感時</span>「你看這木櫃的抽屜裡居然有仙楂餅，我小時候總覺得它是藥。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 +2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「看舊木櫃有什麼用？又不能當零件拆來用。」他站在門邊，一邊踢著石子。</li><li><span class="lw-line-key">普通時</span>「這些老糖果罐還留著啊。」他伸手碰了碰櫃子邊緣，打量起店裡的陳設。</li><li><span class="lw-line-key">有好感時</span>「這批舊地圖複製品收得真好，連航線都對得上。」他指著櫃子深處笑了一下。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 0</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「空間這麼小是要擠給誰看？」</li><li><span class="lw-line-key">普通時</span>「舊木櫃和糖果罐，挺懷舊的雜貨舖。」</li><li><span class="lw-line-key">有好感時</span>「古早味糖果啊，這招我小時候玩過。」</li></ul></li></ul><h4 class="lw-spoiler-stop">老街陶藝坊</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 +2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「要我坐在這裡捏土逃避現實？這招對我沒用。」</li><li><span class="lw-line-key">普通時</span>「空氣有土香，這點可以承認，拉胚就先不用了。」</li><li><span class="lw-line-key">有好感時</span>「等一下，轉這圈的時候手勁不能分心。這個安靜我喜歡。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 +1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「拉胚？我可沒時間在這裡玩泥巴。」他環抱雙臂，靠在門框上不肯動手。</li><li><span class="lw-line-key">普通時</span>「土香倒是聞起來挺安靜的。」他在凳子坐下，看著桌上的素燒作品。</li><li><span class="lw-line-key">有好感時</span>「這轉盤軸承修得真順，轉起來完全沒有抖動。」他順手轉了轉拉胚機。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 −1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「坐兩個小時拉胚？我可沒那耐性。」</li><li><span class="lw-line-key">普通時</span>「安靜的土香味，姑且進去坐坐吧。」</li><li><span class="lw-line-key">有好感時</span>「雖然安靜了點，不過手作拉胚我來試一手。」</li></ul></li></ul><h4 class="lw-spoiler-stop">海平線咖啡</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 −2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「爵士樂跟落地窗，是要我在這裡寫檢討報告嗎？」</li><li><span class="lw-line-key">普通時</span>「咖啡普通，椅子倒是軟得讓人想直接睡在這裡。」</li><li><span class="lw-line-key">有好感時</span>「好啦，這手沖的酸味沒我想的那麼做作，算你挑得好。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 −2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「喝咖啡看海？這坐下去半天就沒了。」他翻了個白眼，直接挑最邊邊的硬椅坐。</li><li><span class="lw-line-key">普通時</span>「地方是挺乾淨，就是椅子太軟了點。」他端起杯子抿了一口，望著落地窗外。</li><li><span class="lw-line-key">有好感時</span>「這爵士樂配手沖還行，偶爾這樣坐著也算沒白跑。」他靠著椅背放鬆了肩膀。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 +1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「又要聽爵士樂發呆嗎？隨便你啦。」</li><li><span class="lw-line-key">普通時</span>「大片落地窗，看海喝咖啡挺舒服的。」</li><li><span class="lw-line-key">有好感時</span>「這沙發位子絕了，剛好讓我停下來喘口氣。」</li></ul></li></ul><h4 class="lw-spoiler-stop">防波堤市集</h4><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-change">心情 −1</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「人多到連呼吸都要搶排班，這地方真吵。」</li><li><span class="lw-line-key">普通時</span>「烤魷魚的味道很重，但也只是把大家全擠在同個廣場上。」</li><li><span class="lw-line-key">有好感時</span>「吉他彈得還算乾淨，我就站在這裡聽一首就好。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-change">心情 0</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「人擠人的市集最麻煩，別走散了。」他皺起眉頭，撥開旁邊的遊客。</li><li><span class="lw-line-key">普通時</span>「烤魷魚的煙別飄過來就好。」他站在攤位外圍，打量著各個攤車。</li><li><span class="lw-line-key">有好感時</span>「這吉他彈得還算紮實，沒走音。」他跟著拍子點了兩下頭。</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-change">心情 +2</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「吵得要命，虧你挑得出這種市集。」</li><li><span class="lw-line-key">普通時</span>「烤魷魚和吉他彈唱，挺熱鬧的廣場。」</li><li><span class="lw-line-key">有好感時</span>「這攤車陣仗夠大！走，我們去試試那個怪招！」</li></ul></li></ul><h3 class="lw-spoiler-title">沒說出口的願望</h3><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><span class="lw-wish-text">今天只希望能在熱鬧市集裡吃碗熱湯，不必再討論詞義。</span></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><span class="lw-wish-text">想找個沒人的舊港口，坐下來看修船的輪軸。</span></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><span class="lw-wish-text">今天只想安靜坐在海邊吹風，不用一直趕場找樂子。</span></li></ul><h3 class="lw-spoiler-title">最後一句話</h3><ul class="lw-spoiler-list"><li class="lw-spoiler-who"><span class="lw-name" data-c="1">鄔向荃</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「車終於要開了，這一天總算可以結案。」</li><li><span class="lw-line-key">普通時</span>「回到車站了，今天謝謝你安排這些地方。」</li><li><span class="lw-line-key">有好感時</span>「明天如果還想去海邊，記得先答應我不談定義。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="2">杜承硯</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「總算回車站了，明天店裡還有一堆輪框要換，先走一步。」</li><li><span class="lw-line-key">普通時</span>「時間剛剛好，謝啦，今天這趟算平安收工。」</li><li><span class="lw-line-key">有好感時</span>「今天這路繞得挺有意思，下次換我帶路看看。」</li></ul></li><li class="lw-spoiler-who"><span class="lw-name" data-c="3">羅映川</span><ul class="lw-lines"><li><span class="lw-line-key">不滿時</span>「終於回車站了，這局總算結束。」</li><li><span class="lw-line-key">普通時</span>「回到車站了，今天時間抓得剛好。」</li><li><span class="lw-line-key">有好感時</span>「這天過得真夠意思，收牌，下次見！」</li></ul></li></ul><h3 class="lw-spoiler-title">結局</h3><ul class="lw-lines"><li><span class="lw-line-key">完美結局</span><strong>滿載而歸的笑聲</strong>　每個人都在今天找到了屬於自己的風景，帶著滿足的笑容與紀念品踏上歸途，車廂內充滿了意猶未盡的討論。</li><li><span class="lw-line-key">好結局</span><strong>剛剛好的美好</strong>　雖然有些景點擦身而過，但整體的步調讓人放鬆，大家在回程路上分享著照片，度過了一個愉快的假日。</li><li><span class="lw-line-key">普通結局</span><strong>各有收穫的一天</strong>　有人覺得不虛此行，也有人略感疲憊。雖然行程有些零散，但大體上平安順利地結束了這趟旅程。</li><li><span class="lw-line-key">遺憾結局</span><strong>疲憊的返程</strong>　時間與節奏沒有抓好，一整天下來步伐匆忙又有些掃興。回程的車廂裡一片安靜，各自帶著不同的心思。</li></ul></details>
+</section>
+<div class="lw-game" hidden></div>
+</main>
+<footer class="lw-foot"><p>這是 AI 依人物設定生成的虛構演出，不代表真實人物或事實。</p><p>由 Life World 匯出・互動遊戲 route-1</p></footer>
+<script type="application/json" id="lw-story">{"cast":[{"color":1,"id":"c1","name":"鄔向荃"},{"color":2,"id":"c2","name":"杜承硯"},{"color":3,"id":"c3","name":"羅映川"}],"clock":{"limit":600,"start":480},"endings":{"classes":{"great":{"text":"雖然有些景點擦身而過，但整體的步調讓人放鬆，大家在回程路上分享著照片，度過了一個愉快的假日。","title":"剛剛好的美好"},"ok":{"text":"有人覺得不虛此行，也有人略感疲憊。雖然行程有些零散，但大體上平安順利地結束了這趟旅程。","title":"各有收穫的一天"},"perfect":{"text":"每個人都在今天找到了屬於自己的風景，帶著滿足的笑容與紀念品踏上歸途，車廂內充滿了意猶未盡的討論。","title":"滿載而歸的笑聲"},"poor":{"text":"時間與節奏沒有抓好，一整天下來步伐匆忙又有些掃興。回程的車廂裡一片安靜，各自帶著不同的心思。","title":"疲憊的返程"}},"reachable":["perfect","great","ok","poor"],"thresholds":{"great":6,"poor":2}},"events":[{"close":840,"id":"p1","name":"海風魚丸攤","open":480,"reactions":{"c1":{"delta":2,"high":"「等一下，現做的意思是連魚丸也是剛捏的嗎？這我得吃兩碗。」","low":"「冷得要命的湯，你打算用哪條規定證明它好喝？」","mid":"「這碗魚丸湯的油蔥，倒是把『在地』兩個字說得很具體。」"},"c2":{"delta":1,"high":"「這家連骨頭都熬進去了，難得。」他夾起一顆魚丸分了一半過來。","low":"「隨便啦，反正肚子餓了什麼都能吞。」他冷哼一聲，低頭用筷子戳著魚丸。","mid":"「這湯頭還行，油蔥放得剛好。」他喝了一口湯，拿塑膠板凳坐下。"},"c3":{"delta":1,"high":"「這家油蔥香得可以！我押這局穩了。」","low":"「你隨便點吧，我只是配合演出。」","mid":"「現做魚丸湯？行，先喝一碗再說。」"}},"stay":45,"tags":["吃","在地"],"text":"緊鄰港口的小攤子，飄著濃郁的油蔥香，現場只有幾張塑膠板凳，提供現做熱騰騰的魚丸湯。","x":3,"y":4},{"close":1440,"id":"p2","name":"燈塔步道","open":0,"reactions":{"c1":{"delta":-1,"high":"「好啦，這燈塔看過去的藍確實很寬，我不念了總行吧。」","low":"「風大得連一句話都說不完整，這步道真適合考驗耐性。」","mid":"「視野是不錯，但風一直把頭髮吹進嘴裡，沒辦法好好看。」"},"c2":{"delta":-1,"high":"「視野倒是不錯，算是沒白爬。」他扶著石欄，多看兩眼海平線才轉身。","low":"「風這麼大走這步道做什麼？浪費時間。」他把外套拉鍊拉到頂，臭著臉不動。","mid":"「風挺強的，走慢點吧。」他雙手插袋，看著遠處的白燈塔。"},"c3":{"delta":2,"high":"「這條燈塔步道挑得漂亮，視野直接打開了！」","low":"「風大得像在趕人，走這步棋真無聊。」","mid":"「石階還蠻長的，上去看看視野吧。」"}},"stay":90,"tags":["風景","散步"],"text":"沿著岩壁修築的石階，沿途海風強勁，視野開闊，盡頭是一座白色的舊燈塔，適合遠眺海景。","x":7,"y":3},{"close":1080,"id":"p3","name":"鹽田柑仔店","open":540,"reactions":{"c1":{"delta":1,"high":"「你看這木櫃的抽屜裡居然有仙楂餅，我小時候總覺得它是藥。」","low":"「這空間小得連轉身都要先投票，妳想塞誰進來？」","mid":"「這些古早味糖果的包裝，拿來當排班表圖例應該挺荒謬的。」"},"c2":{"delta":2,"high":"「這批舊地圖複製品收得真好，連航線都對得上。」他指著櫃子深處笑了一下。","low":"「看舊木櫃有什麼用？又不能當零件拆來用。」他站在門邊，一邊踢著石子。","mid":"「這些老糖果罐還留著啊。」他伸手碰了碰櫃子邊緣，打量起店裡的陳設。"},"c3":{"delta":0,"high":"「古早味糖果啊，這招我小時候玩過。」","low":"「空間這麼小是要擠給誰看？」","mid":"「舊木櫃和糖果罐，挺懷舊的雜貨舖。」"}},"stay":60,"tags":["逛","懷舊"],"text":"保留著舊式木櫃與紅磚牆的雜貨舖，販賣古早味糖果與在地手作小物，店內空間狹小但充滿懷舊感。","x":4,"y":7},{"close":1020,"id":"p4","name":"老街陶藝坊","open":600,"reactions":{"c1":{"delta":2,"high":"「等一下，轉這圈的時候手勁不能分心。這個安靜我喜歡。」","low":"「要我坐在這裡捏土逃避現實？這招對我沒用。」","mid":"「空氣有土香，這點可以承認，拉胚就先不用了。」"},"c2":{"delta":1,"high":"「這轉盤軸承修得真順，轉起來完全沒有抖動。」他順手轉了轉拉胚機。","low":"「拉胚？我可沒時間在這裡玩泥巴。」他環抱雙臂，靠在門框上不肯動手。","mid":"「土香倒是聞起來挺安靜的。」他在凳子坐下，看著桌上的素燒作品。"},"c3":{"delta":-1,"high":"「雖然安靜了點，不過手作拉胚我來試一手。」","low":"「坐兩個小時拉胚？我可沒那耐性。」","mid":"「安靜的土香味，姑且進去坐坐吧。」"}},"stay":120,"tags":["手作","安靜"],"text":"可以動手拉胚的安靜工作室，空氣中帶著淡淡土香，擺滿了各式素燒與上釉的作品。","x":6,"y":8},{"close":1260,"id":"p5","name":"海平線咖啡","open":660,"reactions":{"c1":{"delta":-2,"high":"「好啦，這手沖的酸味沒我想的那麼做作，算你挑得好。」","low":"「爵士樂跟落地窗，是要我在這裡寫檢討報告嗎？」","mid":"「咖啡普通，椅子倒是軟得讓人想直接睡在這裡。」"},"c2":{"delta":-2,"high":"「這爵士樂配手沖還行，偶爾這樣坐著也算沒白跑。」他靠著椅背放鬆了肩膀。","low":"「喝咖啡看海？這坐下去半天就沒了。」他翻了個白眼，直接挑最邊邊的硬椅坐。","mid":"「地方是挺乾淨，就是椅子太軟了點。」他端起杯子抿了一口，望著落地窗外。"},"c3":{"delta":1,"high":"「這沙發位子絕了，剛好讓我停下來喘口氣。」","low":"「又要聽爵士樂發呆嗎？隨便你啦。」","mid":"「大片落地窗，看海喝咖啡挺舒服的。」"}},"stay":90,"tags":["坐坐","看海"],"text":"大片落地窗正對著沙灘，提供手沖咖啡與甜點，室內撥放著輕柔的爵士樂，座位舒適。","x":2,"y":6},{"close":1200,"id":"p6","name":"防波堤市集","open":840,"reactions":{"c1":{"delta":-1,"high":"「吉他彈得還算乾淨，我就站在這裡聽一首就好。」","low":"「人多到連呼吸都要搶排班，這地方真吵。」","mid":"「烤魷魚的味道很重，但也只是把大家全擠在同個廣場上。」"},"c2":{"delta":0,"high":"「這吉他彈得還算紮實，沒走音。」他跟著拍子點了兩下頭。","low":"「人擠人的市集最麻煩，別走散了。」他皺起眉頭，撥開旁邊的遊客。","mid":"「烤魷魚的煙別飄過來就好。」他站在攤位外圍，打量著各個攤車。"},"c3":{"delta":2,"high":"「這攤車陣仗夠大！走，我們去試試那個怪招！」","low":"「吵得要命，虧你挑得出這種市集。」","mid":"「烤魷魚和吉他彈唱，挺熱鬧的廣場。」"}},"stay":75,"tags":["熱鬧","吃"],"text":"聚集了各式攤車與街頭藝人的露天廣場，熱鬧滾滾，有烤魷魚的香味與吉他彈唱聲。","x":8,"y":6}],"farewells":{"c1":{"high":"「明天如果還想去海邊，記得先答應我不談定義。」","low":"「車終於要開了，這一天總算可以結案。」","mid":"「回到車站了，今天謝謝你安排這些地方。」"},"c2":{"high":"「今天這路繞得挺有意思，下次換我帶路看看。」","low":"「總算回車站了，明天店裡還有一堆輪框要換，先走一步。」","mid":"「時間剛剛好，謝啦，今天這趟算平安收工。」"},"c3":{"high":"「這天過得真夠意思，收牌，下次見！」","low":"「終於回車站了，這局總算結束。」","mid":"「回到車站了，今天時間抓得剛好。」"}},"format":"lw-route.v1","genre":"行程","home":{"id":"home","name":"車站","text":"古樸的車站大廳，木造窗櫺透著早晨的光，四周有旅客來來往往，是這趟旅程的起點與終點。","x":5,"y":5},"meter":{"high":2,"label":"心情","low":-2,"max":6,"min":-6},"player":{"name":"你"},"premise":"你帶著三位朋友從車站出發，要在晚上六點前回到這裡搭車。今天要在虛構的海邊小鎮裡看海、吃在地小吃、逛老街並找個地方坐坐，時間有限，得好好安排！","skin":"trip","speed":12,"title":"海角小鎮一日遊","wishes":{"c1":"今天只希望能在熱鬧市集裡吃碗熱湯，不必再討論詞義。","c2":"想找個沒人的舊港口，坐下來看修船的輪軸。","c3":"今天只想安靜坐在海邊吹風，不用一直趕場找樂子。"}}</script>
+<script>(function () {
+  // Life World 離線播放器 route-1：回合制互動作品的路線播放器。
+  // 玩法：使用者在自己的回合選下一步；選之前只看得到代價（時間），選了之後才看到每位同行者的反應與數值升降；最後依數值走到不同的結局。
+  // 反應全部預先生成、寫在檔案的內嵌資料（lw-route.v1）裡：這段程式不連線、不呼叫模型，只是照資料與規則把遊戲演出來。
+  //
+  // 程式分兩層，之後加別的題材（登山、採購、劇情多結局……）只換第二層：
+  // ・通用層：規則——數值的區間、到一個節點時每個人的反應與升降、把走過的選擇重放一遍、結局判定、最後一句話；
+  //           畫面——同行者的數值列、左欄走過的路（可以點回去重選）、右欄目前的節點與反應、選項卡、結局演出（片尾字幕、特效、音樂）、
+  //           重來、看過幾種結局、字級與深淺色、列印。
+  // ・題材層（SKINS，現在只有「行程」）：資源怎麼算（時間：車程、等開門、打烊、趕不趕得回起點）、現在有哪些選項與不能選的原因、
+  //           這些東西在畫面上怎麼寫（選項卡上的幾行、現在幾點還剩多久、行程表），以及題材自己的圖（示意地圖）。
+  // 通用層不知道「時間」是什麼：它只把題材層給的資源狀態（res）原樣帶著走，要顯示時再交回題材層。
+  //
+  // 唯一的狀態是 picks（依序選了哪些節點）。畫面每次都從 picks 重放一遍算出來，所以「回到某一站重選」就是把 picks 截短——
+  // 之後的選擇、時間與數值自然都回到當時，不需要另外記錄與還原。
+  //
+  // 規則的部分是純函式；在 Node 裡載入這個檔案時只匯出它們（給自動測試和 Python 的參考實作逐項對照），不碰畫面。
+  // 沒有程式時頁面是靜態的清單（開場白、同行的人、所有站；反應、願望與結局收合）。看過的結局與閱讀偏好存在這個瀏覽器；
+  // 存不了（直接點開的檔案被限制、放在站內的沙箱 iframe 裡）也照常可以玩，只是不會記得。
+
+  // ======== 共用的寫法（純函式） ========
+  function clock(minutes) { // 從 00:00 起算的分鐘數 → 'HH:MM'
+    var hours = Math.floor(minutes / 60) % 24;
+    var rest = minutes % 60;
+    return (hours < 10 ? '0' : '') + hours + ':' + (rest < 10 ? '0' : '') + rest;
+  }
+  function span(minutes) { // 一段時間 → '45 分'、'2 小時'、'1 小時 20 分'
+    var hours = Math.floor(minutes / 60);
+    var rest = minutes % 60;
+    return !hours ? rest + ' 分' : !rest ? hours + ' 小時' : hours + ' 小時 ' + rest + ' 分';
+  }
+  function signed(value) { // 數值：正數帶加號、負數用全形減號
+    return value > 0 ? '+' + value : value < 0 ? '−' + (-value) : '0';
+  }
+
+  // ======== 通用層：規則 ========
+  var CLASSES = ['perfect', 'great', 'ok', 'poor']; // 結局種類，由好到壞
+  var CLASS_LABELS = {perfect: '完美結局', great: '好結局', ok: '普通結局', poor: '遺憾結局'};
+
+  // 數值落在哪一個區間：決定用哪一句反應、最後說哪一句話
+  function band(meter, value) { return value <= meter.low ? 'low' : value >= meter.high ? 'high' : 'mid'; }
+
+  // 到一個事件：每位同行者先依「到之前」的區間說一句話，然後數值加減、夾在上下限之內。meters 會被就地更新。
+  // change 是夾過之後實際變了多少——畫面標的升降用它，已經到頂再加也不會謊報。事件裡沒有寫到的人略過。
+  function react(data, meters, event) {
+    var result = [];
+    data.cast.forEach(function (member) {
+      var reaction = (event.reactions || {})[member.id];
+      if (!reaction) return;
+      var before = meters[member.id];
+      var which = band(data.meter, before);
+      var after = Math.max(data.meter.min, Math.min(data.meter.max, before + reaction.delta));
+      meters[member.id] = after;
+      result.push({who: member.id, band: which, text: reaction[which], before: before, after: after, change: after - before});
+    });
+    return result;
+  }
+
+  // 把 picks（依序選的節點；選起點＝結束）重放一遍。題材層（skin）負責資源與「現在能選什麼」，這裡負責順序、反應與數值。
+  // 回傳 {steps, here, res, visited, done, meters}。每一步是題材層給的欄位，加上 node、among（選它的當下有幾個選項可以選；
+  // 第一步是出發，沒有選擇，是 null）、final（這一步是不是結束）與 reactions。
+  // 不能走的那一步（不認得、去過了、被擋住）不算，後面的也不看——畫面上本來就按不到，這是擋住不合理的輸入。
+  function replay(data, skin, picks) {
+    var meters = {};
+    data.cast.forEach(function (member) { meters[member.id] = 0; });
+    var events = {};
+    data.events.forEach(function (event) { events[event.id] = event; });
+    var first = skin.begin();
+    first.step.node = data.home.id;
+    first.step.among = null;
+    first.step.final = false;
+    first.step.reactions = [];
+    var state = {steps: [first.step], here: data.home.id, res: first.res, visited: [], done: false, meters: meters};
+    for (var index = 0; index < picks.length && !state.done; index += 1) {
+      var open = skin.choices(state);
+      var choice = null;
+      var among = 0;
+      open.forEach(function (item) {
+        if (item.enabled) among += 1;
+        if (item.enabled && item.id === picks[index] && !choice) choice = item;
+      });
+      if (!choice) break;
+      var moved = choice.final ? skin.finish(state, choice) : skin.visit(state, choice);
+      moved.step.node = choice.id;
+      moved.step.among = among;
+      moved.step.final = choice.final;
+      moved.step.reactions = choice.final ? [] : react(data, meters, events[choice.id]);
+      state.steps.push(moved.step);
+      state.here = choice.id;
+      state.res = moved.res;
+      if (choice.final) state.done = true; else state.visited.push(choice.id);
+    }
+    return state;
+  }
+
+  // 結局種類。判斷的順序是規格定的：什麼都沒做 → poor；每個人都在 high 以上 → perfect；總和過了 great 的門檻 → great；
+  // 總和在 poor 的門檻以下 → poor；其餘 ok。門檻是匯出前由伺服器依所有走得到的路線算好、寫在資料裡的。
+  function classify(data, state) {
+    if (!state.visited.length) return 'poor';
+    var total = 0;
+    var all = data.cast.length > 0;
+    data.cast.forEach(function (member) {
+      total += state.meters[member.id];
+      if (state.meters[member.id] < data.meter.high) all = false;
+    });
+    var thresholds = data.endings.thresholds || {};
+    if (all) return 'perfect';
+    if (total >= thresholds.great) return 'great';
+    if (total <= thresholds.poor) return 'poor';
+    return 'ok';
+  }
+
+  // 結局時每位同行者的最後一句話：依最後的數值區間
+  function farewells(data, state) {
+    return data.cast.map(function (member) {
+      var value = state.meters[member.id];
+      var which = band(data.meter, value);
+      return {who: member.id, value: value, band: which, text: ((data.farewells || {})[member.id] || {})[which] || ''};
+    });
+  }
+
+  // ======== 題材層：行程 ========
+  // 兩地車程（分鐘）＝max(5, 四捨五入(直線距離 × speed))；.5 進位（floor(x + 0.5)），和 Python 的參考實作同一種寫法
+  function travel(a, b, speed) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return Math.max(5, Math.floor(Math.sqrt(dx * dx + dy * dy) * speed + 0.5));
+  }
+
+  function tripSkin(data) {
+    var home = data.home;
+    var deadline = data.clock.start + data.clock.limit; // 最晚幾點要回到起點
+    var spots = {};
+    spots[home.id] = home;
+    data.events.forEach(function (event) { spots[event.id] = event; });
+
+    // 現在（now）人在 here，去 event 這一站會怎樣。blocked：''＝可以去；'closed'＝停留完已經超過打烊；'late'＝去了就趕不回起點。
+    // 早到就等開門；兩個原因同時成立時說打烊（那是這一站自己的限制，比較具體）。
+    function leg(here, now, event) {
+      var ride = travel(spots[here], event, data.speed);
+      var arrive = now + ride;
+      var begin = Math.max(arrive, event.open);
+      var leave = begin + event.stay;
+      var back = travel(event, home, data.speed);
+      return {id: event.id, enabled: true, final: false, reason: leave > event.close ? 'closed' : leave + back > deadline ? 'late' : '',
+              travel: ride, arrive: arrive, wait: begin - arrive, begin: begin, stay: event.stay, leave: leave, close: event.close, back: back};
+    }
+
+    var skin = {
+      // ---- 規則（純函式） ----
+      // 出發：資源狀態只有「現在幾點」
+      begin: function () {
+        var start = data.clock.start;
+        return {step: {travel: 0, arrive: start, wait: 0, begin: start, stay: 0, leave: start}, res: {now: start}};
+      },
+      // 現在可以選什麼：每個還沒去過的站一個（能去的在前，各自依車程由近到遠，同樣遠的照原本的順序），最後是「回起點，結束」。
+      // 已經回到起點就沒有選項。
+      choices: function (state) {
+        if (state.done) return [];
+        var items = [];
+        data.events.forEach(function (event, order) {
+          if (state.visited.indexOf(event.id) >= 0) return;
+          var item = leg(state.here, state.res.now, event);
+          item.enabled = !item.reason;
+          item.order = order;
+          items.push(item);
+        });
+        items.sort(function (a, b) { return (a.enabled ? 0 : 1) - (b.enabled ? 0 : 1) || a.travel - b.travel || a.order - b.order; });
+        items.forEach(function (item) { delete item.order; });
+        var ride = state.here === home.id ? 0 : travel(spots[state.here], home, data.speed);
+        items.push({id: home.id, enabled: true, final: true, reason: '', travel: ride, arrive: state.res.now + ride});
+        return items;
+      },
+      // 去一站：時間走到離開那一站的時候
+      visit: function (state, choice) {
+        return {step: {travel: choice.travel, arrive: choice.arrive, wait: choice.wait, begin: choice.begin, stay: choice.stay, leave: choice.leave},
+                res: {now: choice.leave}};
+      },
+      // 回起點：時間走到回到起點的時候
+      finish: function (state, choice) {
+        return {step: {travel: choice.travel, arrive: choice.arrive, wait: 0, begin: choice.arrive, stay: 0, leave: choice.arrive}, res: {now: choice.arrive}};
+      },
+
+      // ---- 畫面上的寫法 ----
+      words: {trail: '走過的路', start: '準備出發', go: '出發', next: '接下來去哪？', finish: '回起點，結束行程', depart: '出發', back: '回到起點',
+              again: '再走一次', none: '已經沒有來得及去的地方了，只能回起點。', table: '這一局的行程', used: '總共用了'},
+      // 開始畫面的幾行說明
+      intro: function () {
+        return [clock(data.clock.start) + ' 從' + home.name + '出發', span(data.clock.limit) + '內要回到' + home.name + '（' + clock(deadline) + ' 前）',
+                '可以去的地方有 ' + data.events.length + ' 站，時間不夠全部去——每一步都要選。'];
+      },
+      // 左欄每一步前面的時間
+      when: function (step) { return clock(step.arrive); },
+      // 右欄節點上方的一行：這一步花了多少時間
+      detail: function (step, index) {
+        if (index === 0) return clock(step.arrive) + ' 出發';
+        var ride = '車程 ' + span(step.travel) + '・';
+        if (step.final) return (step.travel ? ride : '') + clock(step.arrive) + ' 回到' + home.name;
+        return ride + clock(step.arrive) + ' 到' + (step.wait ? '（等 ' + span(step.wait) + '開門）' : '') + '・停留 ' + span(step.stay) + '・' + clock(step.leave) + ' 離開';
+      },
+      // 現在幾點、還剩多少時間
+      status: function (state) {
+        return '現在 ' + clock(state.res.now) + '・還剩 ' + span(Math.max(0, deadline - state.res.now)) + '（' + clock(deadline) + ' 前要回到' + home.name + '）';
+      },
+      // 選項卡上的幾行：只有代價，沒有任何「會讓誰的數值升降」的東西
+      rows: function (choice) {
+        if (choice.final) return [['車程', choice.travel ? span(choice.travel) : '就在這裡'], ['回到' + home.name, clock(choice.arrive)]];
+        var event = spots[choice.id];
+        return [['車程', span(choice.travel)], ['到達', clock(choice.arrive) + (choice.wait ? '（等 ' + span(choice.wait) + '開門）' : '')],
+                ['停留', span(choice.stay) + '，' + clock(choice.leave) + ' 離開'],
+                ['打烊', event.open <= 0 && event.close >= 1440 ? '整天開放' : clock(choice.close)]];
+      },
+      // 不能選的原因
+      why: function (choice) {
+        return choice.reason === 'closed' ? '來不及：' + clock(choice.close) + ' 打烊' : choice.reason === 'late' ? '去了就趕不回起點' : '';
+      },
+      // 行程表（片尾字幕與列印共用）：{head, rows, total}；total 是已經用掉的時間
+      table: function (state) {
+        var rows = state.steps.map(function (step, index) {
+          var name = spots[step.node].name;
+          if (index === 0) return [clock(step.arrive), name + '（出發）', '—', '—'];
+          if (step.final) return [clock(step.arrive), name + '（回到起點）', '—', step.travel ? span(step.travel) : '—'];
+          return [clock(step.arrive), name, span(step.stay) + (step.wait ? '（先等 ' + span(step.wait) + '）' : ''), span(step.travel)];
+        });
+        return {head: ['時間', '地點', '停留', '車程'], rows: rows, total: span(state.res.now - data.clock.start)};
+      },
+      // 示意地圖：用 x、y 畫出起點與各站；走過的路線連起來，去過的站實心，現在的位置多一圈
+      picture: function (state) {
+        var SCALE = 10;
+        var map = svg('svg', 'lw-map');
+        map.setAttribute('viewBox', '-14 -12 128 124');
+        map.setAttribute('role', 'img');
+        map.setAttribute('aria-label', '示意地圖：起點與各站的相對位置，以及走過的路線');
+        var path = state.steps.map(function (step) { return spots[step.node].x * SCALE + ',' + spots[step.node].y * SCALE; });
+        if (path.length > 1) {
+          var line = svg('polyline', 'lw-map-route');
+          line.setAttribute('points', path.join(' '));
+          map.appendChild(line);
+        }
+        function label(spot, been) {
+          var text = svg('text', 'lw-map-label' + (been ? ' lw-been' : ''));
+          // 起點的名字放在上面；比起點低的站把名字放在點的下面、其餘放在上面：起點附近的名字不會疊在一起。靠邊的點把字往內靠，不會跑出地圖
+          // 字和點之間留下「現在的位置」那一圈的空間
+          var below = spot !== home && (spot.y > home.y || spot.y <= 1);
+          var anchor = spot.x <= 2 ? 'start' : spot.x >= 8 ? 'end' : 'middle';
+          text.setAttribute('x', spot.x * SCALE + (anchor === 'start' ? -4 : anchor === 'end' ? 4 : 0));
+          text.setAttribute('y', spot.y * SCALE + (below ? 10.5 : spot === home ? -7.5 : -6.5));
+          text.setAttribute('text-anchor', anchor);
+          text.textContent = spot.name;
+          map.appendChild(text);
+        }
+        data.events.forEach(function (event) {
+          var been = state.visited.indexOf(event.id) >= 0;
+          var dot = svg('circle', 'lw-map-dot' + (been ? ' lw-been' : ''));
+          dot.setAttribute('cx', event.x * SCALE);
+          dot.setAttribute('cy', event.y * SCALE);
+          dot.setAttribute('r', 2.4);
+          map.appendChild(dot);
+          label(event, been);
+        });
+        var base = svg('rect', 'lw-map-home');
+        base.setAttribute('x', home.x * SCALE - 2.8);
+        base.setAttribute('y', home.y * SCALE - 2.8);
+        base.setAttribute('width', 5.6);
+        base.setAttribute('height', 5.6);
+        map.appendChild(base);
+        label(home, true);
+        var here = svg('circle', 'lw-map-here');
+        here.setAttribute('cx', spots[state.here].x * SCALE);
+        here.setAttribute('cy', spots[state.here].y * SCALE);
+        here.setAttribute('r', 5);
+        map.appendChild(here);
+        return map;
+      }
+    };
+    return skin;
+  }
+
+  var SKINS = {trip: tripSkin};
+
+  // 在 Node 裡（自動測試）只匯出規則，不往下碰畫面
+  if (typeof module === 'object' && module && module.exports) {
+    var ruled = function (data, picks) { return replay(data, SKINS[data.skin](data), picks); };
+    module.exports = {
+      clock: clock, span: span, signed: signed, travel: travel, replay: ruled,
+      options: function (data, picks) { return SKINS[data.skin](data).choices(ruled(data, picks)); },
+      ending: function (data, picks) { return classify(data, ruled(data, picks)); },
+      farewells: function (data, picks) { return farewells(data, ruled(data, picks)); }
+    };
+    return;
+  }
+
+  // ======== 通用層：畫面 ========
+  var root = document.documentElement;
+  var tools = document.querySelector('.lw-tools');
+  var stage = document.querySelector('.lw-game');
+  var source = document.getElementById('lw-story');
+  if (!tools || !stage || !source) return;
+  var data = null;
+  try { data = JSON.parse(source.textContent); } catch (error) { data = null; }
+  // 讀不懂的資料、不認得的題材：什麼都不動，頁面維持靜態的清單
+  if (!data || data.format !== 'lw-route.v1' || !SKINS[data.skin] || !data.cast || !data.events || !data.home || !data.meter || !data.clock || !data.endings) return;
+  var skin = SKINS[data.skin](data);
+  var words = skin.words;
+
+  function list(selector, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(selector)); }
+  function hit(event, selector) { return event.target && event.target.closest ? event.target.closest(selector) : null; }
+  // 沙箱裡（站內的 iframe、某些直接點開檔案的情況）連碰 localStorage 都會丟例外：讀寫一律包起來，存不了就當成沒有
+  function read(key) { try { return window.localStorage.getItem(key); } catch (error) { return null; } }
+  function write(key, value) { try { window.localStorage.setItem(key, value); } catch (error) { /* 存不了不影響遊戲 */ } }
+  function readObject(key) {
+    try {
+      var value = JSON.parse(read(key) || 'null');
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+    } catch (error) { return {}; }
+  }
+  // 程式新增的元素一律用 textContent 放文字：資料裡的內容不會被當成標籤解析
+  function make(tag, name, text) {
+    var element = document.createElement(tag);
+    if (name) element.className = name;
+    if (text !== undefined && text !== null && text !== '') element.textContent = text;
+    if (tag === 'button') element.type = 'button';
+    return element;
+  }
+  function svg(tag, name) {
+    var element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    if (name) element.setAttribute('class', name);
+    return element;
+  }
+  function empty(element) { while (element.firstChild) element.removeChild(element.firstChild); }
+  function add(parent) { // add(parent, child, child…)：略過空的
+    for (var index = 1; index < arguments.length; index += 1) if (arguments[index]) parent.appendChild(arguments[index]);
+    return parent;
+  }
+  // 系統的「減少動態效果」：這時不放動畫特效、數值直接到位、字幕直接顯示全文。每次要用時才問，使用者中途改設定也算數
+  function calm() { return Boolean(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+
+  // ---- 閱讀偏好 ----
+  // 字級與深淺色和閱讀版、互動版共用同一個鍵：同一個瀏覽器裡三種檔案的設定一致。這裡不認得的欄位（例如場景提示）原樣留著。
+  var KEY = 'lw-reader-prefs';
+  var SIZES = ['s', 'm', 'l', 'xl'];
+  var saved = readObject(KEY);
+  var prefs = {theme: typeof saved.theme === 'string' ? saved.theme : '', size: typeof saved.size === 'string' ? saved.size : 'm'};
+
+  function isDark() {
+    var theme = root.getAttribute('data-theme');
+    if (theme) return theme === 'dark';
+    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+
+  function apply() {
+    if (prefs.theme === 'dark' || prefs.theme === 'light') root.setAttribute('data-theme', prefs.theme);
+    else root.removeAttribute('data-theme');
+    root.setAttribute('data-size', SIZES.indexOf(prefs.size) < 0 ? 'm' : prefs.size);
+    var theme = tools.querySelector('[data-tool=theme]');
+    if (theme) theme.textContent = isDark() ? '淺色' : '深色';
+    saved.theme = prefs.theme;
+    saved.size = prefs.size;
+    write(KEY, JSON.stringify(saved));
+  }
+
+  // ---- 狀態 ----
+  var picks = []; // 依序選了哪些節點：唯一的遊戲狀態
+  var phase = 'start'; // start：還沒出發；play：進行中；end：結局
+  var trailOpen = false; // 手機寬度時，「走過的路」有沒有展開
+  var pending = null; // 等著讓數值動起來的計時器（到站後先看反應，再看升降）
+  var MOVE_AFTER = 700; // 反應出現之後多久，數值才開始動（毫秒）
+  var nodes = {};
+  nodes[data.home.id] = data.home;
+  data.events.forEach(function (event) { nodes[event.id] = event; });
+  var people = {};
+  data.cast.forEach(function (member) { people[member.id] = member; });
+
+  // 看過的結局記在這個瀏覽器；鍵帶著作品標題，不同作品不會互相覆蓋。存不了時只記在這一次開啟裡。
+  var ENDINGS_KEY = 'lw-route-endings:' + data.title;
+  var endingsSeen = readObject(ENDINGS_KEY);
+
+  function seenText() {
+    // 分母用資料裡「實際走得到的結局種類」；萬一走出了不在裡面的種類，也算進去（不會出現 5／4）
+    var all = (data.endings.reachable || []).filter(function (name) { return CLASSES.indexOf(name) >= 0; });
+    CLASSES.forEach(function (name) { if (endingsSeen[name] && all.indexOf(name) < 0) all.push(name); });
+    var have = all.filter(function (name) { return endingsSeen[name]; }).length;
+    return '已看過 ' + have + '／' + all.length + ' 種結局';
+  }
+
+  // ---- 固定的骨架：數值列、左欄、右欄、列印用的行程表、給報讀器的一句話 ----
+  var castBar = make('section', 'lw-cast');
+  castBar.setAttribute('aria-label', '同行的人與' + data.meter.label);
+  var meters = data.cast.map(function (member) {
+    var box = make('div', 'lw-meter');
+    box.setAttribute('data-c', member.color);
+    box.setAttribute('data-who', member.id);
+    var bar = make('span', 'lw-bar');
+    bar.setAttribute('aria-hidden', 'true');
+    var zero = make('span', 'lw-bar-zero');
+    var fill = make('span', 'lw-bar-fill');
+    add(bar, fill, zero);
+    var value = make('span', 'lw-meter-value', '0');
+    var delta = make('span', 'lw-delta');
+    add(box, make('span', 'lw-name', member.name), make('span', 'lw-meter-label', data.meter.label), bar, value, delta);
+    castBar.appendChild(box);
+    return {id: member.id, zero: zero, fill: fill, value: value, delta: delta};
+  });
+  var cols = make('div', 'lw-cols');
+  var trail = make('aside', 'lw-trail');
+  trail.setAttribute('aria-label', words.trail);
+  var trailToggle = make('button', 'lw-trail-toggle');
+  trailToggle.setAttribute('data-play', 'trail');
+  var trailBody = make('div', 'lw-trail-body');
+  var trailList = make('ol', 'lw-trail-list');
+  var trailHint = make('p', 'lw-trail-hint', '點任何一步，回到當時重新選（之後的選擇會作廢）。');
+  var mapSlot = make('div', 'lw-picture');
+  add(trailBody, make('h2', 'lw-trail-title', words.trail), trailHint, trailList);
+  add(trail, trailToggle, trailBody);
+  var now = make('section', 'lw-now');
+  add(cols, trail, now);
+  var spoken = make('p', 'lw-sr');
+  spoken.setAttribute('role', 'status');
+  add(stage, castBar, cols, spoken);
+  var printout = make('section', 'lw-print');
+  stage.parentNode.insertBefore(printout, stage.nextSibling);
+
+  // ---- 數值列 ----
+  // 條狀圖：中間偏左或偏右的那條線是 0，往右是正、往左是負；寬度由程式直接設在元素上（頁面的 CSP 不放行行內樣式屬性，但允許程式這樣設）。
+  function showMeter(view, value, change) {
+    var range = data.meter.max - data.meter.min || 1;
+    var zero = (0 - data.meter.min) / range * 100;
+    var at = (Math.max(data.meter.min, Math.min(data.meter.max, value)) - data.meter.min) / range * 100;
+    view.zero.style.left = zero + '%';
+    view.fill.style.left = Math.min(zero, at) + '%';
+    view.fill.style.width = Math.abs(at - zero) + '%';
+    view.value.textContent = signed(value);
+    showDelta(view.delta, change);
+  }
+
+  // 升降的標示：▲ +2、▼ −1；沒有變就不標
+  function showDelta(element, change) {
+    element.className = 'lw-delta' + (change > 0 ? ' lw-up' : change < 0 ? ' lw-down' : '');
+    element.textContent = change > 0 ? '▲ ' + signed(change) : change < 0 ? '▼ ' + signed(change) : '';
+    element.hidden = !change;
+  }
+
+  function settle() { // 還在等的升降直接到位（使用者已經按了下一步，或畫面要重畫）
+    if (pending) {
+      window.clearTimeout(pending.timer);
+      pending.finish();
+      pending = null;
+    }
+  }
+
+  // arrived：剛剛才走到這一步（不是回頭看）。這時先讓反應出現、數值停在到站前，過一會兒才動起來並標出升降；
+  // 回頭看某一步、或系統要求減少動態效果時，直接顯示到站後的數值與升降。
+  function drawMeters(state, arrived) {
+    var last = state.steps[state.steps.length - 1];
+    var changes = {};
+    var befores = {};
+    last.reactions.forEach(function (item) {
+      changes[item.who] = item.change;
+      befores[item.who] = item.before;
+    });
+    var deltas = list('.lw-reaction .lw-delta', now);
+    function finish() {
+      meters.forEach(function (view) { showMeter(view, state.meters[view.id], phase === 'play' ? changes[view.id] || 0 : 0); });
+      deltas.forEach(function (element) { element.hidden = !element.textContent; });
+      stage.setAttribute('data-settled', '1');
+    }
+    if (!arrived || calm() || !last.reactions.length) { finish(); return; }
+    stage.removeAttribute('data-settled');
+    meters.forEach(function (view) { showMeter(view, befores[view.id] === undefined ? state.meters[view.id] : befores[view.id], 0); });
+    deltas.forEach(function (element) { element.hidden = true; });
+    pending = {finish: finish, timer: window.setTimeout(function () { pending = null; finish(); }, MOVE_AFTER)};
+  }
+
+  // ---- 左欄：走過的路 ----
+  // 每一步是一顆按鈕（錨點）：到達時間、名稱、當時是幾選一。按了回到那一步當時的狀態；現在所在的那一步標成目前位置、按了沒有作用。
+  function drawTrail(state) {
+    empty(trailList);
+    var current = state.steps.length - 1;
+    state.steps.forEach(function (step, index) {
+      var button = make('button', 'lw-step');
+      button.setAttribute('data-step', index);
+      if (index === current) button.setAttribute('aria-current', 'step');
+      var among = index === 0 ? words.depart : step.among > 1 ? step.among + ' 選 1' : '沒有別的選擇';
+      add(button, make('span', 'lw-step-time', skin.when(step)), make('span', 'lw-step-name', nodes[step.node].name),
+          make('span', 'lw-step-among', (step.final ? words.back + '・' : '') + among));
+      trailList.appendChild(add(make('li'), button));
+    });
+    trailHint.hidden = state.steps.length < 2;
+    trail.hidden = phase === 'start';
+    trail.setAttribute('data-open', trailOpen ? '1' : '0');
+    trailToggle.setAttribute('aria-expanded', trailOpen ? 'true' : 'false');
+    empty(trailToggle);
+    add(trailToggle, make('span', '', words.trail + '（' + (state.visited.length ? '去過 ' + state.visited.length + ' 站' : '剛出發') + '）'),
+        make('span', '', trailOpen ? '收起 ▴' : '展開 ▾'));
+  }
+
+  // ---- 題材的圖（行程：示意地圖）----
+  // 還沒出發時放在開始畫面裡；出發之後放在左欄、走過的路下面
+  function drawPicture(state, where) {
+    empty(mapSlot);
+    var picture = skin.picture ? skin.picture(state) : null;
+    if (picture) mapSlot.appendChild(picture);
+    where.appendChild(mapSlot);
+  }
+
+  // ---- 右欄：開始畫面 ----
+  function drawStart(state) {
+    var box = make('section', 'lw-start');
+    var intro = make('ul', 'lw-intro');
+    skin.intro().forEach(function (line) { intro.appendChild(make('li', '', line)); });
+    var go = make('button', 'lw-go', words.go);
+    go.setAttribute('data-play', 'start');
+    add(box, make('h2', 'lw-start-title', words.start), intro,
+        make('p', 'lw-start-note', '同行的人各有各的期待，但不會先說。到了每一站，他們的反應與「' + data.meter.label + '」的升降會告訴你。'));
+    drawPicture(state, box);
+    add(box, add(make('p', 'lw-start-go'), go));
+    now.appendChild(box);
+  }
+
+  // ---- 右欄：目前的節點、每個人的反應、接下來的選項 ----
+  function drawNode(state, arrived) {
+    var index = state.steps.length - 1;
+    var step = state.steps[index];
+    var node = nodes[step.node];
+    var card = make('article', 'lw-node' + (arrived ? ' lw-arrive' : ''));
+    var name = make('h2', 'lw-node-name', node.name);
+    name.setAttribute('tabindex', '-1'); // 走到新的一步時把焦點放在這裡：報讀器念出站名，鍵盤再按 Tab 就是第一張選項卡
+    add(card, make('p', 'lw-node-when', skin.detail(step, index)), name, make('p', 'lw-node-text', node.text));
+    if (step.reactions.length) {
+      var reactions = make('ul', 'lw-reactions');
+      step.reactions.forEach(function (item) {
+        var member = people[item.who];
+        var row = make('li', 'lw-reaction');
+        row.setAttribute('data-c', member.color);
+        row.setAttribute('data-who', item.who);
+        var delta = make('span', 'lw-delta');
+        showDelta(delta, item.change);
+        if (item.change) delta.textContent += ' ' + data.meter.label; // ▲ +2 滿意
+        add(row, add(make('p', 'lw-reaction-head'), make('span', 'lw-name', member.name), delta), make('p', 'lw-reaction-text', item.text));
+        reactions.appendChild(row);
+      });
+      card.appendChild(reactions);
+    }
+    card.appendChild(make('p', 'lw-clock', skin.status(state)));
+    now.appendChild(card);
+
+    var open = skin.choices(state);
+    var section = make('section', 'lw-options');
+    section.setAttribute('aria-label', words.next);
+    section.appendChild(make('h2', 'lw-options-title', words.next));
+    if (!open.some(function (choice) { return choice.enabled && !choice.final; })) section.appendChild(make('p', 'lw-options-note', words.none));
+    var cards = make('ul', 'lw-option-list');
+    open.forEach(function (choice) {
+      var target = nodes[choice.id];
+      var button = make('button', 'lw-option' + (choice.final ? ' lw-option-home' : ''));
+      button.setAttribute('data-go', choice.id);
+      // 不能去的只標成不能按（不用 disabled）：鍵盤與報讀器仍然走得到、讀得到原因
+      if (!choice.enabled) button.setAttribute('aria-disabled', 'true');
+      var title = make('span', 'lw-option-name', choice.final ? words.finish : target.name);
+      if (!choice.final) (target.tags || []).forEach(function (tag) { title.appendChild(make('span', 'lw-tag', tag)); });
+      var rows = make('span', 'lw-option-rows');
+      skin.rows(choice).forEach(function (row) { add(rows, make('span', 'lw-key', row[0]), make('span', 'lw-val', row[1])); });
+      add(button, title, choice.final ? null : make('span', 'lw-option-text', target.text), rows);
+      if (!choice.enabled) button.appendChild(make('span', 'lw-option-why', skin.why(choice)));
+      cards.appendChild(add(make('li'), button));
+    });
+    section.appendChild(cards);
+    now.appendChild(section);
+
+    var said = step.reactions.map(function (item) { return people[item.who].name + ' ' + data.meter.label + ' ' + signed(item.change); });
+    spoken.textContent = (index === 0 ? '' : '到了' + node.name + '。' + (said.length ? said.join('；') + '。' : '')) + skin.status(state);
+  }
+
+  // ---- 行程表（片尾字幕與列印共用）----
+  function tableOf(info) {
+    var table = make('table', 'lw-table');
+    var head = make('tr');
+    info.head.forEach(function (cell) { head.appendChild(make('th', '', cell)); });
+    table.appendChild(add(make('thead'), head));
+    var body = make('tbody');
+    info.rows.forEach(function (cells) {
+      var row = make('tr');
+      cells.forEach(function (cell) { row.appendChild(make('td', '', cell)); });
+      body.appendChild(row);
+    });
+    table.appendChild(body);
+    return table;
+  }
+
+  // 列印：只印目前走出來的行程表（螢幕上不顯示這一塊）。走到一半印就是到目前為止的；走完了多一行結局。
+  function drawPrint(state, kind) {
+    empty(printout);
+    if (phase === 'start') return;
+    var info = skin.table(state);
+    add(printout, make('h2', 'lw-print-title', words.table), tableOf(info), make('p', 'lw-print-total', words.used + ' ' + info.total));
+    if (kind) printout.appendChild(make('p', 'lw-print-ending', '結局：' + ((data.endings.classes[kind] || {}).title || CLASS_LABELS[kind])));
+  }
+
+  // ---- 結局演出 ----
+  var fx = null; // 進行中的特效：{canvas, frame, dusk}
+  var music = null; // 播放中的音樂：{context, timer}
+
+  // 特效都是自己畫的（canvas），沒有外部素材。kind：fireworks（煙火）、confetti（紙花）、rain（下雨）。
+  // 畫布固定在視窗上、不擋滑鼠；離開結局畫面就移除。系統要求減少動態效果時根本不建立。
+  function fxOn(kind) {
+    fxOff();
+    if (calm() || !kind) return;
+    var canvas = make('canvas', 'lw-fx');
+    canvas.setAttribute('data-fx', kind);
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
+    var pen = canvas.getContext && canvas.getContext('2d');
+    fx = {canvas: canvas, frame: 0, dusk: null};
+    if (kind === 'rain') { // 不好的結局：畫面慢慢暗下來
+      fx.dusk = make('div', 'lw-dusk');
+      fx.dusk.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(fx.dusk);
+      window.setTimeout(function () { if (fx && fx.dusk) fx.dusk.classList.add('lw-on'); }, 50);
+    }
+    if (!pen) return;
+    var COLORS = ['#ffcf5c', '#ff7a7a', '#7cc0ff', '#8fd0ae', '#c9a0ff', '#ffffff'];
+    var bits = [];
+    var began = Date.now();
+    var last = began;
+    var nextBurst = 0;
+    var mine = fx;
+    function size() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    size();
+    window.addEventListener('resize', size);
+    mine.stop = function () { window.removeEventListener('resize', size); };
+    function pick(items) { return items[Math.floor(Math.random() * items.length)]; }
+    function spawn(elapsed) {
+      var width = canvas.width;
+      var height = canvas.height;
+      if (kind === 'fireworks' && elapsed < 9000 && elapsed >= nextBurst) { // 每隔半秒多在上半部炸開一朵
+        nextBurst = elapsed + 450 + Math.random() * 500;
+        var x = width * (0.15 + Math.random() * 0.7);
+        var y = height * (0.12 + Math.random() * 0.38);
+        var color = pick(COLORS);
+        for (var index = 0; index < 46; index += 1) {
+          var angle = Math.PI * 2 * index / 46;
+          var speed = 90 + Math.random() * 150;
+          bits.push({x: x, y: y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 1.3 + Math.random() * 0.5, age: 0, color: color});
+        }
+      }
+      if (kind === 'confetti' && elapsed < 7000 && bits.length < 160) { // 紙花從上面飄下來
+        for (var count = 0; count < 3; count += 1) {
+          bits.push({x: Math.random() * width, y: -10, vx: -30 + Math.random() * 60, vy: 70 + Math.random() * 90, life: 9, age: 0, color: pick(COLORS),
+                     spin: Math.random() * 6, size: 6 + Math.random() * 6});
+        }
+      }
+      if (kind === 'rain' && elapsed < 40000 && bits.length < 140) {
+        for (var drop = 0; drop < 4; drop += 1) {
+          bits.push({x: Math.random() * (width + 80), y: -20, vx: -60, vy: 620 + Math.random() * 260, life: 3, age: 0, size: 10 + Math.random() * 14});
+        }
+      }
+    }
+    function tick() {
+      if (fx !== mine) return;
+      var nowAt = Date.now();
+      var dt = Math.min(0.05, (nowAt - last) / 1000);
+      last = nowAt;
+      spawn(nowAt - began);
+      pen.clearRect(0, 0, canvas.width, canvas.height);
+      bits = bits.filter(function (bit) {
+        bit.age += dt;
+        bit.x += bit.vx * dt;
+        bit.y += bit.vy * dt;
+        if (kind === 'fireworks') bit.vy += 120 * dt; // 火花往下掉
+        var left = 1 - bit.age / bit.life;
+        if (left <= 0 || bit.y > canvas.height + 30) return false;
+        if (kind === 'rain') {
+          pen.strokeStyle = 'rgba(150,170,190,0.45)';
+          pen.lineWidth = 1;
+          pen.beginPath();
+          pen.moveTo(bit.x, bit.y);
+          pen.lineTo(bit.x + bit.vx * 0.02, bit.y + bit.size);
+          pen.stroke();
+        } else if (kind === 'confetti') {
+          pen.save();
+          pen.translate(bit.x, bit.y);
+          pen.rotate(bit.spin + bit.age * 3);
+          pen.globalAlpha = Math.min(1, left * 3);
+          pen.fillStyle = bit.color;
+          pen.fillRect(-bit.size / 2, -bit.size / 4, bit.size, bit.size / 2);
+          pen.restore();
+        } else {
+          pen.globalAlpha = Math.max(0, left);
+          pen.fillStyle = bit.color;
+          pen.beginPath();
+          pen.arc(bit.x, bit.y, 2.2, 0, Math.PI * 2);
+          pen.fill();
+          pen.globalAlpha = 1;
+        }
+        return true;
+      });
+      mine.frame = window.requestAnimationFrame(tick);
+    }
+    mine.frame = window.requestAnimationFrame(tick);
+  }
+
+  function fxOff() {
+    if (!fx) return;
+    if (fx.frame) window.cancelAnimationFrame(fx.frame);
+    if (fx.stop) fx.stop();
+    if (fx.canvas.parentNode) fx.canvas.parentNode.removeChild(fx.canvas);
+    if (fx.dusk && fx.dusk.parentNode) fx.dusk.parentNode.removeChild(fx.dusk);
+    fx = null;
+  }
+
+  // 音樂：用 Web Audio 即時合成的簡單旋律，沒有音檔。預設不播——使用者按了「開啟音樂」才建立音訊，可以再關掉。
+  // 好結局明亮（大調、快）、普通的結局平靜、不好的結局低沉緩慢（小調、慢）。音符是相對於 A4（440Hz）的半音數，null 是休止。
+  var TUNES = {
+    bright: {wave: 'triangle', beat: 0.26, volume: 0.16, notes: [3, 7, 10, 7, 12, 10, 7, 10, 15, 10, 7, 3, 5, 7, 3, null]},
+    calm: {wave: 'sine', beat: 0.62, volume: 0.14, notes: [-5, -2, 0, -2, -5, -7, -9, null]},
+    dark: {wave: 'sine', beat: 0.95, volume: 0.18, notes: [-12, -9, -5, -9, -10, -12, -13, null]}
+  };
+
+  function musicOn(kind) {
+    musicOff();
+    var Synth = window.AudioContext || window.webkitAudioContext;
+    if (!Synth) return false;
+    var context;
+    try { context = new Synth(); } catch (error) { return false; }
+    var tune = TUNES[kind] || TUNES.calm;
+    var master = context.createGain();
+    master.gain.value = tune.volume;
+    master.connect(context.destination);
+    var next = context.currentTime + 0.08;
+    var index = 0;
+    function schedule() { // 一次只排接下來不到一秒的音符：關掉時不會留下一長串還沒播的
+      while (next < context.currentTime + 0.8) {
+        var note = tune.notes[index % tune.notes.length];
+        if (note !== null) {
+          var voice = context.createOscillator();
+          var envelope = context.createGain();
+          voice.type = tune.wave;
+          voice.frequency.value = 440 * Math.pow(2, note / 12);
+          envelope.gain.setValueAtTime(0.0001, next);
+          envelope.gain.linearRampToValueAtTime(1, next + 0.03);
+          envelope.gain.exponentialRampToValueAtTime(0.0001, next + tune.beat * 0.95);
+          voice.connect(envelope);
+          envelope.connect(master);
+          voice.start(next);
+          voice.stop(next + tune.beat);
+        }
+        next += tune.beat;
+        index += 1;
+      }
+    }
+    schedule();
+    music = {context: context, timer: window.setInterval(schedule, 250)};
+    root.setAttribute('data-music', 'on');
+    try { // 有些瀏覽器建立時是暫停的：使用者剛按了按鈕，可以直接繼續。繼續不了就是沒有聲音，不影響其他東西
+      var resumed = context.resume && context.resume();
+      if (resumed && resumed.catch) resumed.catch(function () { /* 沒有聲音 */ });
+    } catch (error) { /* 沒有聲音 */ }
+    return true;
+  }
+
+  function musicOff() {
+    root.setAttribute('data-music', 'off'); // 頁面上的標記跟著實際的狀態：不管是按了關閉，還是離開結局畫面時一起關掉
+    if (!music) return;
+    window.clearInterval(music.timer);
+    try {
+      var closed = music.context.close();
+      if (closed && closed.catch) closed.catch(function () { /* 已經關了 */ });
+    } catch (error) { /* 已經關了 */ }
+    music = null;
+  }
+
+  function drawMusic(button) {
+    button.setAttribute('aria-pressed', music ? 'true' : 'false');
+    button.textContent = music ? '關閉音樂' : '開啟音樂';
+  }
+
+  var MOODS = {perfect: {fx: 'fireworks', tune: 'bright'}, great: {fx: 'confetti', tune: 'bright'}, ok: {fx: '', tune: 'calm'}, poor: {fx: 'rain', tune: 'dark'}};
+
+  // 結局畫面：結局卡（種類、標題、文字）→ 每位同行者最後的數值、最後一句話，以及這時才揭曉的願望 → 音樂、再走一次、看過幾種結局 → 片尾字幕。
+  function drawFinale(state, kind) {
+    var ending = data.endings.classes[kind] || {title: CLASS_LABELS[kind], text: ''};
+    var info = skin.table(state);
+    var finale = make('section', 'lw-finale');
+    finale.setAttribute('data-ending', kind);
+    finale.setAttribute('aria-label', '結局');
+    var title = make('h2', 'lw-ending-title', ending.title);
+    title.setAttribute('tabindex', '-1');
+    var lastStep = state.steps[state.steps.length - 1];
+    finale.appendChild(add(make('div', 'lw-ending'), make('p', 'lw-ending-kind', CLASS_LABELS[kind]), title, make('p', 'lw-ending-text', ending.text),
+                           make('p', 'lw-ending-when', skin.detail(lastStep, state.steps.length - 1) + '・' + words.used + ' ' + info.total)));
+
+    var lines = make('ul', 'lw-farewells');
+    farewells(data, state).forEach(function (item) {
+      var member = people[item.who];
+      var row = make('li', 'lw-farewell');
+      row.setAttribute('data-c', member.color);
+      row.setAttribute('data-who', item.who);
+      add(row, add(make('p', 'lw-farewell-head'), make('span', 'lw-name', member.name), make('span', 'lw-farewell-value', data.meter.label + ' ' + signed(item.value))),
+          make('p', 'lw-farewell-text', item.text));
+      var wish = (data.wishes || {})[item.who];
+      if (wish) row.appendChild(add(make('p', 'lw-wish'), make('span', 'lw-label', '沒說出口的願望'), document.createTextNode(wish)));
+      lines.appendChild(row);
+    });
+    finale.appendChild(lines);
+
+    var bar = make('div', 'lw-finale-tools');
+    var again = make('button', 'lw-go', words.again);
+    again.setAttribute('data-play', 'again');
+    var sound = make('button', 'lw-music');
+    sound.setAttribute('data-play', 'music');
+    sound.hidden = !(window.AudioContext || window.webkitAudioContext); // 這個瀏覽器不能合成聲音就不放這顆按鈕
+    drawMusic(sound);
+    add(bar, again, sound, make('p', 'lw-endings-seen', seenText()));
+    finale.appendChild(bar);
+
+    // 片尾字幕：由下往上捲一次，捲完停在全文；可以略過。系統要求減少動態效果時直接顯示全文、沒有捲動。
+    var credits = make('div', 'lw-credits');
+    credits.setAttribute('aria-label', '片尾字幕');
+    var roll = make('div', 'lw-credits-roll');
+    add(roll, make('p', 'lw-credits-title', data.title), make('p', 'lw-credits-head', '同行'),
+        make('p', 'lw-credits-line', data.cast.map(function (member) { return member.name; }).join('　')),
+        make('p', 'lw-credits-head', '你扮演'), make('p', 'lw-credits-line', data.player && data.player.name ? data.player.name : '你'),
+        make('p', 'lw-credits-head', words.table), tableOf(info), make('p', 'lw-credits-head', words.used), make('p', 'lw-credits-line', info.total),
+        make('p', 'lw-credits-head', '結局'), make('p', 'lw-credits-line', ending.title), make('p', 'lw-credits-end', 'Life World'));
+    credits.appendChild(roll);
+    if (calm()) {
+      credits.classList.add('lw-still');
+    } else {
+      var skip = make('button', 'lw-credits-skip', '略過字幕');
+      skip.setAttribute('data-play', 'skip');
+      credits.appendChild(skip);
+      roll.style.animationDuration = Math.max(18, 10 + info.rows.length * 4) + 's'; // 行程越長捲得越久，讀得完
+      roll.addEventListener('animationend', function () { stillCredits(credits); });
+    }
+    finale.appendChild(credits);
+    now.appendChild(finale);
+
+    spoken.textContent = CLASS_LABELS[kind] + '：' + ending.title + '。' + seenText();
+  }
+
+  function stillCredits(credits) {
+    credits.classList.add('lw-still');
+    var skip = credits.querySelector('.lw-credits-skip');
+    if (skip) skip.parentNode.removeChild(skip);
+  }
+
+  // ---- 重畫 ----
+  // arrived：這次重畫是因為剛走了一步（要演出反應與升降、把焦點帶到新的節點）；回頭看、重來、切換時是 false。
+  function render(arrived) {
+    settle();
+    var state = replay(data, skin, picks);
+    var kind = phase === 'end' ? classify(data, state) : '';
+    root.setAttribute('data-phase', phase);
+    if (kind === 'poor') root.setAttribute('data-mood', 'poor'); else root.removeAttribute('data-mood');
+    empty(now);
+    drawTrail(state);
+    if (phase === 'start') {
+      spoken.textContent = '';
+      drawStart(state);
+    } else {
+      drawPicture(state, trailBody);
+      if (phase === 'end') drawFinale(state, kind); else drawNode(state, arrived);
+    }
+    drawMeters(state, arrived && phase === 'play');
+    drawPrint(state, kind);
+    return state;
+  }
+
+  function show(element) { // 把新的內容帶進畫面，焦點放上去
+    if (!element) return;
+    // 捲到左右兩欄的開頭：手機寬度時「走過的路」那一列也在畫面裡。上面留下數值列的高度（它固定在畫面頂端，同行者多時會排成好幾列）
+    cols.style.scrollMarginTop = (castBar.offsetHeight + 12) + 'px';
+    if (cols.scrollIntoView) cols.scrollIntoView({block: 'start'});
+    if (element.focus) element.focus({preventScroll: true});
+  }
+
+  function leaveFinale() {
+    fxOff();
+    musicOff();
+  }
+
+  function start() {
+    phase = 'play';
+    picks = [];
+    render(true);
+    show(now.querySelector('.lw-node-name'));
+  }
+
+  // 選了一張選項卡：往下走一步。選的是「回起點」就進結局。
+  function go(id) {
+    if (phase !== 'play') return;
+    var before = replay(data, skin, picks);
+    var allowed = skin.choices(before).some(function (choice) { return choice.id === id && choice.enabled; });
+    if (!allowed) return;
+    picks.push(id);
+    if (id === data.home.id) {
+      phase = 'end';
+      var kind = classify(data, replay(data, skin, picks));
+      if (!endingsSeen[kind]) { // 先記下這個結局，結局畫面上的「已看過 n／N 種」才包含這一次
+        endingsSeen[kind] = 1;
+        write(ENDINGS_KEY, JSON.stringify(endingsSeen));
+      }
+      render(true);
+      fxOn(MOODS[kind].fx);
+      show(now.querySelector('.lw-ending-title'));
+    } else {
+      render(true);
+      show(now.querySelector('.lw-node-name'));
+    }
+  }
+
+  // 回到第 index 步當時的狀態：之後的選擇作廢（picks 截短），時間與數值自然回到當時。按的是現在這一步就沒有作用。
+  function rewind(index) {
+    if (phase === 'start' || !(index >= 0) || index >= picks.length) return; // 最後一步（index 等於 picks 的長度）就是現在的位置
+    leaveFinale();
+    picks = picks.slice(0, index);
+    phase = 'play';
+    render(false);
+    show(now.querySelector('.lw-node-name'));
+  }
+
+  // 再走一次：回到出發之前。看過哪些結局留著。
+  function again() {
+    leaveFinale();
+    picks = [];
+    phase = 'start';
+    trailOpen = false;
+    render(false);
+    window.scrollTo(0, 0);
+    var first = now.querySelector('[data-play=start]');
+    if (first) first.focus({preventScroll: true});
+  }
+
+  document.addEventListener('click', function (event) {
+    var step = hit(event, '.lw-step');
+    if (step) {
+      rewind(Number(step.getAttribute('data-step')));
+      return;
+    }
+    var option = hit(event, '.lw-option');
+    if (option) {
+      if (option.getAttribute('aria-disabled') !== 'true') go(option.getAttribute('data-go'));
+      return;
+    }
+    var button = hit(event, 'button[data-play]');
+    if (!button) return;
+    var what = button.getAttribute('data-play');
+    if (what === 'start') {
+      start();
+    } else if (what === 'again') {
+      again();
+    } else if (what === 'trail') {
+      trailOpen = !trailOpen;
+      trail.setAttribute('data-open', trailOpen ? '1' : '0');
+      trailToggle.setAttribute('aria-expanded', trailOpen ? 'true' : 'false');
+      trailToggle.lastChild.textContent = trailOpen ? '收起 ▴' : '展開 ▾';
+    } else if (what === 'music') {
+      if (music) {
+        musicOff();
+      } else {
+        var kind = (now.querySelector('.lw-finale') || button).getAttribute('data-ending');
+        musicOn((MOODS[kind] || MOODS.ok).tune);
+      }
+      drawMusic(button);
+    } else if (what === 'skip') {
+      stillCredits(button.parentNode);
+    }
+  });
+
+  tools.addEventListener('click', function (event) {
+    var button = hit(event, 'button[data-tool]');
+    if (!button) return;
+    var tool = button.getAttribute('data-tool');
+    if (tool === 'smaller' || tool === 'larger') {
+      var index = SIZES.indexOf(prefs.size);
+      if (index < 0) index = 1;
+      prefs.size = SIZES[Math.max(0, Math.min(SIZES.length - 1, index + (tool === 'larger' ? 1 : -1)))];
+    } else if (tool === 'theme') {
+      prefs.theme = isDark() ? 'light' : 'dark';
+    }
+    apply();
+  });
+
+  apply();
+  render(false);
+  root.setAttribute('data-play', '1'); // 程式啟動了：靜態的清單藏起來（樣式照這個標記），換成遊戲畫面
+  root.setAttribute('data-music', 'off');
+  stage.hidden = false;
+  tools.hidden = false;
+})();</script>
+</body>
+</html>

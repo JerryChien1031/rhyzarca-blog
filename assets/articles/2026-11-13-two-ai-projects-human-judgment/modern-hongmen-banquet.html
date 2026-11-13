@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-EQIftiu3Ywec1U3kn4VPUHVYNY1eHY3gNwBAvLNLmeY='; script-src 'sha256-gB0EN39TFgZVSZYKFfG5RIuVwMjROh5go4sWIJc8weY='; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Life World play-1">
+<title>現代鴻門宴：會館裡的最後合約</title>
+<style>/* Life World 離線播放器 play-1（互動版）的樣式。
+   前半段是 reader-3 的樣式，逐條原樣帶過來：人物顏色、陣營標籤、幕名與起承轉合、三種字體都和閱讀版一致。
+   每個播放器各自是完整的一份（不在匯出時拼接）：之後閱讀版換新版本，已經匯出與之後匯出的互動版都不受影響。
+   tests/test_work_export.py 會檢查 reader-3 的每一條規則都在這裡。
+   後半段（「互動版」之後）是這個播放器自己的：逐段揭開、真心話、人物篩選、結尾卡、下方的逐段按鈕列。 */
+:root{--bg:#fbfaf6;--fg:#23261f;--muted:#6b7468;--line:#e2e0d6;--accent:#2f6b4f;--card:#ffffff;--turn:#c0281f;--c1:#1f5fa8;--c2:#8a5a00;--c3:#b02a78;--c4:#0b7468;--c5:#7a3fa3;--c6:#436f10;--size:18px;--sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;--serif:"Noto Serif TC","Noto Serif CJK TC","Source Han Serif TC","Songti TC","PMingLiU","MingLiU",serif}
+html[data-theme=dark]{--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]){--bg:#171915;--fg:#e9e7df;--muted:#a3aa9d;--line:#33372f;--accent:#8fd0ae;--card:#1f221c;--turn:#ff8a7a;--c1:#7cc0ff;--c2:#f0c060;--c3:#ff8fc7;--c4:#6fd6c4;--c5:#c9a0ff;--c6:#a6dd6a}}
+html[data-size=s]{--size:16px}
+html[data-size=l]{--size:21px}
+html[data-size=xl]{--size:24px}
+[data-c="1"]{--c:var(--c1)}
+[data-c="2"]{--c:var(--c2)}
+[data-c="3"]{--c:var(--c3)}
+[data-c="4"]{--c:var(--c4)}
+[data-c="5"]{--c:var(--c5)}
+[data-c="6"]{--c:var(--c6)}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0 auto;padding:32px 20px 64px;max-width:760px;color:var(--fg);font:var(--size)/1.9 var(--sans);overflow-wrap:anywhere}
+h1{margin:4px 0 12px;font-size:1.7em;line-height:1.35}
+h2,h3,h4{margin:0;font-size:1em}
+p{margin:0}
+.lw-genre,.lw-label,.lw-side,.lw-kind{display:inline-block;padding:0 .6em;border:1px solid var(--line);border-radius:999px;font-family:var(--sans);font-size:.76em;font-style:normal;font-weight:400;line-height:1.7;letter-spacing:.04em;vertical-align:.08em}
+.lw-kicker{color:var(--muted);font-size:.78em;letter-spacing:.12em}
+.lw-tags{margin:6px 0 0;font-size:.78em}
+.lw-genre{border-color:var(--accent);color:var(--accent);font-size:1em}
+.lw-kicker .lw-genre{margin-left:.9em}
+.lw-premise{color:var(--muted)}
+.lw-label{margin-right:.7em;border-color:var(--accent);color:var(--accent)}
+.lw-meta{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 16px;margin:20px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.86em}
+.lw-meta dt{color:var(--muted)}
+.lw-meta dd{margin:0;white-space:pre-wrap}
+.lw-name{color:var(--c,inherit);font-weight:600}
+.lw-group-name{font-weight:600}
+.lw-tools{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.lw-tools[hidden]{display:none}
+.lw-tools button{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font:inherit;font-size:.78em;cursor:pointer}
+.lw-tools button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.lw-tools button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lw-toc{margin:28px 0 0;padding:16px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-toc h2{color:var(--muted);font-size:.86em;letter-spacing:.12em}
+.lw-toc ol{margin:8px 0 0;padding:0;list-style:none}
+.lw-toc a{color:var(--accent);text-decoration:none}
+.lw-toc a:hover,.lw-toc a:focus-visible{text-decoration:underline}
+.lw-chapter+.lw-chapter{margin-top:72px;padding-top:28px;border-top:1px solid var(--line)}
+.lw-chapter-title{margin:44px 0 8px;font-size:1.35em;line-height:1.4}
+.lw-scene{margin:8px 0 0;color:var(--muted);font-size:.86em;white-space:pre-wrap}
+.lw-beat{margin:44px 0 0}
+.lw-beat-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;color:var(--accent);letter-spacing:.08em}
+.lw-beat-name{color:var(--fg);font-size:1.12em;letter-spacing:.02em}
+.lw-kind{border-color:currentColor;border-radius:4px}
+.lw-beat-turn .lw-beat-title{padding-bottom:6px;border-bottom:2px solid var(--turn);color:var(--turn)}
+.lw-beat-turn .lw-kind{border-color:var(--turn);background:var(--turn);color:var(--bg);font-weight:600}
+.lw-turn-mark{margin-left:auto;font-size:.78em;font-weight:400;letter-spacing:.3em}
+.lw-goal{color:var(--muted);font-size:.86em}
+.lw-seg{margin:22px 0 0;padding:0 0 0 16px;border-left:3px solid var(--c,var(--line))}
+.lw-who{color:var(--c,var(--accent));font-weight:600}
+.lw-side{margin-left:.6em;color:var(--muted);font-size:.72em}
+.lw-stage{color:var(--muted);font-size:.82em;font-style:italic}
+.lw-action{color:var(--muted);font-family:var(--serif)}
+.lw-line{font-weight:500;white-space:pre-wrap}
+html[data-stage=off] .lw-stage,html[data-stage=off] .lw-goal{display:none}
+.lw-chapter[data-form=narrative] .lw-seg{padding-left:14px;border-left-width:2px}
+.lw-chapter[data-form=narrative] .lw-action{color:inherit}
+.lw-chapter[data-form=narrative] .lw-who{margin-right:.5em;font-size:.86em}
+.lw-teaser{margin:56px 0 0;padding:18px 20px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--card)}
+.lw-teaser-label{color:var(--accent);font-size:.78em;font-weight:600;letter-spacing:.2em}
+.lw-teaser-text{margin:4px 0 0;font-family:var(--serif);font-size:1.08em}
+.lw-foot{margin:64px 0 0;padding:16px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:.78em}
+@media print{.lw-tools{display:none}body{max-width:none;padding:0}.lw-seg,.lw-teaser{break-inside:avoid}.lw-beat-title{break-after:avoid}.lw-chapter{break-before:page}.lw-chapter:first-of-type{break-before:auto}}
+/* ---- 互動版 ----
+   .lw-wait：逐段模式下還沒揭開的段落、幕、章與結尾卡，由程式加上。只在螢幕上隱藏，列印時整篇都印得出來。
+   .lw-xray：真心話（每一段之後那位人物的情緒、立場、目標）。預設不顯示，工具列的開關打開（html[data-xray=on]）才顯示。
+   .lw-dim：人物篩選時其他人的段落。只變淡、不隱藏，上下文還看得到。
+   .lw-secrets：底牌。原生的收合區塊，沒有程式也不會自己展開。
+   .lw-nav：逐段的按鈕列，貼在畫面下方（手機上拇指按得到）；按鈕高度至少 48px。 */
+[hidden]{display:none!important}
+@media screen{.lw-wait{display:none!important}}
+.lw-hint{margin:14px 0 0;color:var(--muted);font-size:.78em}
+.lw-tools button{min-height:40px}
+.lw-meta .lw-name[role=button]{border-bottom:1px dashed currentColor;cursor:pointer}
+.lw-meta .lw-name[role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.lw-meta .lw-name[aria-pressed=true]{padding:1px .6em;border:0;border-radius:999px;background:var(--c,var(--accent));color:var(--bg)}
+.lw-beat,.lw-chapter{scroll-margin-top:16px}
+.lw-seg{transition:opacity .2s}
+.lw-seg.lw-dim{opacity:.3}
+.lw-new{animation:lw-in .3s ease-out}
+@keyframes lw-in{from{opacity:0;transform:translateY(10px)}}
+.lw-xray{display:none;flex-wrap:wrap;gap:0 16px;margin:10px 0 0;padding:6px 12px;border:1px dashed var(--c,var(--line));border-radius:10px;color:var(--muted);font-family:var(--sans);font-size:.78em;font-style:normal;font-weight:400}
+html[data-xray=on] .lw-xray{display:flex}
+.lw-xray-label{color:var(--c,var(--accent));font-weight:600;letter-spacing:.14em}
+.lw-xray-key{margin-right:.5em;color:var(--fg);font-weight:600}
+.lw-end{margin:56px 0 0}
+.lw-end>*+*{margin-top:20px}
+.lw-end .lw-teaser{margin-top:0}
+.lw-secrets,.lw-pick{padding:14px 20px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lw-secrets summary{padding:8px 0;color:var(--accent);font-weight:600;cursor:pointer}
+.lw-secrets summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.lw-secrets-note{color:var(--muted);font-size:.78em}
+.lw-secrets-chapter{margin:16px 0 0;color:var(--muted);font-size:.86em;letter-spacing:.08em}
+.lw-secret-list{margin:0;padding:0;list-style:none}
+.lw-secret{margin:12px 0 0;padding:0 0 0 14px;border-left:3px solid var(--c,var(--line))}
+.lw-secret .lw-name{display:block;font-size:.86em}
+.lw-secret-text{font-family:var(--serif);white-space:pre-wrap}
+.lw-pick-title{font-size:1em}
+.lw-pick-options{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 0}
+.lw-pick-result{margin:10px 0 0;color:var(--accent);font-weight:600}
+.lw-nav{position:sticky;bottom:0;z-index:1;display:flex;align-items:center;gap:10px;margin:40px -20px 0;padding:12px 20px;border-top:1px solid var(--line);background:var(--bg)}
+.lw-progress{flex:1;min-width:0;color:var(--muted);font-size:.82em;text-align:center}
+.lw-nav button,.lw-pick button,.lw-again button{min-height:48px;padding:8px 22px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg);font:inherit;font-size:.86em;cursor:pointer}
+.lw-nav .lw-go,.lw-pick button[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:var(--bg);font-weight:600}
+.lw-nav [data-play=start]{flex:1}
+.lw-nav button[aria-disabled=true]{opacity:.45;cursor:default}
+.lw-nav button:focus-visible,.lw-pick button:focus-visible,.lw-again button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:480px){.lw-nav button{padding:8px 16px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.lw-seg{transition:none}.lw-new{animation:none}}
+@media print{.lw-nav,.lw-hint,.lw-pick,.lw-again{display:none}.lw-seg.lw-dim{opacity:1}.lw-secret{break-inside:avoid}}</style>
+</head>
+<body>
+<header class="lw-head">
+<p class="lw-kicker">Life World 作品・互動版<span class="lw-genre">現代商戰</span></p>
+<h1>現代鴻門宴：會館裡的最後合約</h1>
+<p class="lw-premise"><span class="lw-label">開場</span>對應〈鴻門宴〉藍本。在豪華會館的慶功宴上，大集團的主事沈知衡與策略長蘇映舟設局，請來搶先簽下關鍵客戶的小公司負責人羅映川。沈知衡尚未決定是否趕盡殺絕，蘇映舟則步步進逼，準備逼迫羅映川當場讓出合約。羅映川隻身赴宴，面臨不簽字、不翻臉便無法脫身的死局。觀眾將看到羅映川如何在險惡的商場局勢中全身而退，以及三人的真實意圖是否會徹底攤牌。</p>
+<dl class="lw-meta"><dt>人物</dt><dd><div class="lw-group"><span class="lw-group-name">獨立派</span>：<span class="lw-name" data-c="1" data-p="1">羅映川</span>（主角）</div><div class="lw-group"><span class="lw-group-name">集團派</span>：<span class="lw-name" data-c="2" data-p="2">沈知衡</span>（對手）、<span class="lw-name" data-c="3" data-p="3">蘇映舟</span>（軍師）</div></dd><dt>場景</dt><dd>藍本：鴻門宴，改編成現代商戰。大集團在自家會館擺慶功宴，請來搶先簽下關鍵客戶的小公司負責人。集團裡有人認定此人日後必成大患，準備在席間逼他當場讓出客戶；主事的人卻還沒下定決心。赴宴的人隻身前來，要不簽字、不翻臉地走出會館。全程只用商場上的手段。沈知衡是集團主事的人，蘇映舟是主張動手的策略長，羅映川是赴宴的小公司負責人。</dd><dt>完成</dt><dd>2026-11-11</dd></dl>
+<p class="lw-hint" hidden>一次看一段：按「下一段」、空白鍵或 → 往下，← 回上一段。點人物的名字，其他人的段落會變淡；再點一次取消。</p>
+<div class="lw-tools" hidden><button type="button" data-tool="smaller" aria-label="字級縮小">A−</button><button type="button" data-tool="larger" aria-label="字級放大">A＋</button><button type="button" data-tool="theme">深色</button><button type="button" data-tool="stage" aria-pressed="true">場景提示</button><button type="button" data-tool="xray" aria-pressed="false">真心話</button><button type="button" data-tool="mode">全部顯示</button></div>
+</header>
+<main>
+<section class="lw-chapter" id="ch-1" data-form="narrative"><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 1 幕</span><span class="lw-kind">起</span><span class="lw-beat-name">慶功宴上的鴻門局</span></h2><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">包廂內的吊燈將白色桌布照得透亮，三人間的距離看似客氣，空氣卻因為桌中央的那份合約而繃緊。</p><p class="lw-action">沈知衡將左手搭在桌面上，食指在關鍵客戶合約複本的邊緣輕輕點了兩下，目光在羅映川臉上停留了幾秒，隨後端起茶杯抿了一口，語氣平穩卻帶著不容迴避的重量。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「映川，這份合約複本上面的條款，你當初看的時候，真的覺得我們集團開出的交期與違約金是合理的嗎？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜審視</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>表面上配合集團施壓，暗中評估對方的談判底氣與抗壓能力</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼出羅映川簽約背後的真正籌碼，測試其是否具備合作資格</span></div></article><article class="lw-seg" data-c="3" data-p="3"><p class="lw-action">蘇映舟靠向椅背，指尖在桌面輕輕敲了兩下，目光掃過那份合約複本，最後停留在沈知衡茶杯上映出的燈影上。</p><p class="lw-line"><span class="lw-who">蘇映舟<span class="lw-side">集團派</span></span>「交期合不合理，得看你想把風險推給誰。不過沈總，這份合約從頭到尾只有你們的人在計算損益，映川要是現在點頭，等於連底褲都留在這裡了。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜而帶有戒備</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>主動介入，替羅映川擋下對方的施壓</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>拆解集團派在合約條款上的優勢，不讓羅映川輕易就範</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">燈光落在桌中央的合約上，原本安靜的包廂內只剩下空調運轉的低鳴。</p><p class="lw-action">羅映川端起手邊的溫水抿了一口，將茶杯放回瓷盤上發出輕響，順勢將那份複本稍微往自己方向推回半吋，迎著兩人的目光笑了笑。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「映舟這話說得直接，不過合約既然已經落定，條款就不是拿來重新喊價的。沈總今天請我來，總不會只是為了再確認一次違約金吧？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>沉著</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>保持防守並試探對方的底線</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>拖延時間並維持自身在談判中的空間</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">沈知衡放下茶杯，將桌上的合約複本往羅映川那邊推了半寸，目光直視著對方的眼睛，語氣放緩卻帶著幾分試探。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「違約金只是框架，我更好奇的是，你敢把合約簽在手裡，是不是已經看見了我們還沒算進去的第二條通路？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>平靜專注</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>表面上施壓，實則在測試對方的真實底牌與合作潛力</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼出羅映川簽約背後的真正籌碼，決定是否給予其合夥人資格</span></div></article></section><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 2 幕</span><span class="lw-kind">承</span><span class="lw-beat-name">步步進逼的讓渡書</span></h2><article class="lw-seg" data-c="3" data-p="3"><p class="lw-stage">包廂內的空氣彷彿瞬間降至冰點，只剩空調運轉的低鳴聲在三人之間迴盪。</p><p class="lw-action">蘇映舟拉開西裝外套內袋，將一封厚厚的牛皮紙袋與一張印著特定金額的支票推到桌面正中央，紙袋邊緣正好壓住那份合約複本的署名欄位。</p><p class="lw-line"><span class="lw-who">蘇映舟<span class="lw-side">集團派</span></span>「通路在哪裡不需要猜，支票上的數字倒是寫得很清楚。映川，拿這筆錢把手續辦一辦，比你留著一張隨時可能被法務部拆掉的合約實在得多。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜而帶有壓迫感</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>主動出手，以具體利益逼迫羅映川就範</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>迫使羅映川當場在讓渡書上簽字</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-action">羅映川沒有伸手去碰那張支票，反而將左手平放在桌面上，指尖在牛皮紙袋的邊緣輕輕彈了一下，語氣輕鬆卻藏著試探。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「這支票上的零確實夠多，不過映舟，你把合約署名欄壓得這麼死，是不打算給我們留退路，還是怕我真的把第二條通路走完？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>保持防守並試探對方的底線</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>拖延時間並維持自身在談判中的主導權</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-action">沈知衡將左手從桌面收回，端起微涼的茶杯在手中轉了半圈，目光落在羅映川平放的手指上，語氣裡聽不出情緒的起伏。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「映舟，把支票收回來吧。如果他真的只靠一張隨時會拆掉的合約，我們今天就不會坐在這裡喝茶了。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜審視</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>表面上維持集團主事的壓力，實則開始認真評估羅映川的合作潛力</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>阻止蘇映舟繼續施壓，進一步看清羅映川真正的底牌與合作意願</span></div></article><article class="lw-seg" data-c="3" data-p="3"><p class="lw-action">蘇映舟沒有收回支票，反而用食指將支票朝羅映川推近了一公分，目光落在那張印著特定金額的紙面上。</p><p class="lw-line"><span class="lw-who">蘇映舟<span class="lw-side">集團派</span></span>「支票留在桌上，總比收進抽屜乾淨。這不是退路的問題，是看你拿什麼底氣來換這個署名欄。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜而帶有壓迫感</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>堅持當場逼迫羅映川讓出合約</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼使羅映川在讓渡協議上簽字</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">包廂內原本凝滯的空氣彷彿被手機螢幕的光線切開，沈知衡的目光瞬間落在那組跳動的數字上。</p><p class="lw-action">羅映川沒有去碰那張支票，而是隨手將手機螢幕按亮，將倒數計時器轉向桌中央，目光平靜地看著蘇映舟。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「支票跟合約我都拿著，但這局的鐘已經開始倒數了。映舟，你如果要買，得先看看這筆交易扣掉伺服器自動解密的時間還剩幾分鐘。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>從容</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>掌握主導權並亮出底牌</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼迫對方在限時內重新評估讓渡條件</span></div></article></section><section class="lw-beat lw-beat-turn"><h2 class="lw-beat-title"><span class="lw-beat-no">第 3 幕</span><span class="lw-kind">轉</span><span class="lw-beat-name">桌底下的終極籌碼</span><span class="lw-turn-mark">轉折</span></h2><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">手機螢幕的紅光在三人臉上跳動，包廂內的氣溫彷彿隨著倒數數字往下掉。</p><p class="lw-action">羅映川將亮著紅色倒數秒數的手機穩穩扣在桌面上，身子往後靠向椅背，右手食指在膝蓋上輕輕敲了兩下，不再試圖去推那張支票。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「沈總，這局不急著定輸贏。倒數五十七分鐘裡，伺服器就會把我們手上的全套數據自動同步備份到外部節點。要嘛我們現在把合約條件重新排過，要嘛等它發出去大家一起看熱鬧。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>鎮定</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>以技術底牌逼迫對方放棄直接吞併</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>迫使沈知衡重新談判條件而非強壓收購</span></div></article><article class="lw-seg" data-c="3" data-p="3"><p class="lw-action">蘇映舟沒有去看那組跳動的數字，反而重新拿回西裝外套的扣子，目光冷冷地落在羅映川扣在桌上的手機螢幕邊緣。</p><p class="lw-line"><span class="lw-who">蘇映舟<span class="lw-side">集團派</span></span>「自動備份的時間算得挺精準，不過映川，你這組倒數計時器跳得這麼急，究竟是想和我們談條件，還是怕伺服器真的連出去那一刻，大家發現裡面除了假資料什麼也沒有？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>帶著防備的冷靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>懷疑羅映川手中伺服器數據的真實性</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>拆穿羅映川的虛張聲勢，不讓對方拿假倒數迫使集團讓步</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">包廂內的冷氣出風口發出低鳴，手機螢幕上的紅色倒數數字在桌面映出一片微弱的光暈。</p><p class="lw-action">沈知衡將茶杯輕輕放回瓷盤上，目光從手機螢幕上移開，重新落回羅映川那張年輕卻沉穩的臉上，修長的右手手指在桌緣慢慢叩了三下。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「映舟的懷疑很有意思。不過沈總比你更清楚，如果裡面只有假資料，我今天就不會坐在此處，而是寄給媒體了。這五十四分鐘足夠我們把下一季的合作條款定下來，沈總覺得呢？」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>沉著審視</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>重新評估對方的籌碼與合作可能</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>確認羅映川的真實意圖，並決定是否將其納入下一季合夥人</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">包廂內的空氣彷彿凝固，沈知衡的茶杯映著倒數的紅光，桌上的牛皮紙袋被冷氣吹得輕輕掀起一角。</p><p class="lw-action">羅映川沒有去拿那張支票，只是重新將手機螢幕向上一抬，讓跳動的紅色數字正好映在沈知衡的茶杯上。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「沈總看得明白。真假不用賭，五十三分鐘後見分曉。這局要不要重開，現在只差你的一句話。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>冷靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>掌握主動權，迫使對方在倒數結束前重新談判條件</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>逼沈知衡撤回收購條件並重簽合作契約</span></div></article></section><section class="lw-beat"><h2 class="lw-beat-title"><span class="lw-beat-no">第 4 幕</span><span class="lw-kind">合</span><span class="lw-beat-name">全身而退的贏局</span></h2><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">沈知衡將桌上的合約複本闔上，包廂厚重的木門隨之被侍應生從外側拉開，走廊的燈光透了進來。</p><p class="lw-action">沈知衡將茶杯推開半寸，目光直視著羅映川，右手平穩地將那份牛皮紙袋連同支票一併按回蘇映舟眼前，隨後向包廂大門抬了抬下巴。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「這局到這裡。映舟，把支票跟讓渡協議收起來，讓映川走吧。下一季的合夥人名單，我們晚點再重新擬一份。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>沉穩決斷</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>收回施壓並重新評估對方的合作資格</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>結束當下僵局，放行羅映川並為下一季合夥人布局</span></div></article><article class="lw-seg" data-c="3" data-p="3"><p class="lw-action">蘇映舟將支票與牛皮紙袋快速掃進公事包裡，拉上金屬拉鍊，沒有再看那支還在倒數的手機一眼。</p><p class="lw-line"><span class="lw-who">蘇映舟<span class="lw-side">集團派</span></span>「合約收好。映川，門在那邊，慢走。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>帶著保留的冷淡</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>認為羅映川的伺服器數據虛實難辨，但尊重沈知衡的決定</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>收拾檔案結束這場會談，離開包廂</span></div></article><article class="lw-seg" data-c="1" data-p="1"><p class="lw-stage">走廊的白光落進半開的包廂門口，空氣中的緊張感隨著腳步聲漸漸散去。</p><p class="lw-action">羅映川拿起手機按掉螢幕上的倒數計時器，塞回外套口袋，沒有去看那張被收進公事包的支票，轉身朝著打開的木門走去。</p><p class="lw-line"><span class="lw-who">羅映川<span class="lw-side">獨立派</span></span>「謝了，沈總。這局棋算我們扯平，下一季見。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>輕鬆</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>保持距離，順利脫身</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>安全步出会館，準備後續合作</span></div></article><article class="lw-seg" data-c="2" data-p="2"><p class="lw-stage">走廊的腳步聲漸遠，包廂內的冷氣出風口仍在低鳴，桌上只剩下一隻空茶杯與幾張摺疊過的筆記。</p><p class="lw-action">沈知衡靠回椅背上，看著羅映川的身影消失在門口，隨手端起冷掉的茶杯，將剩下的半口茶倒進瓷盤裡。</p><p class="lw-line"><span class="lw-who">沈知衡<span class="lw-side">集團派</span></span>「不用謝我，你只是證明了自己有資格坐在這裡談下一局。門外已經叫好車了，走吧。」</p><div class="lw-xray"><span class="lw-xray-label">真心話</span><span class="lw-xray-item"><span class="lw-xray-key">情緒</span>平靜</span><span class="lw-xray-item"><span class="lw-xray-key">立場</span>對等</span><span class="lw-xray-item"><span class="lw-xray-key">目標</span>準備重新擬定下一季合夥人名單的具體條款</span></div></article></section></section>
+<section class="lw-end" aria-label="讀完之後"><aside class="lw-teaser"><p class="lw-teaser-label">敬請期待下集</p><p class="lw-teaser-text">當羅映川步出會館坐上車時，手機另一頭傳來了更大的併購案消息。</p></aside><details class="lw-secrets"><summary>看底牌</summary><p class="lw-secrets-note">每個人只有自己知道的事。會透露劇情，建議讀完再看。</p><ul class="lw-secret-list"><li class="lw-secret" data-c="1"><span class="lw-name">羅映川</span><span class="lw-secret-text">羅映川早已將關鍵客戶的伺服器權限備份，並設定只要自己一小時內未手動取消，對手核心機密將自動公開。</span></li><li class="lw-secret" data-c="2"><span class="lw-name">沈知衡</span><span class="lw-secret-text">沈知衡其實欣賞羅映川的膽識，表面上配合施壓，實則在測試羅映川有無資格成為集團的下一季合夥人。</span></li></ul></details><div class="lw-pick" hidden><h2 class="lw-pick-title">你站哪一邊？</h2><div class="lw-pick-options"><button type="button" data-side="1">獨立派</button><button type="button" data-side="2">集團派</button></div><p class="lw-pick-result" role="status" hidden></p></div><div class="lw-again" hidden><button type="button" data-play="restart">從頭再看</button></div></section>
+</main>
+<nav class="lw-nav" aria-label="逐段閱讀" hidden><button type="button" class="lw-go" data-play="start">開始</button><button type="button" data-play="prev">上一段</button><p class="lw-progress"></p><button type="button" class="lw-go" data-play="next">下一段</button></nav>
+<footer class="lw-foot"><p>這是 AI 依人物設定生成的虛構演出，不代表真實人物或事實。</p><p>由 Life World 匯出・互動版 play-1</p></footer>
+<script type="application/json" id="lw-story">{"cast":[{"color":1,"name":"羅映川","role":"主角","secret":"羅映川早已將關鍵客戶的伺服器權限備份，並設定只要自己一小時內未手動取消，對手核心機密將自動公開。","side":"獨立派"},{"color":2,"name":"沈知衡","role":"對手","secret":"沈知衡其實欣賞羅映川的膽識，表面上配合施壓，實則在測試羅映川有無資格成為集團的下一季合夥人。","side":"集團派"},{"color":3,"name":"蘇映舟","role":"軍師","secret":null,"side":"集團派"}],"chapters":[{"beats":[{"goal":"","kind":"setup","no":1,"segments":[{"action":"沈知衡將左手搭在桌面上，食指在關鍵客戶合約複本的邊緣輕輕點了兩下，目光在羅映川臉上停留了幾秒，隨後端起茶杯抿了一口，語氣平穩卻帶著不容迴避的重量。","color":2,"line":"映川，這份合約複本上面的條款，你當初看的時候，真的覺得我們集團開出的交期與違約金是合理的嗎？","no":1,"side":"集團派","speaker":"沈知衡","stage":"包廂內的吊燈將白色桌布照得透亮，三人間的距離看似客氣，空氣卻因為桌中央的那份合約而繃緊。","state":{"emotion":"冷靜審視","goal":"逼出羅映川簽約背後的真正籌碼，測試其是否具備合作資格","stance":"表面上配合集團施壓，暗中評估對方的談判底氣與抗壓能力"},"who":2},{"action":"蘇映舟靠向椅背，指尖在桌面輕輕敲了兩下，目光掃過那份合約複本，最後停留在沈知衡茶杯上映出的燈影上。","color":3,"line":"交期合不合理，得看你想把風險推給誰。不過沈總，這份合約從頭到尾只有你們的人在計算損益，映川要是現在點頭，等於連底褲都留在這裡了。","no":2,"side":"集團派","speaker":"蘇映舟","stage":"","state":{"emotion":"冷靜而帶有戒備","goal":"拆解集團派在合約條款上的優勢，不讓羅映川輕易就範","stance":"主動介入，替羅映川擋下對方的施壓"},"who":3},{"action":"羅映川端起手邊的溫水抿了一口，將茶杯放回瓷盤上發出輕響，順勢將那份複本稍微往自己方向推回半吋，迎著兩人的目光笑了笑。","color":1,"line":"映舟這話說得直接，不過合約既然已經落定，條款就不是拿來重新喊價的。沈總今天請我來，總不會只是為了再確認一次違約金吧？","no":3,"side":"獨立派","speaker":"羅映川","stage":"燈光落在桌中央的合約上，原本安靜的包廂內只剩下空調運轉的低鳴。","state":{"emotion":"沉著","goal":"拖延時間並維持自身在談判中的空間","stance":"保持防守並試探對方的底線"},"who":1},{"action":"沈知衡放下茶杯，將桌上的合約複本往羅映川那邊推了半寸，目光直視著對方的眼睛，語氣放緩卻帶著幾分試探。","color":2,"line":"違約金只是框架，我更好奇的是，你敢把合約簽在手裡，是不是已經看見了我們還沒算進去的第二條通路？","no":4,"side":"集團派","speaker":"沈知衡","stage":"","state":{"emotion":"平靜專注","goal":"逼出羅映川簽約背後的真正籌碼，決定是否給予其合夥人資格","stance":"表面上施壓，實則在測試對方的真實底牌與合作潛力"},"who":2}],"title":"慶功宴上的鴻門局"},{"goal":"","kind":"rise","no":2,"segments":[{"action":"蘇映舟拉開西裝外套內袋，將一封厚厚的牛皮紙袋與一張印著特定金額的支票推到桌面正中央，紙袋邊緣正好壓住那份合約複本的署名欄位。","color":3,"line":"通路在哪裡不需要猜，支票上的數字倒是寫得很清楚。映川，拿這筆錢把手續辦一辦，比你留著一張隨時可能被法務部拆掉的合約實在得多。","no":5,"side":"集團派","speaker":"蘇映舟","stage":"包廂內的空氣彷彿瞬間降至冰點，只剩空調運轉的低鳴聲在三人之間迴盪。","state":{"emotion":"冷靜而帶有壓迫感","goal":"迫使羅映川當場在讓渡書上簽字","stance":"主動出手，以具體利益逼迫羅映川就範"},"who":3},{"action":"羅映川沒有伸手去碰那張支票，反而將左手平放在桌面上，指尖在牛皮紙袋的邊緣輕輕彈了一下，語氣輕鬆卻藏著試探。","color":1,"line":"這支票上的零確實夠多，不過映舟，你把合約署名欄壓得這麼死，是不打算給我們留退路，還是怕我真的把第二條通路走完？","no":6,"side":"獨立派","speaker":"羅映川","stage":"","state":{"emotion":"冷靜","goal":"拖延時間並維持自身在談判中的主導權","stance":"保持防守並試探對方的底線"},"who":1},{"action":"沈知衡將左手從桌面收回，端起微涼的茶杯在手中轉了半圈，目光落在羅映川平放的手指上，語氣裡聽不出情緒的起伏。","color":2,"line":"映舟，把支票收回來吧。如果他真的只靠一張隨時會拆掉的合約，我們今天就不會坐在這裡喝茶了。","no":7,"side":"集團派","speaker":"沈知衡","stage":"","state":{"emotion":"冷靜審視","goal":"阻止蘇映舟繼續施壓，進一步看清羅映川真正的底牌與合作意願","stance":"表面上維持集團主事的壓力，實則開始認真評估羅映川的合作潛力"},"who":2},{"action":"蘇映舟沒有收回支票，反而用食指將支票朝羅映川推近了一公分，目光落在那張印著特定金額的紙面上。","color":3,"line":"支票留在桌上，總比收進抽屜乾淨。這不是退路的問題，是看你拿什麼底氣來換這個署名欄。","no":8,"side":"集團派","speaker":"蘇映舟","stage":"","state":{"emotion":"冷靜而帶有壓迫感","goal":"逼使羅映川在讓渡協議上簽字","stance":"堅持當場逼迫羅映川讓出合約"},"who":3},{"action":"羅映川沒有去碰那張支票，而是隨手將手機螢幕按亮，將倒數計時器轉向桌中央，目光平靜地看著蘇映舟。","color":1,"line":"支票跟合約我都拿著，但這局的鐘已經開始倒數了。映舟，你如果要買，得先看看這筆交易扣掉伺服器自動解密的時間還剩幾分鐘。","no":9,"side":"獨立派","speaker":"羅映川","stage":"包廂內原本凝滯的空氣彷彿被手機螢幕的光線切開，沈知衡的目光瞬間落在那組跳動的數字上。","state":{"emotion":"從容","goal":"逼迫對方在限時內重新評估讓渡條件","stance":"掌握主導權並亮出底牌"},"who":1}],"title":"步步進逼的讓渡書"},{"goal":"","kind":"turn","no":3,"segments":[{"action":"羅映川將亮著紅色倒數秒數的手機穩穩扣在桌面上，身子往後靠向椅背，右手食指在膝蓋上輕輕敲了兩下，不再試圖去推那張支票。","color":1,"line":"沈總，這局不急著定輸贏。倒數五十七分鐘裡，伺服器就會把我們手上的全套數據自動同步備份到外部節點。要嘛我們現在把合約條件重新排過，要嘛等它發出去大家一起看熱鬧。","no":10,"side":"獨立派","speaker":"羅映川","stage":"手機螢幕的紅光在三人臉上跳動，包廂內的氣溫彷彿隨著倒數數字往下掉。","state":{"emotion":"鎮定","goal":"迫使沈知衡重新談判條件而非強壓收購","stance":"以技術底牌逼迫對方放棄直接吞併"},"who":1},{"action":"蘇映舟沒有去看那組跳動的數字，反而重新拿回西裝外套的扣子，目光冷冷地落在羅映川扣在桌上的手機螢幕邊緣。","color":3,"line":"自動備份的時間算得挺精準，不過映川，你這組倒數計時器跳得這麼急，究竟是想和我們談條件，還是怕伺服器真的連出去那一刻，大家發現裡面除了假資料什麼也沒有？","no":11,"side":"集團派","speaker":"蘇映舟","stage":"","state":{"emotion":"帶著防備的冷靜","goal":"拆穿羅映川的虛張聲勢，不讓對方拿假倒數迫使集團讓步","stance":"懷疑羅映川手中伺服器數據的真實性"},"who":3},{"action":"沈知衡將茶杯輕輕放回瓷盤上，目光從手機螢幕上移開，重新落回羅映川那張年輕卻沉穩的臉上，修長的右手手指在桌緣慢慢叩了三下。","color":2,"line":"映舟的懷疑很有意思。不過沈總比你更清楚，如果裡面只有假資料，我今天就不會坐在此處，而是寄給媒體了。這五十四分鐘足夠我們把下一季的合作條款定下來，沈總覺得呢？","no":12,"side":"集團派","speaker":"沈知衡","stage":"包廂內的冷氣出風口發出低鳴，手機螢幕上的紅色倒數數字在桌面映出一片微弱的光暈。","state":{"emotion":"沉著審視","goal":"確認羅映川的真實意圖，並決定是否將其納入下一季合夥人","stance":"重新評估對方的籌碼與合作可能"},"who":2},{"action":"羅映川沒有去拿那張支票，只是重新將手機螢幕向上一抬，讓跳動的紅色數字正好映在沈知衡的茶杯上。","color":1,"line":"沈總看得明白。真假不用賭，五十三分鐘後見分曉。這局要不要重開，現在只差你的一句話。","no":13,"side":"獨立派","speaker":"羅映川","stage":"包廂內的空氣彷彿凝固，沈知衡的茶杯映著倒數的紅光，桌上的牛皮紙袋被冷氣吹得輕輕掀起一角。","state":{"emotion":"冷靜","goal":"逼沈知衡撤回收購條件並重簽合作契約","stance":"掌握主動權，迫使對方在倒數結束前重新談判條件"},"who":1}],"title":"桌底下的終極籌碼"},{"goal":"","kind":"payoff","no":4,"segments":[{"action":"沈知衡將茶杯推開半寸，目光直視著羅映川，右手平穩地將那份牛皮紙袋連同支票一併按回蘇映舟眼前，隨後向包廂大門抬了抬下巴。","color":2,"line":"這局到這裡。映舟，把支票跟讓渡協議收起來，讓映川走吧。下一季的合夥人名單，我們晚點再重新擬一份。","no":14,"side":"集團派","speaker":"沈知衡","stage":"沈知衡將桌上的合約複本闔上，包廂厚重的木門隨之被侍應生從外側拉開，走廊的燈光透了進來。","state":{"emotion":"沉穩決斷","goal":"結束當下僵局，放行羅映川並為下一季合夥人布局","stance":"收回施壓並重新評估對方的合作資格"},"who":2},{"action":"蘇映舟將支票與牛皮紙袋快速掃進公事包裡，拉上金屬拉鍊，沒有再看那支還在倒數的手機一眼。","color":3,"line":"合約收好。映川，門在那邊，慢走。","no":15,"side":"集團派","speaker":"蘇映舟","stage":"","state":{"emotion":"帶著保留的冷淡","goal":"收拾檔案結束這場會談，離開包廂","stance":"認為羅映川的伺服器數據虛實難辨，但尊重沈知衡的決定"},"who":3},{"action":"羅映川拿起手機按掉螢幕上的倒數計時器，塞回外套口袋，沒有去看那張被收進公事包的支票，轉身朝著打開的木門走去。","color":1,"line":"謝了，沈總。這局棋算我們扯平，下一季見。","no":16,"side":"獨立派","speaker":"羅映川","stage":"走廊的白光落進半開的包廂門口，空氣中的緊張感隨著腳步聲漸漸散去。","state":{"emotion":"輕鬆","goal":"安全步出会館，準備後續合作","stance":"保持距離，順利脫身"},"who":1},{"action":"沈知衡靠回椅背上，看著羅映川的身影消失在門口，隨手端起冷掉的茶杯，將剩下的半口茶倒進瓷盤裡。","color":2,"line":"不用謝我，你只是證明了自己有資格坐在這裡談下一局。門外已經叫好車了，走吧。","no":17,"side":"集團派","speaker":"沈知衡","stage":"走廊的腳步聲漸遠，包廂內的冷氣出風口仍在低鳴，桌上只剩下一隻空茶杯與幾張摺疊過的筆記。","state":{"emotion":"平靜","goal":"準備重新擬定下一季合夥人名單的具體條款","stance":"對等"},"who":2}],"title":"全身而退的贏局"}],"form":"narrative","genre":"現代商戰","no":1,"premise":"對應〈鴻門宴〉藍本。在豪華會館的慶功宴上，大集團的主事沈知衡與策略長蘇映舟設局，請來搶先簽下關鍵客戶的小公司負責人羅映川。沈知衡尚未決定是否趕盡殺絕，蘇映舟則步步進逼，準備逼迫羅映川當場讓出合約。羅映川隻身赴宴，面臨不簽字、不翻臉便無法脫身的死局。觀眾將看到羅映川如何在險惡的商場局勢中全身而退，以及三人的真實意圖是否會徹底攤牌。","scene":"藍本：鴻門宴，改編成現代商戰。大集團在自家會館擺慶功宴，請來搶先簽下關鍵客戶的小公司負責人。集團裡有人認定此人日後必成大患，準備在席間逼他當場讓出客戶；主事的人卻還沒下定決心。赴宴的人隻身前來，要不簽字、不翻臉地走出會館。全程只用商場上的手段。沈知衡是集團主事的人，蘇映舟是主張動手的策略長，羅映川是赴宴的小公司負責人。","secrets":[{"color":1,"name":"羅映川","secret":"羅映川早已將關鍵客戶的伺服器權限備份，並設定只要自己一小時內未手動取消，對手核心機密將自動公開。","who":1},{"color":2,"name":"沈知衡","secret":"沈知衡其實欣賞羅映川的膽識，表面上配合施壓，實則在測試羅映川有無資格成為集團的下一季合夥人。","who":2}],"teaser":"當羅映川步出會館坐上車時，手機另一頭傳來了更大的併購案消息。","title":"現代鴻門宴：會館裡的最後合約"}],"format":"lw-play.v1","title":"現代鴻門宴：會館裡的最後合約"}</script>
+<script>(function () {
+  // Life World 離線播放器 play-1（互動版）。內容已經完整寫在頁面裡；這段程式把它變成可以把玩的版本：
+  // 1. 逐段模式（預設）：先藏起還沒讀到的段落，按「下一段」、空白鍵或 → 一次揭開一段，← 收回。
+  //    章名、幕名跟著那一章（幕）的第一段出現；「全部顯示」可以切到整篇閱讀，再按回到逐段。
+  // 2. 真心話：每一段之後那位人物的情緒、立場、目標。頁面裡本來就有，預設不顯示，開關打開才顯示。
+  // 3. 人物篩選：點開頭的人物名字，其他人的段落變淡（不隱藏，上下文還在）。
+  // 4. 結尾卡：全部揭開後才出現——下集預告、看底牌（原生的收合區塊，按了才展開）、你站哪一邊、從頭再看。
+  // 這段程式沒有執行時（預覽工具、被停用），頁面就是整篇可讀的文章，底牌仍然收合：所以「藏起來」都由這裡動手，不寫死在頁面裡。
+  // 沒有任何連線；偏好存在這個瀏覽器，存不了（例如直接點開的檔案被限制）也照常使用。
+  var root = document.documentElement;
+  var tools = document.querySelector('.lw-tools');
+  if (!tools) return;
+
+  function list(selector, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(selector)); }
+  function hit(event, selector) { return event.target && event.target.closest ? event.target.closest(selector) : null; }
+  function read(key) { try { return window.localStorage.getItem(key); } catch (error) { return null; } }
+  function write(key, value) { try { window.localStorage.setItem(key, value); } catch (error) { /* 存不了不影響閱讀 */ } }
+  function readObject(key) {
+    try {
+      var value = JSON.parse(read(key) || 'null');
+      return value && typeof value === 'object' ? value : {};
+    } catch (error) { return {}; }
+  }
+
+  // ---- 閱讀偏好 ----
+  // 字級、深淺色、場景提示和閱讀版共用同一個鍵：同一個瀏覽器裡兩種檔案的設定一致。
+  // 真心話只有互動版有，另外存一個鍵——閱讀版寫回偏好時只寫它認得的三項，放在一起會被它清掉。
+  var KEY = 'lw-reader-prefs';
+  var PLAY_KEY = 'lw-play-prefs';
+  var SIZES = ['s', 'm', 'l', 'xl'];
+  var prefs = {theme: '', size: 'm', stage: 'on'};
+  var saved = readObject(KEY);
+  Object.keys(prefs).forEach(function (key) { if (typeof saved[key] === 'string') prefs[key] = saved[key]; });
+  var xray = readObject(PLAY_KEY).xray === 'on';
+
+  function isDark() {
+    var theme = root.getAttribute('data-theme');
+    if (theme) return theme === 'dark';
+    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+
+  function apply() {
+    if (prefs.theme === 'dark' || prefs.theme === 'light') root.setAttribute('data-theme', prefs.theme);
+    else root.removeAttribute('data-theme');
+    root.setAttribute('data-size', SIZES.indexOf(prefs.size) < 0 ? 'm' : prefs.size);
+    root.setAttribute('data-stage', prefs.stage === 'off' ? 'off' : 'on');
+    root.setAttribute('data-xray', xray ? 'on' : 'off');
+    var stage = tools.querySelector('[data-tool=stage]');
+    if (stage) stage.setAttribute('aria-pressed', prefs.stage === 'off' ? 'false' : 'true');
+    var theme = tools.querySelector('[data-tool=theme]');
+    if (theme) theme.textContent = isDark() ? '淺色' : '深色';
+    var reveal = tools.querySelector('[data-tool=xray]');
+    if (reveal) reveal.setAttribute('aria-pressed', xray ? 'true' : 'false');
+    write(KEY, JSON.stringify(prefs));
+    write(PLAY_KEY, JSON.stringify({xray: xray ? 'on' : 'off'}));
+  }
+
+  // ---- 逐段模式 ----
+  var main = document.querySelector('main');
+  var segs = list('main .lw-seg');
+  var total = segs.length;
+  var nav = document.querySelector('.lw-nav');
+  var end = document.querySelector('.lw-end');
+  var secrets = document.querySelector('.lw-secrets');
+  var modeButton = tools.querySelector('[data-tool=mode]');
+  var startButton = nav && nav.querySelector('[data-play=start]');
+  var prevButton = nav && nav.querySelector('[data-play=prev]');
+  var nextButton = nav && nav.querySelector('[data-play=next]');
+  var progress = nav && nav.querySelector('.lw-progress');
+  // 沒有段落（或頁面不完整）就不進入逐段模式：整篇照常顯示
+  var stepping = Boolean(total && startButton && prevButton && nextButton && progress);
+  var mode = stepping ? 'step' : 'all';
+  var shown = 0; // 已經揭開幾段
+
+  // 每一章、每一幕從第幾段開始（依頁面順序，章排在它的幕前面）。章名、幕名跟著自己的第一段出現；
+  // 沒有段落的章跟著它後面的第一段出現（後面沒有段落就跟著最後一段）。
+  var heads = list('main .lw-chapter, main .lw-beat').map(function (element) {
+    var first = segs.indexOf(element.querySelector('.lw-seg'));
+    if (first < 0) {
+      first = total - 1;
+      for (var index = 0; index < total; index += 1) {
+        if (element.compareDocumentPosition(segs[index]) & 4) { first = index; break; } // 4＝這一段排在它後面
+      }
+    }
+    return {element: element, first: first};
+  });
+
+  function wait(element, on) { if (element) element.classList.toggle('lw-wait', on); }
+
+  function draw() {
+    var everything = mode === 'all';
+    var done = everything || shown >= total;
+    if (main && everything) main.removeAttribute('aria-live'); // 整篇一次出現時不要全部念一遍
+    segs.forEach(function (seg, index) { wait(seg, !everything && index >= shown); });
+    heads.forEach(function (head) { wait(head.element, !everything && head.first >= shown); });
+    wait(end, !done); // 結尾卡：讀完才出現
+    if (!done && secrets) secrets.open = false; // 結尾卡收起來時底牌也收合：再讀到最後要重新按才看得到
+    root.setAttribute('data-mode', mode);
+    if (modeButton) modeButton.textContent = everything ? '逐段閱讀' : '全部顯示'; // 按鈕寫的是按下去會變成什麼
+    if (!stepping) return;
+    nav.hidden = everything;
+    startButton.hidden = shown > 0;
+    prevButton.hidden = nextButton.hidden = shown === 0;
+    // 讀完時「下一段」只標成不能按，不用 disabled：焦點留在被停用的按鈕上時，瀏覽器不會送出鍵盤事件，← 會失效
+    nextButton.setAttribute('aria-disabled', shown >= total ? 'true' : 'false');
+    progress.textContent = shown === 0 ? '共 ' + total + ' 段' : '第 ' + shown + '／' + total + ' 段';
+    if (main && !everything) main.setAttribute('aria-live', 'polite'); // 新揭開的段落讓螢幕報讀器念出來
+  }
+
+  function bring(element, top) {
+    if (!element || !element.scrollIntoView) return;
+    // 一般的段落放在畫面中間；新的一章（幕）或比畫面高的段落從開頭對齊，標題與第一行不會被切掉
+    var tall = element.getBoundingClientRect().height > window.innerHeight * 0.6;
+    element.scrollIntoView({block: top || tall ? 'start' : 'center'});
+  }
+
+  function advance() {
+    if (mode !== 'step' || shown >= total) return false;
+    var index = shown;
+    shown += 1;
+    draw();
+    var target = segs[index];
+    for (var number = 0; number < heads.length; number += 1) {
+      if (heads[number].first === index) { target = heads[number].element; break; } // 這一段是某一章（幕）的第一段：章名、幕名一起進到畫面
+    }
+    list('.lw-new').forEach(function (item) { item.classList.remove('lw-new'); });
+    target.classList.add('lw-new');
+    // 最後一段也從開頭對齊：結尾卡（下集預告、看底牌）接在它下面，一起進到畫面
+    bring(target, target !== segs[index] || shown >= total);
+    return true;
+  }
+
+  function back() {
+    if (mode !== 'step' || shown <= 0) return false;
+    var inNav = nav.contains(document.activeElement);
+    shown -= 1;
+    draw();
+    if (shown > 0) {
+      bring(segs[shown - 1]);
+    } else {
+      window.scrollTo(0, 0);
+      if (inNav) startButton.focus({preventScroll: true}); // 「上一段」收起來了，焦點交給「開始」
+    }
+    return true;
+  }
+
+  function restart() {
+    if (!stepping) return;
+    shown = 0;
+    mode = 'step';
+    draw();
+    window.scrollTo(0, 0);
+    startButton.focus({preventScroll: true});
+  }
+
+  document.addEventListener('click', function (event) {
+    var button = hit(event, 'button[data-play]');
+    if (!button) return;
+    var what = button.getAttribute('data-play');
+    if (what === 'start') {
+      if (advance()) nextButton.focus({preventScroll: true}); // 「開始」收起來了，焦點交給「下一段」：鍵盤可以接著按
+    } else if (what === 'next') {
+      advance();
+    } else if (what === 'prev') {
+      back();
+    } else if (what === 'restart') {
+      restart();
+    }
+  });
+
+  document.addEventListener('keydown', function (event) {
+    // 只在逐段模式接手：整篇閱讀時空白鍵照常捲動頁面
+    if (mode !== 'step' || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+    var space = event.key === ' ' || event.key === 'Spacebar';
+    if (!space && event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+    // 焦點在按鈕、連結、收合區塊上時，空白鍵是「按下它」：交給瀏覽器，不要同時又翻一段
+    if (space && hit(event, 'button,a,summary,input,select,textarea,[role=button]')) return;
+    var left = event.key === 'ArrowLeft';
+    if (left ? shown <= 0 : shown >= total) return; // 沒有得翻了：交還給瀏覽器（讀完之後空白鍵照常捲動頁面）
+    event.preventDefault();
+    if (event.repeat) return; // 按住不放不連翻，免得一口氣把後面都揭開
+    if (left) back(); else advance();
+  });
+
+  tools.addEventListener('click', function (event) {
+    var button = hit(event, 'button[data-tool]');
+    if (!button) return;
+    var tool = button.getAttribute('data-tool');
+    if (tool === 'smaller' || tool === 'larger') {
+      var index = SIZES.indexOf(prefs.size);
+      if (index < 0) index = 1;
+      prefs.size = SIZES[Math.max(0, Math.min(SIZES.length - 1, index + (tool === 'larger' ? 1 : -1)))];
+    } else if (tool === 'theme') {
+      prefs.theme = isDark() ? 'light' : 'dark';
+    } else if (tool === 'stage') {
+      prefs.stage = prefs.stage === 'off' ? 'on' : 'off';
+    } else if (tool === 'xray') {
+      xray = !xray;
+    } else if (tool === 'mode' && stepping) {
+      mode = mode === 'all' ? 'step' : 'all'; // 進度留著：切回逐段時回到剛才讀到的地方
+      draw();
+      if (mode === 'step' && shown > 0) bring(segs[shown - 1]);
+    }
+    apply();
+  });
+
+  // ---- 人物篩選 ----
+  // 名字在頁面裡是一般文字；有這段程式才變成可以按的按鈕（滑鼠、Enter、空白鍵）。再按一次同一個名字取消。
+  var names = list('.lw-meta .lw-name[data-p]');
+  var chosen = '';
+
+  function focusOn(who) {
+    chosen = chosen === who ? '' : who;
+    names.forEach(function (name) { name.setAttribute('aria-pressed', name.getAttribute('data-p') === chosen ? 'true' : 'false'); });
+    segs.forEach(function (seg) { seg.classList.toggle('lw-dim', Boolean(chosen) && seg.getAttribute('data-p') !== chosen); });
+  }
+
+  names.forEach(function (name) {
+    name.setAttribute('role', 'button');
+    name.setAttribute('tabindex', '0');
+    name.setAttribute('aria-pressed', 'false');
+    name.addEventListener('click', function () { focusOn(name.getAttribute('data-p')); });
+    name.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+      event.preventDefault();
+      focusOn(name.getAttribute('data-p'));
+    });
+  });
+
+  // ---- 你站哪一邊 ----
+  // 選擇記在這個瀏覽器；鍵帶著作品標題，不同作品不會互相覆蓋。
+  var pick = document.querySelector('.lw-pick');
+  if (pick) {
+    var PICK_KEY = 'lw-play-pick:' + document.title;
+    var options = list('button[data-side]', pick);
+    var result = pick.querySelector('.lw-pick-result');
+    var choose = function (side) {
+      var found = false;
+      options.forEach(function (option) {
+        var on = option.textContent === side;
+        found = found || on;
+        option.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      if (result) {
+        result.textContent = found ? '你選了：' + side : '';
+        result.hidden = !found;
+      }
+    };
+    choose(read(PICK_KEY) || ''); // 上次選的陣營還在才顯示
+    pick.addEventListener('click', function (event) {
+      var option = hit(event, 'button[data-side]');
+      if (!option) return;
+      choose(option.textContent);
+      write(PICK_KEY, option.textContent);
+    });
+    pick.hidden = false;
+  }
+
+  // ---- 目錄（多章節） ----
+  // 逐段模式下還沒揭開的章是藏起來的，連結跳不過去：先把到那一章第一段為止的內容揭開，瀏覽器再照常捲到那一章。
+  var toc = document.querySelector('.lw-toc');
+  if (toc) {
+    toc.addEventListener('click', function (event) {
+      var link = hit(event, 'a[href^="#"]');
+      if (!link || mode !== 'step') return;
+      var chapter = document.getElementById(link.getAttribute('href').slice(1));
+      heads.forEach(function (head) {
+        if (head.element === chapter && head.first >= shown) {
+          shown = head.first + 1;
+          draw();
+        }
+      });
+    });
+  }
+
+  apply();
+  draw();
+  tools.hidden = false;
+  if (modeButton && !stepping) modeButton.hidden = true;
+  list('.lw-again, .lw-hint').forEach(function (element) { element.hidden = !stepping; });
+})();</script>
+</body>
+</html>
