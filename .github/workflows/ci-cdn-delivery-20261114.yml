@@ -1,0 +1,94 @@
+name: Verify CDN repair against the actual Blogger site
+on:
+  push:
+    branches: ['fix/verify-blogger-cdn-delivery-20261114']
+    paths: ['.github/workflows/ci-cdn-delivery-20261114.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Confirm exact repair scope and unchanged website sources
+        run: |
+          git rev-parse HEAD
+          git status --porcelain=v1 -uall
+          git diff --name-status
+          git diff --cached --name-status
+          test -z "$(git status --porcelain=v1 -uall)"
+          git diff --exit-code d2ff13a5e7ae57b2d8ea85b203aa5682f8bc9328 -- assets _posts _pages
+          python -m unittest discover -s tests -p 'test_refresh_blog_cdn.py' -v
+      - name: Refresh stale official CDN URLs and compare delivered bytes
+        run: python scripts/refresh_blog_cdn.py
+      - name: Install isolated browser verifier
+        if: always()
+        run: |
+          python -m pip install playwright
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Inspect the real website without injecting or replacing page content
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,shutil
+          from playwright.sync_api import sync_playwright
+          out=Path('_live_cdn_receipt');out.mkdir()
+          report={'injected_scripts':False,'mocked_responses':False,'checks':[],'errors':[]}
+          expected=hashlib.sha256(Path('assets/js/blogger.js').read_bytes()).hexdigest()
+          targets=[('homepage-desktop','https://blog.rhyzarca.com/',1440),('homepage-mobile','https://blog.rhyzarca.com/?m=1',390),('category','https://blog.rhyzarca.com/search/label/architecture',1280)]
+          with sync_playwright() as p:
+              browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'))
+              for name,url,width in targets:
+                  page=browser.new_page(viewport={'width':width,'height':950})
+                  scripts=[]
+                  page.on('response',lambda r:scripts.append(r) if '/assets/js/blogger.js' in r.url else None)
+                  try:
+                      response=page.goto(url,wait_until='domcontentloaded',timeout=30000)
+                      check={'name':name,'url':page.url,'status':response.status if response else None}
+                      if not response or response.status!=200 or 'google.com/sorry' in page.url:
+                          report['checks'].append(check)
+                          report['errors'].append({'name':name,'message':'Public read blocked; stopped without retry.'})
+                          page.close()
+                          break
+                      page.locator('#rhyzarca-nav').wait_for(timeout=12000)
+                      page.wait_for_timeout(1500)
+                      check['navigation']=page.locator('#rhyzarca-nav').inner_text()
+                      check['new_label']=page.locator('#rhyzarca-nav a[href="/search/label/architecture"]').inner_text()
+                      check['definition']=page.locator('#rhyzarca-category-description').all_inner_texts()
+                      check['article_labels']=page.locator('.post-labels').all_inner_texts()
+                      check['has_latest_article']='從行政痛點到互動世界' in page.locator('body').inner_text()
+                      check['script_sha256']=[hashlib.sha256(r.body()).hexdigest() for r in scripts]
+                      check['served_script_matches_source']=expected in check['script_sha256']
+                      (out/(name+'.html')).write_text(page.content(),encoding='utf-8')
+                      page.screenshot(path=str(out/(name+'.png')),full_page=False)
+                      report['checks'].append(check)
+                      if check['new_label']!='實作探索 (Practice)' or not check['served_script_matches_source']:
+                          report['errors'].append({'name':name,'message':'Visible navigation or delivered script does not match release.'})
+                      if name=='category' and (not check['definition'] or not check['has_latest_article']):
+                          report['errors'].append({'name':name,'message':'Category definition or target article missing.'})
+                  except Exception as e:
+                      report['errors'].append({'name':name,'message':str(e)[:500]})
+                  finally:
+                      if not page.is_closed():page.close()
+              browser.close()
+          report['all_checked']=len(report['checks'])==3 and not report['errors']
+          (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False))
+          if not report['all_checked']:raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-cdn-repair-verification
+          path: _live_cdn_receipt/
+          retention-days: 7
