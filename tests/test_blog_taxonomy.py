@@ -10,8 +10,8 @@ class TaxonomyTests(unittest.TestCase):
         self.categories=json.loads((ROOT/'_data/blog_categories.json').read_text())
         self.ids={c['id'] for c in self.categories}
     def test_four_categories_and_names(self):
-        self.assertEqual(self.ids,{'insights','architecture','embodied','speculations'})
-        self.assertEqual(next(c['name'] for c in self.categories if c['id']=='architecture'),'實作探索')
+        self.assertEqual(self.ids,{'insights','practice','embodied','speculations'})
+        self.assertEqual(next(c['name'] for c in self.categories if c['id']=='practice'),'實作探索')
     def test_all_posts_use_canonical_categories(self):
         for path in (ROOT/'_posts').glob('*.md'):
             with self.subTest(path=path.name):
@@ -33,7 +33,7 @@ class TaxonomyTests(unittest.TestCase):
         self.assertIn('category.aliases',text)
         self.assertNotIn('site.categories.build-log',text)
     def test_examples_keep_distinct_reading_purposes(self):
-        expected={'2026-11-13-two-ai-projects-human-judgment.md':['architecture'],'2026-11-06-from-unknown-to-human-ai-mutual-growth.md':['insights'],'2026-10-22-claude-codex-harness-engineering-auto-workflow.md':['architecture']}
+        expected={'2026-11-13-two-ai-projects-human-judgment.md':['practice'],'2026-11-06-from-unknown-to-human-ai-mutual-growth.md':['insights'],'2026-10-22-claude-codex-harness-engineering-auto-workflow.md':['practice']}
         for name,categories in expected.items():
             self.assertEqual(frontmatter.load(ROOT/'_posts'/name)['categories'],categories)
     def test_definition_includes_planning_tests_and_failure(self):

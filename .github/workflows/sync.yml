@@ -7,6 +7,7 @@ on:
     paths:
       - '_posts/**'
       - '_pages/**'
+      - '_data/blog_categories.json'
       - 'scripts/**'
       - '.github/workflows/sync.yml'
       - 'assets/**'

@@ -3,7 +3,7 @@ blogger_permalink_slug: two-ai-projects-human-judgment
 blogger_post_id: '4357768617267032194'
 blogger_post_url: https://blog.rhyzarca.com/2026/11/two-ai-projects-human-judgment.html
 categories:
-- architecture
+- practice
 date: 2026-11-13 09:00:00 +0800
 description: 跨產業團隊從行政痛點與 CRM 出發，在有限時間裡與 AI 協作。從發票審核到目標、人物經歷與人設，記錄系統如何生成可規劃、可推演、可閱讀的作品。
 image: /assets/images/posts/2026-11-13-two-ai-projects-human-judgment_1.svg
