@@ -1,6 +1,7 @@
 ---
 blogger_post_id: '5366443801176099018'
 categories:
+- speculations
 - insights
 - practice
 date: 2026-09-15 09:39:56 +0800

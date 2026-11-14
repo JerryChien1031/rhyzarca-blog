@@ -14,33 +14,15 @@ title: "首頁"
   </div>
 </div>
 
-<!-- 五大主題分類導航 -->
+<!-- 四大主題分類導航：與文章及 Blogger 共用分類定義 -->
 <div class="section-heading">🗂️ 認知領域分類</div>
 <div class="category-grid">
-  <a href="/categories/#insights" class="category-card">
-    <div class="category-card-title">💡 心得記錄</div>
-    <p class="category-card-desc">認知原點、價值觀推演、個人認知管理（PCM）哲學與趨勢觀察。</p>
+  {% for category in site.data.blog_categories %}
+  <a href="{{ '/categories/' | relative_url }}#{{ category.id }}" class="category-card">
+    <div class="category-card-title">{% case category.id %}{% when 'insights' %}💡{% when 'practice' %}🛠️{% when 'embodied' %}🌲{% when 'speculations' %}🌌{% endcase %} {{ category.name }}</div>
+    <p class="category-card-desc">{{ category.summary }}</p>
   </a>
-
-  <a href="/categories/#build-log" class="category-card">
-    <div class="category-card-title">🛠️ 實作日誌</div>
-    <p class="category-card-desc">Rhyzarca 系統架構、推論演算法、MCP 工具整合與試錯記錄。</p>
-  </a>
-
-  <a href="/categories/#life-and-trails" class="category-card">
-    <div class="category-card-title">🌲 生活點滴</div>
-    <p class="category-card-desc">登山步道、旅遊見聞與生活隨筆，記錄肉身在實體空間的具身體驗。</p>
-  </a>
-
-  <a href="/categories/#speculations" class="category-card">
-    <div class="category-card-title">🌌 科學猜想</div>
-    <p class="category-card-desc">與 AI 探討宇宙本質、量子推論、時間維度與意識起源的思辨對話。</p>
-  </a>
-
-  <a href="/categories/#uncategorized" class="category-card">
-    <div class="category-card-title">📦 其他</div>
-    <p class="category-card-desc">未分類的靈感碎片、實驗性短文與跨領域的臨時雜感。</p>
-  </a>
+  {% endfor %}
 </div>
 
 <!-- 最新文章列表（唯一入口來源） -->
@@ -51,7 +33,8 @@ title: "首頁"
       <div class="post-meta">
         <span>{{ post.date | date: "%Y-%m-%d" }}</span>
         {% for cat in post.categories %}
-          <span class="post-category-tag">{{ cat }}</span>
+          {% assign category = site.data.blog_categories | where: 'id', cat | first %}
+          <span class="post-category-tag">{{ category.name | default: cat }}</span>
         {% endfor %}
       </div>
       <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
