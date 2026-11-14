@@ -168,9 +168,9 @@ permalink: "/insights/epistemology/2026/08/22/mythology-civilizational-models/"
 ---
 
 > ### 🔗 認知脈絡與延伸閱讀
-> * **制度架構**：[當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？](/search/label/speculations)
-> * **主權演算法實踐**：[從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？](/search/label/embodied)
-> * **系統本體論**：[認識論總帳 (Epistemic Ledger)：AI 時代的個人存在證明與主權錨定](/search/label/architecture)
+> * **制度架構**：[當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？](https://blog.rhyzarca.com/2026/09/agi_01025053811.html)
+> * **主權演算法實踐**：[從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？](https://blog.rhyzarca.com/2026/09/agi_0896037257.html)
+> * **系統本體論**：《認識論總帳 (Epistemic Ledger)：AI 時代的個人存在證明與主權錨定》（目前無公開連結）
 
 ---
 

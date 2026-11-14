@@ -221,9 +221,9 @@ AGI 甚至可以比我們更客觀地了解這個世界的運作規律。
 ---
 
 > ### 🔗 認知脈絡與延伸閱讀
-> * **原點回溯**：[認識論總帳 (Epistemic Ledger)：AI 時代的個人存在證明與主權錨定](/search/label/architecture)
-> * **價值發端**：[當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源](/search/label/insights)
-> * **完整治理全景**：[BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？](/search/label/speculations)
+> * **原點回溯**：《認識論總帳 (Epistemic Ledger)：AI 時代的個人存在證明與主權錨定》（目前無公開連結）
+> * **價值發端**：[當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源](https://blog.rhyzarca.com/2026/09/agi-rhyzarca_01235952759.html)
+> * **完整治理全景**：[BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？](https://blog.rhyzarca.com/2026/09/bci-agi_0874824434.html)
 
 ---
 

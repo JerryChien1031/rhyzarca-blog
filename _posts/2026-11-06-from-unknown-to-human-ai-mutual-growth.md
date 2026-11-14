@@ -5,6 +5,7 @@ blogger_permalink_slug: human-ai-mutual-growth
 blogger_post_id: '4612228034531880686'
 blogger_post_url: https://blog.rhyzarca.com/2026/11/human-ai-mutual-growth.html
 categories:
+- practice
 - insights
 date: 2026-11-06 08:50:00 +0800
 description: 一份散落各處的報價單，如何變成一場人與 AI 一起解決問題的練習？從找資料、連工具到跨平台交接，看雙方如何邊做邊學，讓經驗不因換工具而重來。
@@ -19,6 +20,7 @@ tags:
 - Harness-Engineering
 - Epistemic-Ledger
 title: 從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求
+permalink: "/insights/2026/11/06/from-unknown-to-human-ai-mutual-growth/"
 ---
 
 ![從模糊意圖經過 AI Agent、工具研究與知識累積走向可驗證成果的原創封面](/assets/images/posts/2026-11-06-from-unknown-to-human-ai-mutual-growth_1.svg)

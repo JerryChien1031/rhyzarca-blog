@@ -288,9 +288,9 @@ AGI 可以消耗數兆瓦特的恆星能源，在後台窮舉十億種資源分�
 ---
 
 > ### 🔗 認知脈絡與延伸閱讀
-> * **憲法四輪廓來源**：[當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？](/search/label/speculations)
-> * **人的不可替代性**：[從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？](/search/label/embodied)
-> * **認識論總帳實踐**：[當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？](/search/label/architecture)
+> * **憲法四輪廓來源**：[當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？](https://blog.rhyzarca.com/2026/09/agi_01025053811.html)
+> * **人的不可替代性**：[從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？](https://blog.rhyzarca.com/2026/09/agi_0896037257.html)
+> * **認識論總帳實踐**：[當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？](https://blog.rhyzarca.com/2026/09/agi-rhyzarca_0627294882.html)
 
 ---
 
