@@ -30,15 +30,11 @@ jobs:
           fetch-depth: 0
           ref: main
 
-      # -------------------------------------------------------------
-      # 1. 樣式與腳本 CDN 快取自動刷新（Purge jsDelivr Cache）
-      # -------------------------------------------------------------
-      - name: 自動刷新 jsDelivr CDN 快取
+      # CDN 必須實際交付本次版本，不能只把清除請求視為發布成功。
+      - name: 刷新 CDN 並核對正式網址的腳本與樣式
         run: |
-          echo "正在請求 jsDelivr 清除快取..."
-          curl -s https://purge.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/assets/css/blogger.css || true
-          curl -s https://purge.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/assets/js/blogger.js || true
-          echo "✅ jsDelivr 快取清除請求已完成！"
+          python3 -m unittest discover -s tests -p 'test_refresh_blog_cdn.py' -v
+          python3 scripts/refresh_blog_cdn.py
 
       # -------------------------------------------------------------
       # 2. Python 環境設定與 Blogger 文章同步
