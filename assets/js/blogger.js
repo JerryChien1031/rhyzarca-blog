@@ -1,5 +1,5 @@
 // Generated category definitions; tests keep this snapshot aligned with _data/blog_categories.json.
-var RHYZARCA_CATEGORIES = [{"id": "insights", "name": "心得記錄", "english": "Insights", "aliases": [], "summary": "對知識、工具、工作與人機協作的觀察、評析和反思；分享觀點如何形成與改變。"}, {"id": "architecture", "name": "實作探索", "english": "Practice", "aliases": ["build-log", "Architecture"], "summary": "從構想、試驗到成果，分享把問題做出解法的過程。涵蓋可行性研究、設計製作、測試除錯、維護與實作回顧；不限個人或團隊，也不以完成或成功為門檻。"}, {"id": "embodied", "name": "生活體驗", "english": "Embodied", "aliases": ["life-and-trails"], "summary": "以親身經歷為主，記錄生活、活動、旅行、學習、工作現場、環境與身體感受。"}, {"id": "speculations", "name": "科學思辨", "english": "Speculations", "aliases": [], "summary": "以問題、假說與思想實驗探索科學、技術、歷史與未來社會的可能性，釐清前提、推論與待驗證之處。"}];
+var RHYZARCA_CATEGORIES = [{"id": "insights", "name": "心得記錄", "english": "Insights", "aliases": [], "summary": "對知識、工具、工作與人機協作的觀察、評析和反思；分享觀點如何形成與改變。"}, {"id": "practice", "name": "實作探索", "english": "Practice", "aliases": ["architecture", "build-log", "Architecture"], "summary": "從構想、試驗到成果，分享把問題做出解法的過程。涵蓋可行性研究、設計製作、測試除錯、維護與實作回顧；不限個人或團隊，也不以完成或成功為門檻。"}, {"id": "embodied", "name": "生活體驗", "english": "Embodied", "aliases": ["life-and-trails"], "summary": "以親身經歷為主，記錄生活、活動、旅行、學習、工作現場、環境與身體感受。"}, {"id": "speculations", "name": "科學思辨", "english": "Speculations", "aliases": [], "summary": "以問題、假說與思想實驗探索科學、技術、歷史與未來社會的可能性，釐清前提、推論與待驗證之處。"}];
 
 /* ==========================================================================
    Rhyzarca Blog Client Script (Nav, TOC & Sovereign Footers)
@@ -36,7 +36,7 @@ function renderCustomErrorPage() {
         '</div>' +
         '<nav class="error-links" aria-label="內容分類">' +
         '<a href="/search/label/insights">心得記錄</a>' +
-        '<a href="/search/label/architecture">實作探索</a>' +
+        '<a href="/search/label/practice">實作探索</a>' +
         '<a href="/search/label/embodied">生活體驗</a>' +
         '<a href="/search/label/speculations">科學思辨</a>' +
         '</nav>';
@@ -45,18 +45,36 @@ function renderCustomErrorPage() {
     statusMessage.parentNode.replaceChild(errorPage, statusMessage);
 }
 
+function categoryForPath(path) {
+    var match = path.match(/^\/search\/label\/([^/]+)\/?$/);
+    if (!match) return null;
+    var requested;
+    try { requested = decodeURIComponent(match[1]); } catch (error) { return null; }
+    return RHYZARCA_CATEGORIES.find(function (entry) {
+        return entry.id === requested || entry.aliases.indexOf(requested) !== -1;
+    }) || null;
+}
+
 function renderCategoryDetails() {
-    var match = window.location.pathname.match(/^\/search\/label\/([^/]+)\/?$/);
-    if (match) {
-        var requested;
-        try { requested = decodeURIComponent(match[1]); } catch (error) { return; }
-        var category = RHYZARCA_CATEGORIES.find(function (entry) {
-            return entry.id === requested || entry.aliases.indexOf(requested) !== -1;
-        });
-        if (category && requested !== category.id) {
+    var category = categoryForPath(window.location.pathname);
+    if (category) {
+        if (window.location.pathname.replace(/\/$/, '') !== '/search/label/' + category.id) {
             window.location.replace('/search/label/' + category.id + window.location.search + window.location.hash);
             return;
         }
+        document.querySelectorAll('.status-msg-body, .status-msg-hidden').forEach(function (status) {
+            Array.prototype.forEach.call(status.childNodes, function (node) {
+                if (node.nodeType === 3) {
+                    var text = node.nodeValue.replace('「' + category.id + '」', '「' + category.name + '」');
+                    if (node.nodeValue !== text) node.nodeValue = text;
+                } else if (node.nodeName === 'B' && node.textContent.trim() === category.id) {
+                    node.textContent = category.name;
+                }
+            });
+        });
+        document.querySelectorAll('.widget.Label li > span[dir="ltr"]').forEach(function (label) {
+            if (label.textContent.trim() === category.id) label.textContent = category.name;
+        });
         var posts = document.querySelector('#Blog1 .blog-posts, .blog-posts');
         if (category && posts && !document.getElementById('rhyzarca-category-description')) {
             var section = document.createElement('section');
@@ -75,10 +93,13 @@ function renderCategoryDetails() {
         var url;
         try { url = new URL(link.href, window.location.href); } catch (error) { return; }
         if (url.origin !== window.location.origin) return;
-        var found = RHYZARCA_CATEGORIES.find(function (entry) {
-            return url.pathname === '/search/label/' + entry.id;
-        });
-        if (found && link.textContent.trim() === found.id) link.textContent = found.name;
+        var found = categoryForPath(url.pathname);
+        if (!found) return;
+        var canonicalPath = '/search/label/' + found.id;
+        if (url.pathname !== canonicalPath) link.href = canonicalPath + url.search + url.hash;
+        if (link.textContent.trim() === found.id || found.aliases.indexOf(link.textContent.trim()) !== -1) {
+            link.textContent = found.name;
+        }
     });
 }
 
@@ -95,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
             '<a href="/" class="nav-link">首頁</a>' +
             '<a href="/p/about.html" class="nav-link">關於我</a>' +
             '<a href="/search/label/insights" class="nav-link">心得記錄 (Insights)</a>' +
-            '<a href="/search/label/architecture" class="nav-link">實作探索 (Practice)</a>' +
+            '<a href="/search/label/practice" class="nav-link">實作探索 (Practice)</a>' +
             '<a href="/search/label/embodied" class="nav-link">生活體驗 (Embodied)</a>' +
             '<a href="/search/label/speculations" class="nav-link">科學思辨 (Speculations)</a>' +
             '</div>';
