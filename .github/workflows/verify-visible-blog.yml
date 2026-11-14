@@ -1,0 +1,128 @@
+name: Verify actual Blogger navigation
+on:
+  workflow_run:
+    workflows: ['Sync Markdown Posts to Google Blogger']
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visible:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install isolated browser verifier
+        run: |
+          python -m pip install playwright
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Check cached-theme compatibility separately from real public pages
+        run: |
+          PYTHONPATH=scripts python - <<'PY'
+          from pathlib import Path
+          import json,shutil
+          from playwright.sync_api import sync_playwright
+          from blogger_taxonomy import render_category_runtime
+          out=Path('_public_navigation_receipt');out.mkdir()
+          report={'live':[],'fixture':[],'errors':[],'real_page_responses_replaced':False}
+          runtime=render_category_runtime()
+          with sync_playwright() as p:
+              browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'))
+              # Explicit local regression fixture: NOT the live screenshot evidence.
+              fixture=browser.new_context()
+              html='<html><body><header>Rhyzarca</header><div id="Blog1"><div class="blog-posts">Example</div></div><a href="/search/label/Epistemology">Epistemology</a>'+runtime*3+'<script>document.addEventListener("DOMContentLoaded",function(){document.querySelector("#rhyzarca-nav a[href=\\\"/search/label/architecture\\\"]").textContent="系統日誌 (Architecture)";});</script></body></html>'
+              fixture.route('**/*',lambda route:route.fulfill(status=200,content_type='text/html',body=html))
+              page=fixture.new_page()
+              page.goto('https://blog.rhyzarca.com/search/label/architecture')
+              page.wait_for_timeout(300)
+              assert page.locator('#rhyzarca-nav').count()==1
+              assert page.locator('#rhyzarca-nav a[href="/search/label/architecture"]').inner_text()=='實作探索 (Practice)'
+              assert page.locator('#rhyzarca-category-description h2').inner_text()=='實作探索'
+              assert page.locator('a[href="/search/label/Epistemology"]').inner_text()=='Epistemology'
+              report['fixture'].append('old cached theme, duplicate article runtimes and topic preservation passed')
+              fixture.close()
+              # Fresh contexts, real public requests: no routes, injected scripts, or mocked HTML.
+              for name,url,width in [('homepage-desktop','https://blog.rhyzarca.com/',1440),('category','https://blog.rhyzarca.com/search/label/architecture',1280),('homepage-mobile','https://blog.rhyzarca.com/?m=1',390)]:
+                  context=browser.new_context(viewport={'width':width,'height':960})
+                  page=context.new_page()
+                  errors=[]
+                  page.on('pageerror',lambda error:errors.append(str(error)[:300]))
+                  try:
+                      response=page.goto(url,wait_until='domcontentloaded',timeout=30000)
+                      item={'name':name,'url':page.url,'status':response.status if response else None}
+                      if not response or response.status!=200 or 'google.com/sorry' in page.url:
+                          report['live'].append(item)
+                          report['errors'].append(name+': public access blocked; no challenge bypass or retry')
+                          break
+                      page.wait_for_timeout(2000)
+                      item['navigation']=page.locator('#rhyzarca-nav').all_inner_texts()
+                      item['label']=page.locator('#rhyzarca-nav a[href="/search/label/architecture"]').all_inner_texts()
+                      item['published_runtime']=page.locator('script[data-rhyzarca-taxonomy]').count()
+                      item['runtime_version']=page.locator('#rhyzarca-nav').get_attribute('data-published-taxonomy')
+                      item['definition']=page.locator('#rhyzarca-category-description').all_inner_texts()
+                      item['latest_article']='從行政痛點到互動世界' in page.locator('body').inner_text()
+                      item['script_errors']=errors
+                      item['horizontal_overflow']=page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
+                      page.screenshot(path=str(out/(name+'.png')),full_page=False)
+                      (out/(name+'.html')).write_text(page.content(),encoding='utf-8')
+                      report['live'].append(item)
+                      if item['label']!=['實作探索 (Practice)'] or not item['runtime_version']:
+                          report['errors'].append(name+': navigation not corrected by published content')
+                      if name=='category' and (not item['definition'] or not item['latest_article']):
+                          report['errors'].append(name+': category definition/article missing')
+                  except Exception as error:
+                      report['errors'].append(name+': '+str(error)[:400])
+                  finally:
+                      context.close()
+              browser.close()
+          report['passed']=len(report['live'])==3 and not report['errors']
+          (out/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False))
+          if not report['passed']:raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-public-navigation
+          path: _public_navigation_receipt/
+          retention-days: 14
+  cleanup-completed-branches:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Remove only known completed branches whose commits are retained in main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          api='https://api.github.com/repos/'+os.environ['GITHUB_REPOSITORY']
+          headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'}
+          def get(path):
+              with urllib.request.urlopen(urllib.request.Request(api+path,headers=headers),timeout=20) as response:return json.load(response)
+          known={'draft/two-ai-projects-human-judgment-20261113','draft/unknown-driven-ai-collaboration-20261106','edit/life-world-experiences-personas-works-20261114','edit/practice-explorations-taxonomy-20261114','edit/swap-hongmen-demo-to-original-20261114','edit/taiwan-voice-human-ai-collaboration-20261106','edit/two-ai-projects-portfolio-positioning-20261113','fix/insights-article-slug-20261106','privacy/remove-development-links-20261114'}
+          main=get('/git/ref/heads/main')['object']['sha']
+          for branch in get('/branches?per_page=100'):
+              name=branch['name'];sha=branch['commit']['sha']
+              if name not in known or branch.get('protected'):continue
+              comparison=get('/compare/'+sha+'...'+main)
+              if comparison['merge_base_commit']['sha']!=sha or comparison['status'] not in ('ahead','identical'):
+                  print('PRESERVED_UNMERGED',name);continue
+              ref='/git/refs/heads/'+name
+              if get(ref)['object']['sha']!=sha:
+                  print('PRESERVED_MOVED',name);continue
+              with urllib.request.urlopen(urllib.request.Request(api+ref,headers=headers,method='DELETE'),timeout=20) as response:
+                  assert response.status==204
+              print('REMOVED_MERGED_BRANCH',name,sha)
+          print('MAIN_UNCHANGED',get('/git/ref/heads/main')['object']['sha']==main)
+          PY

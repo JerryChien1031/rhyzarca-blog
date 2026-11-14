@@ -2,6 +2,10 @@ import os
 import frontmatter
 import markdown
 from bs4 import BeautifulSoup
+try:
+    from .blogger_taxonomy import render_category_runtime
+except ImportError:
+    from blogger_taxonomy import render_category_runtime
 
 # 將此處替換為您的 GitHub 使用者名稱與倉庫名稱
 # 格式為：https://cdn.jsdelivr.net/gh/使用者名稱/倉庫名稱@main
@@ -36,8 +40,9 @@ def parse_and_convert(filepath):
             # 將本地相對路徑替換為 jsDelivr CDN 絕對路徑
             img['src'] = f"{CDN_BASE_URL}{src}"
 
-    # 將處理後的 HTML 轉回字串
-    final_html = str(soup)
+    # 分類隨正式 HTML 發布，避免讀者仍使用快取七天的舊版 theme JS。
+    # 同一首頁可能顯示多篇文章；runtime 有版本鎖與冪等更新，不重複導覽。
+    final_html = str(soup) + render_category_runtime()
     return metadata, final_html
 
 if __name__ == "__main__":
