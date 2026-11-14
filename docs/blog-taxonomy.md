@@ -15,45 +15,55 @@
 
 ## 邊界與交集
 1. 先看全文的主要目的，再看文風。第一人稱和結語反思不會把實作自動變成心得。
-2. 有另一條完整內容主線時可保留次要分類，不強制所有舊文互斥，也不為增加曝光全選。
+2. 作者未指定分類時，有另一條完整內容主線可保留次要分類，不為增加曝光全選；作者明確指定的單一分類優先。
 3. 團隊／個人是合作方式，規劃／原型／已部署是進度，Life World 等是專案，RAG／Agent 等是主題；它們不另立主分類。
 4. 「實作探索」不宣稱驗收成功。完成程度、樣本限制、失敗與未驗證事項在正文交代。
 5. 指定單一分類的作者要求優先。不得只見 MCP、AI、架構或程式就加上 practice。
 6. insights 不刪除、不改作實作的別名；embodied 暫無文章也保留其內容方向。
 
-## 2026-11-14 既有文章審閱
-下表依現行四類定義逐篇審閱，並納入分類網址修正後的內容複核，不是以標題關鍵字自動分類。保留有完整內容主線支持的交集。
+## 2026-11-14 既有文章分類（作者指定）
+作者在前次複核後明確指定：現有文章只有以下兩篇歸入單一 `practice`，其他既有文章全部歸入單一 `insights`。這項指定取代先前的多分類審閱結果；後續維護不得依文章中的架構或思想實驗內容，擅自將這批文章加回其他分類。未來新文章仍依當次作者要求判斷。
+
+- [Claude Code × OpenAI Codex：從共享契約到可恢復的自主工程工作流](https://blog.rhyzarca.com/2026/10/claude-code-openai-codex.html)
+- [從行政痛點到互動世界：當 AI 的想像力遇上真實需求](https://blog.rhyzarca.com/2026/11/two-ai-projects-human-judgment.html)
+
+下表記錄目前指定結果。四個分類入口與定義保留；現有文章暫不歸入 `embodied` 或 `speculations`。
 
 | 文章 | 原分類 | 目前分類 | 理由 |
 | --- | --- | --- | --- |
 | 認知總帳：為什麼 AGI 時代最稀缺的不是知識，而是認知軌跡 | Epistemology, Architecture | insights | 認知軌跡與網站理念，沒有具體製作方案。 |
-| 當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源 | insights, architecture | insights, practice | 以價值觀為主，同時提出主權狀態層及帳本設計；保留觀點與方案探索的交集。 |
+| 當 AGI 無所不能，該如何提供適合你的引導與協助？—— Rhyzarca 的價值與起源 | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
 | 聰明 vs. 見識：當 Gemini Notebook 賦予 AI 專家資歷，選項始於認知、決策來自天賦 | insights, architecture | insights | 以認知、見識與決策的觀點為主，工具是論述案例。 |
 | 視角差異與社會債務：為什麼在演算法時代，我們需要 AGI 僕人式領導的深度同理？ | insights, architecture | insights | 以同理、視角與社會成本的觀點為主，非具體製作紀錄。 |
-| 當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？ | insights, architecture | speculations, insights | 未來智能與治理制度推演，同時保留價值判斷的心得入口。 |
-| 神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗 | insights, epistemology | speculations, insights | 歷史假說與思想實驗，並反思認知方法；Epistemology 主題標籤仍保留。 |
-| 從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？ | insights, architecture | speculations, insights | 未來文明及人類價值推演，不把社會藍圖當成工程成果。 |
-| BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？ | insights, architecture | speculations | BCI 與 AGI 社會體制的假設推演，以科學思辨為主要入口。 |
-| 當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？ | insights, architecture | insights, practice | 包含具體四層系統方案；實作探索涵蓋規劃設計，不要求已完成產品。 |
-| 數位巴別塔：當 AGI 成為文明唯一的翻譯器，Rhyzarca 如何保存人類的可理解性？ | insights, architecture | speculations, insights, practice | 機器原生語言、唯一翻譯者與未來重新解釋權構成完整思想實驗；另有理解與認知主權的觀點，以及保存、溯源、重建與雙棧連續層的設計方案，保留三者交集。 |
+| 當 AGI 注定成為認知巨人，而人又逐漸脫離勞動力時，未來社會需要什麼樣的智能？ | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
+| 神話從未架空：技術斷層、唯讀協議與「小孩開大車」的遠古工程思想實驗 | insights, epistemology | insights | 依作者 2026-11-14 指定，歸入單一心得記錄；Epistemology 主題標籤仍保留。 |
+| 從資訊套利到認知共善：當 AGI 接管生產力，人該如何活出不可替代的價值？ | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
+| BCI ╳ AGI 共治共產社會：資訊落差逐漸失效；資訊公開崛起，新的社會型態會是什麼樣的體制？ | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
+| 當 AGI 成為文明的公共大腦：Rhyzarca 為何能夠存在？ | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
+| 數位巴別塔：當 AGI 成為文明唯一的翻譯器，Rhyzarca 如何保存人類的可理解性？ | insights, architecture | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
 | Claude Code × OpenAI Codex：從共享契約到可恢復的自主工程工作流 | architecture | practice | 工程設計、跨平台協作、故障恢復與限定實測。 |
-| 從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求 | insights | practice, insights | 以報價比較工具為完整教學案例，探索需求、工具、交接、除錯與驗收方法；另保留雙向學習及知識累積的觀點。合成案例與尚未完成端到端實測是證據邊界，不排除實作探索。 |
+| 從未知開始：當 AI 自行組織專業、擴充工具，與人類共同長出需求 | insights | insights | 依作者 2026-11-14 指定，歸入單一心得記錄。 |
 | 從行政痛點到互動世界：當 AI 的想像力遇上真實需求 | insights | practice | 兩個團隊專案從需求、研究、試錯到成果；屬實作探索。 |
 
 ## 相容性與發布
 `practice` 是「實作探索（Practice）」唯一正式分類代碼，對應 `/search/label/practice`。`architecture`、`Architecture`、`build-log` 為歷史入口，導向同一個正式網址並保留 query 與 hash；`life-and-trails` 仍導向 `embodied`。別名不再作為新文章分類或 Blogger labels 寫入。
 
-上表的「原分類」保留最初審閱前的歷史值，「目前分類」記錄複核後的正式代碼。
+上表的「原分類」保留最初審閱前的歷史值，「目前分類」記錄作者最後指定的正式代碼。
 
 ### 網址修正階段
 先前內容審閱調整八篇文章；隨後的網址修正將五篇實作探索文章的 `architecture` 改為 `practice`，該階段的 Blogger ID、標題、日期、slug、tags、正文、圖檔與作品連結不變。當時四篇尚未指定 Jekyll permalink 的文章，按變更前 `_config.yml` 的路徑規則固定原網址；既有 permalink 不做字串取代。
 
-### 文章內容與分類複核
+### 文章內容與分類複核（歷史階段）
 2026-11-14 依作者「分類改變，文章原本定義的分類也應跟著改變」的要求重新閱讀十三篇來源文章。《從未知開始》加入 `practice`，《數位巴別塔》加入 `speculations`，其餘十一篇維持有內容依據的分類。《從未知開始》補上變更前的 Jekyll permalink `/insights/2026/11/06/from-unknown-to-human-ai-mutual-growth/`，避免分類增加造成既有網址改變。
 
 《Rhyzarca 的價值與起源》正文的四類名稱及範圍同步更新，並保留有日期的變更註記。八篇文章的延伸閱讀共二十四處原以文章標題連到分類列表：二十一處改用公開 feed 核實的文章正式網址；另三處《認識論總帳》引用沒有可核實的公開文章網址，保留文字並標示「目前無公開連結」，不再導向不相符的實作分類。Jekyll 首頁的分類卡與文章分類名稱改由同一份分類資料產生。
 
-本輪保留 Blogger ID、標題、日期、slug、tags、既有 permalink、圖檔與其餘正文。Blogger 更新既有 Post，不建立新文章；Trash 中的《認知總帳》來源檔維持原狀，不因重分類或修連結而恢復公開。
+該輪保留 Blogger ID、標題、日期、slug、tags、既有 permalink、圖檔與其餘正文。Blogger 更新既有 Post，不建立新文章；Trash 中的《認知總帳》來源檔維持原狀，不因重分類或修連結而恢復公開。
+
+### 作者指定的單一分類（現行）
+2026-11-14 作者明確指定兩篇 `practice`、其餘既有文章皆為 `insights`，因此調整八篇文章的 `categories`，移除前次的多分類分配。兩篇指定的實作文章維持單一 `practice`，不加入 `insights`。公開十二篇預期為心得記錄十篇、實作探索兩篇；來源十三篇另含未公開的《認知總帳》，其既有 `insights` 與公開狀態保持不變。
+
+這次只改文章分類，以及本文件與既有分類測試的對應記錄。全部正文、tags、圖片、Blogger identity、日期、slug 與既有 permalink 保留；前次修正的正式文章連結和分類說明繼續沿用。
 
 GitHub、Blogger 導覽、404 分類入口、標籤文字及分類說明同步使用 `_data/blog_categories.json` 的四類定義；Blogger 腳本快照由測試比對。原生分類查詢提示與側欄選中項顯示中文名稱，實際資料仍由相同 canonical label 篩選。分類設定本身的變更也會觸發 Blogger 同步。
 

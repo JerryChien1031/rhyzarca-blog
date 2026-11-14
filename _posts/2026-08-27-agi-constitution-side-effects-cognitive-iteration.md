@@ -1,7 +1,7 @@
 ---
 blogger_post_id: '3172284516608159184'
 categories:
-- speculations
+- insights
 date: 2026-08-27 12:00:00 +0800
 description: 當推論邊際成本趨近於零，資訊落差的套利宣告終結。未來的社會不再追求單一利益最大化，而是建立在熱力學基建、全息治理沙盒與人類 20 瓦濕件約束之上的數位憲政體制。
 layout: post

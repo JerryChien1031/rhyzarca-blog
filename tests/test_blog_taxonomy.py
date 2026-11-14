@@ -32,12 +32,12 @@ class TaxonomyTests(unittest.TestCase):
         self.assertIn('site.categories[category.id]',text)
         self.assertIn('category.aliases',text)
         self.assertNotIn('site.categories.build-log',text)
-    def test_examples_keep_distinct_reading_purposes(self):
+    def test_examples_follow_author_assigned_categories(self):
         expected={
             '2026-11-13-two-ai-projects-human-judgment.md':['practice'],
-            '2026-11-06-from-unknown-to-human-ai-mutual-growth.md':['practice','insights'],
+            '2026-11-06-from-unknown-to-human-ai-mutual-growth.md':['insights'],
             '2026-10-22-claude-codex-harness-engineering-auto-workflow.md':['practice'],
-            '2026-09-15-digital-babel-rhyzarca-sovereign-continuity.md':['speculations','insights','practice'],
+            '2026-09-15-digital-babel-rhyzarca-sovereign-continuity.md':['insights'],
         }
         for name,categories in expected.items():
             self.assertEqual(frontmatter.load(ROOT/'_posts'/name)['categories'],categories)
