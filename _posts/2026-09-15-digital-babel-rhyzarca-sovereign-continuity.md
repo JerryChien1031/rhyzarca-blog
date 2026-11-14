@@ -1,9 +1,7 @@
 ---
 blogger_post_id: '5366443801176099018'
 categories:
-- speculations
 - insights
-- practice
 date: 2026-09-15 09:39:56 +0800
 description: 當 AGI 成為文明的唯一翻譯者，我們面臨的不只是知識失傳，而是「文明理解債」的全面爆發。本文探討 Rhyzarca 如何作為雙棧文明的連續層，不只為人類保留一條走回底層知識的道路，更為未來的重新解釋權埋下伏筆。
 layout: post
