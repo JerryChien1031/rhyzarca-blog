@@ -12,6 +12,7 @@ import re
 import time
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.error import HTTPError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
@@ -21,17 +22,38 @@ CDN_BASE = 'https://cdn.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/'
 PURGE_BASE = 'https://purge.jsdelivr.net/gh/jerrychien1031/rhyzarca-blog@main/'
 ASSETS = ('assets/css/blogger.css', 'assets/js/blogger.js')
 DELAYS = (0, 10, 25, 45)
+# Bounded retries for temporary public-site/CDN rate limiting; never bypass checks.
+RATE_LIMIT_DELAYS = (20, 60, 120)
 
 
 def get_bytes(url: str) -> bytes:
-    request = Request(url, headers={'Accept-Encoding': 'identity',
-                                   'User-Agent': 'Rhyzarca-CDN-Delivery-Check/1.0'})
-    with urlopen(request, timeout=25) as response:
-        if response.status != 200:
-            raise RuntimeError(f'Unexpected HTTP status: {response.status}')
-        if response.geturl() != url:
-            raise RuntimeError(f'Unexpected redirect while checking {url}')
-        return response.read()
+    for attempt in range(len(RATE_LIMIT_DELAYS) + 1):
+        request = Request(url, headers={'Accept-Encoding': 'identity',
+                                       'User-Agent': 'Rhyzarca-CDN-Delivery-Check/1.0'})
+        try:
+            with urlopen(request, timeout=25) as response:
+                if response.status != 200:
+                    raise RuntimeError(f'Unexpected HTTP status: {response.status}')
+                if response.geturl() != url:
+                    raise RuntimeError(f'Unexpected redirect while checking {url}')
+                return response.read()
+        except HTTPError as exc:
+            if exc.code != 429:
+                raise
+            if attempt == len(RATE_LIMIT_DELAYS):
+                raise RuntimeError(
+                    f'HTTP 429 after {attempt + 1} attempts while checking {url}'
+                ) from exc
+            retry_after = exc.headers.get('Retry-After') if exc.headers else None
+            try:
+                hinted_seconds = int(retry_after) if retry_after is not None else 0
+            except (TypeError, ValueError):
+                hinted_seconds = 0
+            delay = max(RATE_LIMIT_DELAYS[attempt], min(max(hinted_seconds, 0), 300))
+            print(f'RATE_LIMIT_RETRY url={url} attempt={attempt + 1} '
+                  f'delay_seconds={delay}', flush=True)
+            time.sleep(delay)
+    raise AssertionError('Unreachable retry state')
 
 
 def digest(data: bytes) -> str:

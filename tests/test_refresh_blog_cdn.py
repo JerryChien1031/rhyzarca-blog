@@ -1,11 +1,51 @@
 import importlib.util
 import unittest
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
+from urllib.error import HTTPError
 
 SPEC = importlib.util.spec_from_file_location('refresh_blog_cdn', Path(__file__).resolve().parents[1] / 'scripts/refresh_blog_cdn.py')
 cdn = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(cdn)
+
+
+class HTTP429RetryTests(unittest.TestCase):
+    url = cdn.BLOG_URL
+
+    def test_429_retries_same_url_and_checks_exact_response(self):
+        success = MagicMock()
+        success.__enter__.return_value.status = 200
+        success.__enter__.return_value.geturl.return_value = self.url
+        success.__enter__.return_value.read.return_value = b'<html>ok</html>'
+        limited = HTTPError(self.url, 429, 'Too Many Requests',
+                            {'Retry-After': '30'}, None)
+        with patch.object(cdn, 'urlopen', side_effect=[limited, success]) as opener, \
+                patch.object(cdn.time, 'sleep') as sleep:
+            self.assertEqual(cdn.get_bytes(self.url), b'<html>ok</html>')
+        self.assertEqual(opener.call_count, 2)
+        self.assertTrue(all(call.args[0].full_url == self.url
+                            for call in opener.call_args_list))
+        sleep.assert_called_once_with(30)
+
+    def test_repeated_429_fails_closed_after_bounded_retries(self):
+        limited = [HTTPError(self.url, 429, 'Too Many Requests', {}, None)
+                   for _ in range(len(cdn.RATE_LIMIT_DELAYS) + 1)]
+        with patch.object(cdn, 'urlopen', side_effect=limited) as opener, \
+                patch.object(cdn.time, 'sleep') as sleep:
+            with self.assertRaisesRegex(RuntimeError, 'HTTP 429 after 4 attempts'):
+                cdn.get_bytes(self.url)
+        self.assertEqual(opener.call_count, 4)
+        self.assertEqual([call.args[0] for call in sleep.call_args_list],
+                         list(cdn.RATE_LIMIT_DELAYS))
+
+    def test_other_http_errors_are_not_retried(self):
+        forbidden = HTTPError(self.url, 403, 'Forbidden', {}, None)
+        with patch.object(cdn, 'urlopen', side_effect=forbidden) as opener, \
+                patch.object(cdn.time, 'sleep') as sleep:
+            with self.assertRaises(HTTPError):
+                cdn.get_bytes(self.url)
+        opener.assert_called_once()
+        sleep.assert_not_called()
 
 
 class CDNDeliveryTests(unittest.TestCase):

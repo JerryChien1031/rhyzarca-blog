@@ -15,6 +15,8 @@ on:
       - 'categories.md'
       - 'docs/blog-taxonomy.md'
       - 'tests/test_blog_taxonomy.py'
+      - 'scripts/refresh_blog_cdn.py'
+      - 'tests/test_refresh_blog_cdn.py'
 
 permissions:
   contents: read
@@ -42,6 +44,9 @@ jobs:
 
       - name: Regression tests for the post contract
         run: python -m unittest discover -s tests -p 'test_blog_article_contract.py' -v
+
+      - name: Verify Blogger public asset check and bounded HTTP 429 retries (mocked)
+        run: python -m unittest discover -s tests -p 'test_refresh_blog_cdn.py' -v
 
       - name: Verify stable Blogger permalink publisher and migration recovery
         run: python -m unittest discover -s tests -p 'test_blogger_post_permalink.py' -v
