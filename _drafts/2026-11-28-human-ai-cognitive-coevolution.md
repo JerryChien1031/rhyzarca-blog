@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "人腦 AI 化 × AI 人腦化：從 Google RSI 到 Rhyzarca 的認知共演化"
-date: 2026-11-28 09:00:00 +0800
+date: 2026-11-28 03:59:00 +0800
 categories:
   - insights
 tags:
@@ -429,7 +429,7 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 
 ### 🏛️ Epistemic Ledger Entry: #0012
 
-- **Timestamp:** 2026-11-28T09:00:00+08:00
+- **Timestamp:** 2026-11-28T03:59:00+08:00
 - **Claim:** 人類透過外部工具擴充記憶、搜尋與分析能力，AI 系統則透過記憶、回饋與 Harness 自我改進累積可重用能力；若能讓人類學習與 AI 系統改善互相校正，可能形成比單獨使用任一方更有價值的人機共同認知系統。
 - **Epistemic State:** Tentative Hypothesis；認知外部化與 Agent Harness RSI 有公開研究支持，但「長期人機共同演化」仍是需要進一步驗證的整合性命題。
 - **Evidence Scope:** 依據 Extended Mind 哲學論述、2025–2026 年認知外包與人機學習研究，以及 SIM／CRSI、Harness²、RRSI、Dream-RSI 等公開預印本與研究專案。不同研究的任務、模型、評估指標與實驗條件不同，本文不將其數字合併比較；也未獨立重現各研究實驗。
