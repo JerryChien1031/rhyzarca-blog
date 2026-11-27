@@ -558,7 +558,7 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 
 **2027～2028 AGI、AI 研究自動化與治理**
 
-- [Alexandr Wang 觀點影片（使用者提供）](https://www.youtube.com/watch?v=_9MXea8z2ps)
+- [Alexandr Wang 對超級智慧與 RSI 的觀點影片](https://www.youtube.com/watch?v=_9MXea8z2ps)
 - [Alexandr Wang — Superintelligence is Arriving（X 原文）](https://x.com/alexandr_wang/status/2124636606959345776)
 - [AI 2027 — Original scenario and timelines](https://ai-2027.com/)
 - [Fortune — Meta AI chief Alexandr Wang warns “superintelligence is arriving”](https://fortune.com/2026/11/23/alexandr-wang-meta-superintelligence-arriving-riemann-hypothesis-nasdaq-ai-selloff/)
