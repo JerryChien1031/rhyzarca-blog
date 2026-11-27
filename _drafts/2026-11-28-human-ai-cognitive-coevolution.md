@@ -272,7 +272,7 @@ Wang 認為，模型的原始智力可能已不再是主要瓶頸；剩下的差
 
 但 Wang 同時反對把「AI 超級智慧必然到來」當成放棄人類決策權的理由。他明確表示，不應接受把社會交給 AI 的「handover」，而應建立能讓所有人保有更大自主性與能力的技術。
 
-這是一位產業領導者的觀點與警告，不是已經經過獨立驗證的 AGI 時間預測。尤其一項 AI 協助完成的數學突破，即使非常重要，也不能單獨證明 AI 已能在所有科學領域自主研究。
+這是一位產業領導者的觀點與警告，不是已經經過獨立驗證的 AGI 時間預測。尤其近期被報導為由 AI 協助完成、並經形式化檢查的黎曼猜想證明主張，即使非常重要，也不能單獨證明 AI 已能在所有科學領域自主研究。
 
 [Alexandr Wang 原始文章](https://x.com/alexandr_wang/status/2124636606959345776)／[Fortune 報導](https://fortune.com/2026/11/23/alexandr-wang-meta-superintelligence-arriving-riemann-hypothesis-nasdaq-ai-selloff/)
 
