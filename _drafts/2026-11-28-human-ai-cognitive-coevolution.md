@@ -343,6 +343,10 @@ METR 在 2026 年 11 月 20 日更新 AI R&D 相關能力評估，指出在其 T
 
 因此，不能把「任務時間跨度每幾個月翻倍」直接換算成「AGI 一定在某個月份出現」。
 
+Forecasting Research Institute 在 2026 年 11 月發布的 RSI 證據回顧，也提醒讀者要把「AI 寫出大量程式碼」、「AI 大幅加速 AI 研究」、「AI 能自主完成研究並改善下一代 AI」分開衡量。它認為 2027 年初出現研究團隊級自動化或大幅加速，是值得認真準備的可能性；但這不等於已有公開證據證明完整、無人監督的 RSI 閉環會在同一時間出現。這個區分很重要：**研究自動化可能先於完整 RSI，而能力提升也不會自動解決安全、治理與人類監督問題。**
+
+[Forecasting Research Institute — How Close Is Recursive Self-Improvement? A Review of the Evidence](https://forecastingresearch.org/research/recursive-self-improvement)
+
 [METR — AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure（2026-11-20）](https://evals.alignment.org/blog/2026-11-20-q4-2026-capability-update/)
 
 #### 我的判斷：2027～2028 值得當成認知與治理的準備窗口，而不是倒數計時器
