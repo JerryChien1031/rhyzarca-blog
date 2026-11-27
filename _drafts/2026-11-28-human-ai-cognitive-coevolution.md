@@ -567,7 +567,7 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 - [OpenAI — Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
 - [AI Futures Project — Q3.5 Timelines Update（2026-11-10）](https://blog.aifutures.org/p/q35-timelines-update-looks-like-the)
 - [METR — AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure（2026-11-20）](https://evals.alignment.org/blog/2026-11-20-q4-2026-capability-update/)
-- [Forecasting Research Institute — How Close Is Recursive Self-Improvement? A Review of the Evidence](https://forecastingresearch.org/research/recursive-self-improvement)
+- [Joi Ito — Recursive Self-Improvement at OpenAI and Anthropic（2026-11-12 更新）](https://joi.ito.com/memos/rsi/full.html)
 - [Thousands of AI Authors on the Future of AI（2024）](https://arxiv.org/abs/2401.02843)
 - [Metaculus／Consensus AGI 預測彙整（2026-11-26）](https://www.consens.io/topics/when-will-agi-arrive)
 
