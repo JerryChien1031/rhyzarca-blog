@@ -11,7 +11,9 @@ tags:
   - Extended-Cognition
   - Agent-Memory
   - Human-Learning
-description: "從認知外部化、延伸心智與 AI 自我改進研究出發，探討人類如何借助 AI 擴充記憶與判斷，AI 又如何透過經驗、回饋與 RSI 持續改善，最後走向人機共同演化。"
+  - AGI-Timelines
+  - AI-Governance
+description: "從延伸心智、Google RSI 與 2027～2028 AGI 預測出發，探討人類如何擴充認知、AI 如何累積經驗，以及人機如何在超級智慧時代共同演化並保留人的決策權。"
 blogger_permalink_slug: human-ai-cognitive-coevolution
 image: /assets/images/posts/2026-11-28-human-ai-cognitive-coevolution_1.svg
 permalink: "/insights/2026/11/28/human-ai-cognitive-coevolution/"
@@ -24,7 +26,7 @@ permalink: "/insights/2026/11/28/human-ai-cognitive-coevolution/"
 > **TL;DR**
 > 人腦 AI 化，是人類把記憶、搜尋、分析與規劃延伸到 AI 和外部工具；AI 人腦化，則是 AI 系統逐漸具備可延續的記憶、經驗累積、反思與自我改進機制。兩者不是要互相取代，也不代表 AI 已經擁有人類意識。
 >
-> Google 研究者提出的 SIM、RRSI、Dream-RSI 與 Harness²，讓我們看見 AI 如何改善產生行動的系統；認知科學則提醒我們，外部記憶能減輕負擔，也可能讓人失去獨立記憶與判斷的練習。真正值得追求的，是人類持續學習、AI 持續改善，兩者透過可查證的回饋一起進步。
+> Google 研究者提出的 SIM、RRSI、Dream-RSI 與 Harness²，讓我們看見 AI 如何改善產生行動的系統；2027～2028 也可能成為 AI 研究自動化與 AGI 定義受到檢驗的重要窗口，但不同機構的能力門檻與預測差異很大。認知科學則提醒我們，外部記憶能減輕負擔，也可能讓人失去獨立記憶與判斷的練習。真正值得追求的，是人類持續學習、AI 持續改善，兩者透過可查證的回饋一起進步。
 >
 > *本文討論的是公開研究與作者的長期觀察；Rhyzarca 的部分內容屬未來方向與概念推論，不代表已完成的產品功能或公開工程規格。*
 
@@ -205,32 +207,161 @@ RRSI 透過限制候選修改的數量與範圍，並加入 Critic 和 Pruner，
 
 #### 4. Dream-RSI：讓 AI 在歷史探索中預演新策略
 
-[Dream-RSI: Recursive Self-Improvement through Evolving Worlds](https://arxiv.org/abs/2609.14858)
+[Dream-RSI: Recursive Self-Improvement through Evolving Worlds（arXiv v1）](https://arxiv.org/html/2609.14858v1)
 
-Dream-RSI 探索另一個問題：AI 每次要測試新的探索策略，都必須重新執行昂貴的真實任務嗎？
+這篇由 Google、Google DeepMind、馬里蘭大學與維吉尼亞大學研究者共同提出的工作，於 2026 年 9 月 14 日提交。它處理的不是「讓模型自己重新訓練自己」，而是一個更窄、但很實際的問題：**AI Agent 能不能從過去探索過的結果中，學會更有效率地探索下一輪？**
 
-它的做法，是將過去探索產生的 Discovery Tree（探索樹）整理成可重播的模擬環境。新策略可以先在歷史探索結果中預演，取得相對便宜的離線回饋，再將選出的策略帶回真實任務繼續探索。
+Dream-RSI 將流程分成兩個階段：
 
-這並不是讓 AI 在腦中憑空想像一個完全正確的世界，而是利用已經實際探索過的範圍，建立可重播的歷史環境。沒有走過的區域仍然需要真實探索，歷史模擬也不等於能保證未來結果。
+1. **Online exploration：**目前的 Coding Agent 依照一套探索策略嘗試解題，過程中留下每次嘗試、觀察結果與評估分數，形成 Discovery Tree（探索樹）。
+2. **Offline dreaming：**系統把已經走過的探索樹當成可回放的模擬環境，讓大量候選探索策略在歷史結果上重新走不同路徑，利用已保存的結果快速評分；選出較好的策略後，再部署到下一輪真實探索。
 
-這個方向的價值，是讓 AI 不只記得過去做過什麼，還能利用過去的探索成果，降低下一輪實驗的部分成本。
+這個方法的關鍵，是把原本只用來記錄「做過什麼」的歷史，轉成可以比較「如果當時換一種探索順序，結果會怎樣」的回放環境。由於既有節點的觀察與評估結果已經保存，離線比較不必每次都重新呼叫 Agent 執行昂貴的任務。
+
+但必須精確理解它改進的是什麼：**變動的是探索策略（exploration policy），不是底層模型權重。**官方程式說明也明確指出，Agent、評估器與任務保持固定，只有決定如何分配探索預算的策略會更新。因此，它展示的是受限任務中的「元探索層自我改進」，不是已經能自主設計下一代基礎模型的完整 RSI。
+
+研究在演算法工程、數學最佳化與 GPU Kernel 工程等領域測試八項探索任務。GPU Kernel 的結果包括：VGG16 在達到相近效能時可減少 2.43 倍 generations，LayerNorm 可減少 1.79 倍；ConvDiv 與 ConvMax 則在相近探索預算下，分別達到 2.09 倍與 1.44 倍效能。
+
+其中最容易被媒體放大的數字，是 Lasso 任務上比 SimpleTES 少 162 倍 Agent calls。但這個比較不能直接當成同模型、同策略基線的 162 倍效率提升：Dream-RSI 使用 Gemini 3.1 Pro，而 SimpleTES 使用 GPT-OSS-120B；若與論文自己的 Recursive Fixed Exploration 基線相比，Dream-RSI 的呼叫量是 317 對 550，改善約 1.7 倍。**比較基準不同，數字就不能混為一談。**
+
+[Dream-RSI 官方研究頁](https://dream-rsi.com/)／[Google Research 官方程式庫](https://github.com/google-research/dream-rsi)
+
+這項研究還有一個重要限制：回放環境只包含 Agent 真正探索過的範圍。它可以精確重播已經留下紀錄的節點，卻不能憑空知道尚未探索的世界；若外部條件、評估器或任務本身改變，歷史回放也不能代替新的真實實驗。
+
+因此，我會把 Dream-RSI 視為一個重要的工程訊號，而不是 AGI 已經到來的證明：
+
+- AI 可以從歷史任務中抽取可重用的探索經驗。
+- AI 可以在不反覆支付真實執行成本的情況下，比較多種候選策略。
+- AI 可以把經過評估的改善策略重新部署，讓下一輪探索更有效率。
+- 但它仍然依賴固定的任務、評估器、模型與有限的歷史探索空間。
+
+**這是自我改進循環的一個可觀察、可測量的局部實例；離無限制、開放式的智能爆炸，仍有很長的距離。**
 
 ---
 
-**四項研究放在一起，可以看見不同的改進方向：**
+### 五、2027～2028：AGI 會不會在這個時間窗口出現？
 
-| 研究 | 核心問題 | 改善重點 |
+當越來越多研究開始談論 AI 自我改進，產業領袖也開始公開討論超級智慧，2027～2028 年自然成為一個值得關注的時間窗口。
+
+但我認為，這裡最容易犯的錯誤，是把所有「AI 變得很強」的里程碑都叫作 AGI，再把不同機構提出的日期排成一條看似確定的時間表。
+
+**AGI 並沒有一個所有研究者都同意的單一驗收標準。**能寫程式、能協助研究、能自動完成一個研究團隊的工作、能在幾乎所有認知任務上超越頂尖專家，以及能在所有職業與物理世界任務中取代人類，是不同層次的能力。
+
+#### 先分清楚：AI 研究自動化、AGI 與 RSI 不是同一件事
+
+我會先用四個層次理解這場討論。這是本文為了整理公開預測所建立的分析框架，不是任何研究機構的官方分類。
+
+| 層次 | 能力描述 | 為什麼不能直接等同 AGI／RSI |
 | --- | --- | --- |
-| SIM／CRSI | 換模型或任務後，如何延續改善經驗？ | 記錄修改原因、預期與實際結果 |
-| Harness² | 如何把單次任務改善轉成後續能力？ | 任務層與持續改善層的雙重循環 |
-| RRSI | 如何避免只對已知測試過度最佳化？ | 限制修改、檢查泛化與成本 |
-| Dream-RSI | 如何降低反覆探索的成本？ | 利用歷史探索環境預演新策略 |
+| AI 輔助研究 | 協助研究者寫程式、整理論文、設計實驗或分析結果 | 人仍負責研究問題、方向與重要判斷 |
+| 自動化研究工作者 | 能在明確目標下獨立完成一段研究工作，並產生可檢查結果 | 自動化一部分研究工作，不等於能自主選擇所有研究方向 |
+| 超人類 AI 研究者 | 在研究品質、速度與成本上，足以取代或超越頂尖人類研究團隊 | 可能大幅加速 AI 研發，但仍須確認是否形成持續的自我改進閉環 |
+| 開放式遞迴自我改進 | AI 能改善研究方法、模型或下一代系統，且改善本身持續加速下一輪改善 | 這才接近一般人所說的強 RSI／智能爆炸，還需要證明改善能持續複利且不被瓶頸限制 |
 
-這些研究並不是同一套系統，也不能把它們的分數直接排成排行榜。它們共同顯示的是：AI 的能力不只取決於模型本身，也取決於模型周圍的記憶、工具、工作流程與評估方法。
+這四個層次可能互相重疊，卻不是同義詞。尤其 Dream-RSI 證明了有限探索策略可以被反覆改善，不能因此推論模型已經能自主完成整個 AI 研究領域。
+
+#### 2026 年底，幾個值得追蹤的公開時間訊號
+
+**1. Alexandr Wang：超級智慧正在到來，剩下的瓶頸可能已經改變**
+
+你提供的 Alexandr Wang 影片，與他在 2026 年 11 月 22 日公開發表的〈Superintelligence is Arriving〉，提出了一個很值得討論的觀點。
+
+Wang 認為，模型的原始智力可能已不再是主要瓶頸；剩下的差距包括領域專業知識（domain-specific know-how）、工程串接與基礎設施（plumbing），以及實驗能力（experimentation）。他進一步主張，模型可能具備自動化 AI 研究的能力，讓 AI 研究本身成為加速 AI 發展的來源。
+
+這個觀點的重要性，不只是預測 AI 何時超越人類，而是指出：**下一階段的瓶頸可能從「模型會不會思考」，轉向「能不能取得專業知識、接上真實系統、執行實驗並驗證結果」。**
+
+但 Wang 同時反對把「AI 超級智慧必然到來」當成放棄人類決策權的理由。他明確表示，不應接受把社會交給 AI 的「handover」，而應建立能讓所有人保有更大自主性與能力的技術。
+
+這是一位產業領導者的觀點與警告，不是已經經過獨立驗證的 AGI 時間預測。尤其一項 AI 協助完成的數學突破，即使非常重要，也不能單獨證明 AI 已能在所有科學領域自主研究。
+
+[Alexandr Wang 原始文章](https://x.com/alexandr_wang/status/2124636606959345776)／[Fortune 報導](https://fortune.com/2026/11/23/alexandr-wang-meta-superintelligence-arriving-riemann-hypothesis-nasdaq-ai-selloff/)
+
+**2. Anthropic：早在 2027 年初，研究團隊級自動化就可能成為現實**
+
+Anthropic 在 2026 年 7 月 10 日公布的 Frontier Safety Roadmap 中表示，他們認為最早在 2027 年初，AI 系統就有可能完全自動化，或大幅加速大型頂尖人類研究團隊的工作；涵蓋的領域包括能源、機器人、武器研發與 AI 本身。
+
+這段話值得重視，但也必須保留原文的兩個限定：
+
+- 它說的是「plausible」（有可能），不是保證會發生。
+- 它把「完全自動化」與「大幅加速」並列，後者不代表人類研究者已經完全不需要參與。
+
+這是 Anthropic 為安全準備所提出的情境判斷，不是 AGI 正式發布日期，也不是完整 RSI 已經完成的宣告。
+
+[Anthropic Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
+
+**3. OpenAI：2028 年 3 月的自動化 AI 研究員目標**
+
+OpenAI 在 2026 年 9 月 6 日公布的 Research Acceleration 報告中表示，依照內部衡量，他們已達成原先設定的「2026 年 9 月前具備研究實習生能力」目標。OpenAI 對這個階段的定義，是能在研究者指導下完成明確的研究工作，包括原本需要熟練研究人員花費數天的任務。
+
+同一份報告也表示，正朝著 **2028 年 3 月前建立自動化 AI 研究員**的目標前進，讓它在人工監督下協助深度學習與對齊研究。
+
+這裡最重要的不是單純看到 2028 這個日期，而是 OpenAI 把研究自動化當成明確的工程目標，並開始觀察研究者使用 Agent 的工作方式、實驗量與成功率。
+
+但研究實習生的內部里程碑達成，不代表已有一個能獨立主持整個研究計畫的 AI；自動化研究員目標也不等於 OpenAI 已宣稱完整 RSI 將在 2028 年完成。
+
+[OpenAI — Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
+
+**4. AI Futures Project：2027～2028 年的預測在 2026 年 11 月再次縮短**
+
+AI Futures Project 在 2026 年 11 月 10 日發布 Q3.5 Timelines Update，根據最新的 METR 評估與其他證據，重新調整對超人類 AI 研究員（Superhuman AI Researcher, SAR）與頂尖專家級 AI（Top-Expert-Dominating AI, TED-AI）的預測。
+
+該次更新提出：
+
+- 團隊成員認為 SAR 很可能在 2027 年某個時間出現，前提是沒有重大的人為放慢前沿 AI 開發。
+- 團隊估計 TED-AI 在 2028 年以前出現的機率約為 35%～65%。
+- 各成員的 TED-AI 中位日期並不一致：Daniel Kokotajlo 約為 2027 年 9 月；Eli Lifland 約為 2028 年 9 月；Brendan Halstead 與 Thomas Larsen 約為 2028 年 4 月；Romeo Dean 約為 2028 年 9 月。
+
+這裡的 TED-AI 是指在幾乎所有認知任務上，至少與人類頂尖專家一樣好的 AI。它是該團隊用來描述 AGI 的一種操作性定義，不等於每一種身體勞動、社會互動與現實世界工作都已經自動化。
+
+這些預測還有一個共同前提：沒有出現重大、刻意的前沿開發放慢。政策、能源、算力、硬體、實驗資源與安全限制，都可能改變實際時間。
+
+[AI Futures Project — Q3.5 Timelines Update](https://blog.aifutures.org/p/q35-timelines-update-looks-like-the)
+
+#### 不同預測為什麼差距這麼大？
+
+除了 AI 實驗室與研究團隊的時間預測，還有預測市場與大型研究者調查。
+
+| 來源 | 時間訊號 | 代表的意義與限制 |
+| --- | --- | --- |
+| Metaculus（2026-11-26） | 弱通用 AI 約 2027-08；一般通用 AI 約 2030-02 | 不同問題定義的群體預測，不能將弱 AGI 日期當成完整 AGI |
+| AI Futures Project（2026-11） | SAR 可能在 2027；TED-AI 有 35%～65% 機率在 2028 前出現 | 特定研究團隊的主觀預測，並且假設沒有重大刻意放慢 |
+| OpenAI（2026-09） | 自動化 AI 研究員目標為 2028-03 | 企業內部的研發目標，不等於獨立驗證的 AGI 日期 |
+| Anthropic（2026-07） | 最早 2027 年初可能自動化或大幅加速頂尖研究團隊 | 安全規劃情境，不是保證發生的預測 |
+| AI 研究者調查（2023 年調查、2024 年發表） | 1,714 位研究者對 HLMI 的中位預測為 2047 年；2027 年達成機率約 10% | HLMI 定義為機器在每一項任務上都能比人類工作者做得更好、成本更低；與前述研究自動化里程碑不同 |
+
+這份研究者調查總共邀請 2,778 位曾在頂尖 AI 會議或期刊發表論文的研究者，並不是只詢問少數科技公司高層。它的預測時間較長，也提醒我們：**AI 研究員自動化、頂尖認知任務超越人類，以及所有職業都能被完整自動化，是不同問題。**
+
+[Thousands of AI Authors on the Future of AI（2024）](https://arxiv.org/abs/2401.02843)／[Metaculus 與各機構預測彙整（2026-11-26）](https://www.consens.io/topics/when-will-agi-arrive)
+
+#### METR 的能力曲線，能否支持 2027～2028 的時間窗口？
+
+METR 在 2026 年 11 月 20 日更新 AI R&D 相關能力評估，指出在其 TH1.1 與 TH2 任務上，AI 能完成的任務時間跨度大約每 3.61 個月翻倍（95% 信賴區間約 2.08～4.94 個月）。
+
+若單純將這個速度往後外推，模型可能在 2027 年 7 月左右，達到該測試集合中 200 小時任務的 50% 成功時間跨度。
+
+這是非常值得關注的進步，但 METR 同時提醒另一個重要問題：以另一種能力指標 MCI（METR Capability Index）觀察公開前沿模型時，研究者沒有看到所有模型整體能力出現明顯加速的充分證據。時間跨度的快速增加，也可能受到任務難度估計、任務選擇與成功門檻的影響。
+
+因此，不能把「任務時間跨度每幾個月翻倍」直接換算成「AGI 一定在某個月份出現」。
+
+[METR — AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure（2026-11-20）](https://evals.alignment.org/blog/2026-11-20-q4-2026-capability-update/)
+
+#### 我的判斷：2027～2028 值得當成認知與治理的準備窗口，而不是倒數計時器
+
+把這些資料放在一起，我認為可以得出三個比較穩健的判斷：
+
+1. **AI 研究自動化很可能在 2027～2028 年成為更具體的產業議題。** 不論最後是否達到完整 AGI，研究工作本身已經開始被 AI 介入，而且企業已經設定自動化研究員的目標。
+2. **2027～2028 年可能出現跨越現有研究門檻的系統，但時間與能力範圍仍有高度不確定性。** 這個窗口值得提前準備，不應當成已經確定的歷史事件。
+3. **即使超級智慧真的到來，也不代表人類必須交出社會決策權。** 技術能力、公共政策、價值判斷與責任歸屬是不同層次的問題。
+
+我特別認同 Alexandr Wang 所提出的警告：如果 AI 逐漸具備自動化 AI 研究的能力，人類更需要思考誰決定研究方向、哪些目標可以被最佳化，以及誰有權拒絕不合理的結果。
+
+**AI 可以擴大人類的認知能力，也可以改善自己的工作方法；但人類不能因此放棄決定社會要往哪裡走的權利。**
+
+這也讓本文的核心命題更清楚：人腦 AI 化與 AI 人腦化，並不是單純的技術競賽，而是人類與 AI 如何在能力差距持續變化的環境中，仍然維持相互校正與共同決策的問題。
 
 ---
 
-### 五、人與 AI 的學習循環，如何真正接在一起？
+### 六、人與 AI 的學習循環，如何真正接在一起？
 
 如果只看 AI 自我改進，可能會忽略一件事：**人類也必須在合作中學習。**
 
@@ -277,7 +408,7 @@ AI 幫人類整理資訊，不代表人類就理解了；AI 能根據過去任�
 
 ---
 
-### 六、從 Rhyzarca 的公開思考方向，看認知共演化可以往哪裡走
+### 七、從 Rhyzarca 的公開思考方向，看認知共演化可以往哪裡走
 
 Rhyzarca 過去的文章曾討論一個問題：當 AI 越來越強，真正重要的是否仍然只是模型有多聰明？還是人類能不能保留自己的理解、經驗與選擇？
 
@@ -317,7 +448,7 @@ SIM／CRSI 提供了一個值得研究的方向：讓 AI 保留改善經驗，�
 
 ---
 
-### 七、認知共演化也有風險：人類可能失去判斷，AI 也可能越學越偏
+### 八、認知共演化也有風險：人類可能失去判斷，AI 也可能越學越偏
 
 人腦 AI 化與 AI 人腦化聽起來像是雙贏，但兩個循環都可能走向錯誤。
 
@@ -345,7 +476,7 @@ RRSI 研究正是針對這類風險，透過限制候選修改與改善選擇機
 
 ---
 
-### 八、怎麼知道我們真的在共同進步，而不是單純更依賴 AI？
+### 九、怎麼知道我們真的在共同進步，而不是單純更依賴 AI？
 
 如果未來要評估人腦 AI 化與 AI 人腦化是否真的產生正面效果，我認為不能只看 AI 的 Benchmark，也不能只看使用者覺得方便不方便。
 
@@ -379,7 +510,7 @@ RRSI 研究正是針對這類風險，透過限制候選修改與改善選擇機
 
 ---
 
-### 九、結語：人不必變成模型，模型也不必變成人
+### 十、結語：人不必變成模型，模型也不必變成人
 
 回到最初的兩個問題。
 
@@ -412,12 +543,27 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 - [Richmond & Taylor — The benefits and potential costs of cognitive offloading（2025）](https://doi.org/10.1038/s44159-025-00432-2)：認知外包的效益與失去外部記憶時的潛在代價。
 - [Berger et al. — Human learning is an understudied but promising lever for boosting human–AI synergy（PNAS, 2026）](https://doi.org/10.1073/pnas.2536100123)：結果回饋、人類學習與人機協同效益。
 
-**Google 相關 RSI 研究**
+**Google 與其他研究機構的 RSI 研究**
 
 - [Self-Improvement Memory Enables Continual Recursive Self-Improvement（SIM／CRSI）](https://arxiv.org/abs/2611.18856)
 - [Harness²: Recursive Agent Harnessing for an Open World](https://arxiv.org/abs/2610.14224)
 - [RRSI: Regularized Recursive Self-Improvement of Agent Harnesses](https://arxiv.org/abs/2609.24972)
-- [Dream-RSI: Recursive Self-Improvement through Evolving Worlds](https://arxiv.org/abs/2609.14858)
+- [Dream-RSI: Recursive Self-Improvement through Evolving Worlds（指定 v1 HTML）](https://arxiv.org/html/2609.14858v1)
+- [Dream-RSI 官方研究頁與實驗結果](https://dream-rsi.com/)
+- [Google Research 官方 Dream-RSI 程式庫](https://github.com/google-research/dream-rsi)
+
+**2027～2028 AGI、AI 研究自動化與治理**
+
+- [Alexandr Wang — Superintelligence is Arriving（X 原文）](https://x.com/alexandr_wang/status/2124636606959345776)
+- [Fortune — Meta AI chief Alexandr Wang warns “superintelligence is arriving”](https://fortune.com/2026/11/23/alexandr-wang-meta-superintelligence-arriving-riemann-hypothesis-nasdaq-ai-selloff/)
+- [TheWrap — Meta AI Chief Warns Against Handing Over Society to Artificial Superintelligence](https://www.thewrap.com/industry-news/tech/meta-ai-officer-superintelligence-warning/)
+- [Anthropic — Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
+- [OpenAI — Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
+- [AI Futures Project — Q3.5 Timelines Update（2026-11-10）](https://blog.aifutures.org/p/q35-timelines-update-looks-like-the)
+- [METR — AI R&D-relevant model capabilities are improving rapidly and are getting harder to measure（2026-11-20）](https://evals.alignment.org/blog/2026-11-20-q4-2026-capability-update/)
+- [Forecasting Research Institute — How Close Is Recursive Self-Improvement? A Review of the Evidence](https://forecastingresearch.org/research/recursive-self-improvement)
+- [Thousands of AI Authors on the Future of AI（2024）](https://arxiv.org/abs/2401.02843)
+- [Metaculus／Consensus AGI 預測彙整（2026-11-26）](https://www.consens.io/topics/when-will-agi-arrive)
 
 **Rhyzarca 既有公開文章**
 
@@ -430,9 +576,9 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 ### 🏛️ Epistemic Ledger Entry: #0012
 
 - **Timestamp:** 2026-11-28T03:59:00+08:00
-- **Claim:** 人類透過外部工具擴充記憶、搜尋與分析能力，AI 系統則透過記憶、回饋與 Harness 自我改進累積可重用能力；若能讓人類學習與 AI 系統改善互相校正，可能形成比單獨使用任一方更有價值的人機共同認知系統。
+- **Claim:** 人類透過外部工具擴充記憶、搜尋與分析能力，AI 系統則透過記憶、回饋與 Harness 自我改進累積可重用能力；若能讓人類學習與 AI 系統改善互相校正，可能形成比單獨使用任一方更有價值的人機共同認知系統。2027～2028 是值得觀察 AI 研究自動化、超人類 AI 研究員與不同 AGI 門檻的高影響時間窗口，但不構成必然到達 AGI 或完整 RSI 的預言。
 - **Epistemic State:** Tentative Hypothesis；認知外部化與 Agent Harness RSI 有公開研究支持，但「長期人機共同演化」仍是需要進一步驗證的整合性命題。
-- **Evidence Scope:** 依據 Extended Mind 哲學論述、2025–2026 年認知外包與人機學習研究，以及 SIM／CRSI、Harness²、RRSI、Dream-RSI 等公開預印本與研究專案。不同研究的任務、模型、評估指標與實驗條件不同，本文不將其數字合併比較；也未獨立重現各研究實驗。
+- **Evidence Scope:** 依據 Extended Mind 哲學論述、2025–2026 年認知外包與人機學習研究，以及 SIM／CRSI、Harness²、RRSI、Dream-RSI 等公開預印本與研究專案；另納入 Anthropic 研究自動化安全路線圖、OpenAI 自動化研究員目標、AI Futures Project 2026 年 11 月預測更新、METR 2026 年 11 月能力評估、Metaculus 群體預測與 2023 年 AI 研究者調查。不同來源對 AGI、AI 研究自動化、RSI 的定義與時間條件不同，本文不將其數字合併比較；也未獨立重現各研究實驗。Alexandr Wang 的觀點屬產業領袖公開論述，不是獨立能力評估。
 - **Dependencies:** 外部記憶可取得且有來源；AI 解釋能搭配可靠的結果回饋；人類保留獨立判斷與拒絕能力；AI 改進使用獨立評估與未見任務檢查；模型記憶不被誤認為主觀意識。
-- **Revision Trigger:** 若後續實驗顯示外部認知工具長期降低人類的知識遷移能力，或 AI 的歷史經驗無法改善未見任務、反而加劇偏誤，則應修訂本文對共同演化的正面假設。
-- **Next Question:** 如何設計長期、可重複的實驗，同時測量人類的認知成長、AI 的跨任務改善，以及兩者合作後是否真正產生協同效益？
+- **Revision Trigger:** 若後續實驗顯示外部認知工具長期降低人類的知識遷移能力，或 AI 的歷史經驗無法改善未見任務、反而加劇偏誤，則應修訂本文對共同演化的正面假設。若 2027～2028 年 AI 研究自動化、超人類研究能力或 AGI 的公開驗收標準與目前預測明顯不同，也應保留預測原貌並追加修訂分錄，不以新結果抹除當時的估計。
+- **Next Question:** 如何設計長期、可重複的實驗，同時測量人類的認知成長、AI 的跨任務改善，以及兩者合作後是否真正產生協同效益？當 AI 開始參與 AI 研究本身，誰決定研究方向、風險門檻與社會採用條件？
