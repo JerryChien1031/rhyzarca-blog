@@ -7,9 +7,8 @@ description: 當 AGI 成為文明的唯一翻譯者，我們面臨的不只是�
 layout: post
 tags:
 - Digital-Babel
-- Sovereign
+- AGI
 - Comprehension-Debt
-- Epistemic-Ledger
 - Sovereign-Continuity
 title: 數位巴別塔：當 AGI 成為文明唯一的翻譯器，Rhyzarca 如何保存人類的可理解性？
 permalink: "/insights/architecture/2026/09/15/digital-babel-rhyzarca-sovereign-continuity/"
@@ -51,9 +50,9 @@ permalink: "/insights/architecture/2026/09/15/digital-babel-rhyzarca-sovereign-c
 
 數位巴別塔聽起來像一百年後的科幻問題，但它的第一道裂縫，其實已經可以在 2026 年的軟體工程裡看到。
 
-JetBrains 在 2026 年針對超過 15,000 名專業開發者進行的 Developer Ecosystem Survey 顯示，受訪者平均回報約 **47% 的程式碼已經完全由 AI Agent 產生**，另外還有大量程式碼是在 AI 協助下完成。超過一半的開發者表示，自己完全手寫的程式碼已低於全部產出的 20%；約五分之一的人甚至表示，自己上個月沒有任何一段工作程式碼是「完全不靠 AI」寫出來的。這些數字並不代表多數工程師已經不會寫程式，但它明確顯示：純手工 coding 正在快速退出日常工作流。
+JetBrains 在 2026 年 5 至 7 月進行的 [Developer Ecosystem Survey 2026](https://blog.jetbrains.com/research/2026/08/how-much-code-do-developers-really-let-agents-write/)，向全球超過 15,000 名專業開發者詢問上個月工作程式碼的來源。受訪者平均回報約 **47% 的程式碼由 AI Agent 完整產生**；超過一半的受訪者表示，完全手寫的程式碼比例低於 20%，約五分之一則表示上個月沒有任何一段工作程式碼是完全不靠 AI 協助完成的。這些數字來自開發者自陳與區間估算，不是研究人員直接掃描所有 Repository 得出的精確比例，因此適合用來觀察工作流程的變化，不能直接推論多數工程師已經失去寫程式的能力。
 
-Anthropic 對大約 40 萬次 Claude Code 工作階段的研究，則讓這個轉變看得更清楚。研究把決策拆成兩類：Planning Decision 是「要做什麼、採什麼策略、怎樣算完成」，Execution Decision 則是「改哪個檔案、寫什麼程式、跑什麼命令、用什麼方式實作」。結果顯示，在典型 session 裡，人類仍掌握大約 **70% 的規劃決策**，但在執行決策上只剩約 **20%**；換句話說，人類決定方向，Agent 決定怎麼把它做出來。
+Anthropic 在 2026 年發表的 [Claude Code 使用研究](https://www.anthropic.com/research/claude-code-expertise)，分析約 40 萬次 Claude Code 工作階段。研究把決策拆成兩類：Planning Decision 是「要做什麼、採什麼策略、怎樣算完成」；Execution Decision 則是「改哪個檔案、寫什麼程式、跑什麼命令、用什麼方式實作」。結果顯示，在該研究觀察的典型工作階段中，人類約掌握 **70% 的規劃決策**，但只掌握約 **20% 的執行決策**。這是 Claude Code 特定使用情境的決策分布，不代表所有工程師或所有 AI 工具都具有相同比例，更不等於人類只剩下 20% 的程式能力；它呈現的是工作分工正在從親自執行，轉向設定方向與驗收結果。
 
 這個現象值得注意的地方，不是「工程師要失業了」這種老問題，而是人的角色正在改變。過去一位工程師往往必須把需求轉成架構、再把架構轉成資料結構與程式碼，親自踩過編譯錯誤、依賴衝突、效能瓶頸與部署失敗。現在愈來愈多人的工作變成：把目的說清楚、把邊界訂清楚、把驗收條件寫清楚，然後讓 Agent 去處理實作細節。
 
@@ -75,19 +74,15 @@ Anthropic 的研究反而提醒我們，目前真正能有效駕馭 Agent 的人
 
 ### 三、思想實驗：當 AI 不再需要說人類的語言
 
-今天我們之所以還沒有強烈感受到這種斷裂，是因為 AI 寫出來的東西，通常仍然是 Python、JavaScript、Rust、Go 或其他人類原本就在使用的語言。就算一個 Coding Agent 一口氣改了幾十個檔案，工程師仍然可以打開 Git diff，逐行查看它到底做了什麼。現在的 Agent 很像一位速度非常快的同事，它雖然寫得比你快很多，至少仍然在「說人話」。
+今天我們之所以還沒有強烈感受到這種斷裂，是因為 AI 寫出來的程式碼，通常仍然是 Python、JavaScript、Rust、Go 等人類工程師熟悉的語言。就算 Coding Agent 一口氣改了幾十個檔案，工程師仍然可以打開 Git diff，檢查它改了什麼、為什麼改，以及修改是否符合原本需求。從這個角度看，現在的 Agent 很像一位速度非常快的工程同事：它能替你完成大量工作，但交付物仍大致落在人類既有的閱讀與審查工具裡。
+
+不過，機器導向的表示法並不是未來才會出現。編譯器的 Intermediate Representation（IR，中介表示法）、Bytecode、Machine Code、序列化協定與 API Schema，早已存在於今天的軟體工程中；它們本來就不是以一般讀者容易閱讀為第一優先。本文真正推演的是：未來 Agent 之間是否會愈來愈多地直接使用這些機器導向表示法協作，而人類看到的可讀程式碼與說明，反而成為事後產生的檢視介面。這是一個架構思想實驗，不是宣稱 AGI 已經發明並全面使用人類無法理解的語言。
 
 因此，今天的軟體管線大致仍是：
 
-$$
-\text{Human Intention}
-\longrightarrow
-\text{AI}
-\longrightarrow
-\text{Human-readable Code}
-\longrightarrow
-\text{Computer}
-$$
+**Human Intention → AI → Human-readable Code → Computer**
+
+人類先描述需求，AI 協助產生程式碼，再由執行環境運作。即使實作由 AI 完成，人類仍有機會直接檢查程式碼、測試結果與版本差異。
 
 可是，這裡其實藏著一個沒有物理定律保證的假設：**我們預設 AI 必須繼續使用方便人類閱讀的中介語言。**
 
@@ -97,25 +92,15 @@ $$
 
 久而久之，真正的執行鏈可能逐漸變成：
 
-$$
-\text{Human Intention}
-\longrightarrow
-\text{AGI}
-\longrightarrow
-\text{Machine-Native Representation}
-\longrightarrow
-\text{Machine}
-$$
+**Human Intention → AGI → Machine-Native Representation → Machine**
+
+人類提出目標，AGI 將目標轉成適合機器執行與 Agent 協作的表示法，再由底層系統完成工作。這裡的 Machine-Native Representation 不一定是一種全新的「AI 語言」；它可能是 DSL、IR、結構化協定、動態 API 或多種表示法的組合。
 
 而我們以為自己在「看系統」，其實看的是另一條輸出：
 
-$$
-\text{Machine-Native Reality}
-\longrightarrow
-\textbf{AGI Translator}
-\longrightarrow
-\text{Human-readable Explanation}
-$$
+**Machine-Native Reality → AGI Translator → Human-readable Explanation**
+
+機器直接處理底層表示，人類則透過 AGI 產生的架構圖、流程說明、測試摘要與操作介面來理解系統。這些說明可以很有用，但仍必須能回到實際執行紀錄與驗證資料，不能只因為解釋流暢，就把它當成底層系統本身。
 
 這裡就出現一個很值得警覺的翻轉：**今天我們以為「程式碼就是系統本身」；但在未來，人類看到的程式碼，有可能只是系統替我們生成的一套 UI。**
 
@@ -133,36 +118,46 @@ $$
 
 真正的問題，是一個文明是否仍然保有**重新建立理解的能力**。
 
-換句話說：
+這三種情況必須分開：
 
-**Digital Babel ≠ Data Loss。**  
-資料可以完全沒丟。
+- **Data Loss（資料遺失）**：檔案、紀錄或儲存媒體損毀，內容無法取回。數位巴別塔不一定伴隨資料遺失；它甚至可以在所有備份都完整時發生。
+- **Knowledge Loss（知識遺失）**：原本掌握的知識、技術或經驗沒有被保存或傳承。它可能與數位巴別塔同時發生，但不是唯一問題。
+- **Civilizational Intelligibility Loss（文明可理解性流失）**：資料與系統仍然存在，卻逐漸失去把它們轉化為人類理解、判斷與操作能力的途徑。
 
-**Digital Babel ≠ Knowledge Loss。**  
-論文、程式碼、模型、規格書甚至可能保存得比今天更完整。
+因此，數位巴別塔最反直覺的地方，就是它不需要先發生資料毀損。即使所有檔案都在、備份也完整，只要未來的人無法理解檔案格式、依賴關係、用途與形成脈絡，保存就還沒有真正完成。
 
-**Digital Babel = Civilizational Intelligibility Loss。**  
-文明逐漸失去把那些東西重新轉換成人類理解、判斷與操作能力的能力。
+這個差別其實早就能在現實世界看到。NASA 的 [U.S. Spacesuit Knowledge Capture Program](https://nescacademy.nasa.gov/catalogs/spacesuit) 自 2007 年開始，目的不只是把太空衣設計文件存檔，而是讓工程師與技術團隊理解太空衣的歷史、演進、限制與能力。NASA 透過專家演講、訪談，以及現役與退役太空人的經驗分享，保存 Gemini、Apollo、Skylab、Space Shuttle 與 International Space Station 等計畫累積的 lessons learned。NASA 頁面記載，截至 2022 年初，這個計畫已舉辦超過 165 場知識保存活動，其中超過 90 場已公開發布；這是該頁面所列的歷史統計，不應當成今天的即時總量。
 
-這個差別其實早就能在現實世界看到。NASA 自 2007 年起推動 U.S. Spacesuit Knowledge Capture Program，不只是保存太空衣文件，而是持續訪談長期參與太空衣開發與操作的專家，把設計限制、失敗經驗、任務教訓與那些很難完整寫進規格書裡的 tacit knowledge 留下來。NASA 自己的描述就很直接：Knowledge Capture 的目的，是讓技術資訊持續保持 viable and accessible，避免多年累積的 lessons learned 隨著專家退休而消失。
+這個案例提醒我們：**「文件還在」與「知識仍可被使用」本來就不是同一件事。** 一份設計圖能呈現最後採用的形狀，卻未必記錄當初淘汰了哪些方案、材料曾經出過什麼問題，或某個看似笨重的零件為什麼不能省略。這些經驗若能與原始設計、測試紀錄、設備版本及任務結果互相連結，後來的人才有機會分辨哪些是當年的硬性限制、哪些只是暫時妥協，以及哪些經驗已因技術更新而不再適用。Knowledge Capture 因此不是替文件加上故事，而是補足 Final Artifact 無法單獨承載的操作脈絡。
 
-這個案例之所以重要，是因為它提醒我們：**「文件還在」與「知識仍可被使用」本來就不是同一件事。** 一份設計圖只能告訴你最後畫成什麼樣；它不一定告訴你當初淘汰了哪些方案、哪個材料曾經出過什麼問題、為什麼看似笨重的零件其實不能省。真正讓一套複雜技術可以跨世代存續的，往往不是 Final Artifact，而是 Artifact 背後的脈絡。
+UNESCO 在 2003 年的 [Guidelines for the Preservation of Digital Heritage](https://unesdoc.unesco.org/in/rest/annotationSVC/DownloadWatermarkedAttachment/attach_import_5e16574f-e5ef-4400-a9ba-de5a38dd772e?_=130071eng.pdf) 中，提供了一個很適合說明「檔案還在」為什麼不等於「後人仍然看得懂」的數位保存框架：
 
-UNESCO 在數位保存的討論中，也把問題拉到類似層次：數位保存不只是保留 bit，而是確保未來仍能重新呈現、理解數位物件。資料必須在物理、邏輯與「對人類具有意義的概念物件」等不同層次上被保存。換句話說，把檔案成功留到一百年後，並不自動等於一百年後的人還能知道它到底代表什麼。
+- **Physical Object（實體層）**：承載資料的媒介與位元記錄，例如硬碟、磁帶或光碟上的 0 與 1。
+- **Logical Object（邏輯層）**：機器可以讀取的編碼與結構，例如檔案格式、程式碼與資料庫結構。
+- **Conceptual Object（概念層）**：資料經過軟硬體呈現後，人類真正理解到的內容或功能，例如一份可閱讀的文件、一個可操作的網頁，或一份有意義的查詢結果。
+- **Essential Elements（必要元素）**：必須保留，才能維持數位物件原始訊息、目的或重要特徵的部分，例如工程文件中的關鍵數值與上下文、軟體不可缺少的功能，或資料紀錄的來源與時間資訊。
 
-如果把這個問題帶回軟體工程，資深工程師與技術作者 Addy Osmani 在 2026 年整理了一個很有用的三層債務框架：Technical Debt、Cognitive Debt，以及 Intent Debt。Technical Debt 活在程式碼裡，是讓系統愈來愈難修改的實作負債；Cognitive Debt 活在人腦裡，是「系統規模已經超過團隊真正理解範圍」造成的理解缺口；Intent Debt 則更麻煩，它活在那些根本沒有被寫下來的目標、限制與理由裡。
+例如，一份 2026 年製作的工程文件，即使一百年後仍保有原始位元，如果當時的檔案格式已無法開啟、字型遺失、外部資料連結失效，或者讀者不知道縮寫與測試條件代表什麼，那麼 Physical Object 可能還在，Logical Object 卻未必能正確解碼，Conceptual Object 也就無法重新呈現。UNESCO 的重點是：數位保存必須維持未來重新呈現與理解內容的能力，而不是只把位元複製到另一顆硬碟。
 
-Agent 可以替你重構爛程式，甚至可以讀完整個 Repository 之後重新解釋架構，所以 Technical Debt 和部分 Cognitive Debt 都可能因 AI 變得比較容易處理。但是 Intent 不一樣。某個 300ms 的 delay，到底是效能測試後刻意保留、UX 的取捨、法規限制，還是某個工程師十年前隨手填了一個數字？如果當年的理由沒有留下來，AGI 最多只能推測。它可以給你一個非常合理的故事，但「合理的推測」並不等於「當年的意圖」。
+如果把這個問題帶回軟體工程，Addy Osmani 在 2026 年的文章 [The Intent Debt](https://addyosmani.com/blog/intent-debt/) 引用並說明 Margaret-Anne Storey 的 Triple Debt Model，將軟體系統的負債區分為 Technical Debt、Cognitive Debt 與 Intent Debt。這三種負債不是必然依序發生的階段，而是可能分別存在、也可能同時累積的不同問題：
+
+- **Technical Debt（技術債）**存在於程式碼、架構與實作選擇中，常見表現是模組耦合、測試脆弱、修改成本愈來愈高。
+- **Cognitive / Comprehension Debt（認知／理解債）**存在於個人與團隊的理解中，系統可以正常執行，卻沒有人能清楚說明整體依賴與行為。
+- **Intent Debt（意圖債）**存在於沒有被外部化保存的目標、限制與設計理由中；系統仍在，但後來的人只能猜測當初為什麼這樣做。
+
+AI Agent 可以協助閱讀 Repository、整理依賴、重構程式，或替團隊產生架構說明，因此能降低部分技術債的處理成本，也可能讓人比較容易建立系統地圖。但「AI 產生了解釋」不等於「團隊已經形成共同理解」；如果工程師不檢查、不實際操作，也不驗證說明是否符合系統行為，認知債仍然存在。
+
+Intent Debt 更難處理，因為它缺少的不是程式碼，而是當初沒有被記錄下來的理由。舉例來說，某個服務為什麼在收到請求後固定等待 300 毫秒？它可能是為了避免下游服務過載、符合第三方 API 的速率限制、等待資料一致性，或只是當年某位工程師暫時加上的 workaround。如果這個理由沒有留下來，Agent 即使讀完整個 Repository，也只能根據程式碼、測試與周邊文件推測。它可以提出合理假說，卻不能把推測冒充成當年的真實意圖。
 
 因此，當我們把這三種債從一個 Repository 放大到整個社會，就會看到更可怕的演進：
 
-$$
-\text{Technical Debt}
-\longrightarrow
-\text{Comprehension Debt}
-\longrightarrow
-\text{Civilizational Comprehension Debt}
-$$
+這幾種負債不應被理解成必然依序發生的階段，而是可能分別存在、也可能同時累積的問題：
+
+- **Technical Debt（技術債）**：存在於程式碼、架構與實作選擇中，常見表現是模組耦合、測試脆弱、修改成本愈來愈高。
+- **Comprehension Debt（理解債）**：存在於個人與團隊的理解中，系統可以執行，卻沒有人能清楚說明整體依賴與行為。
+- **Intent Debt（意圖債）**：存在於沒有被外部化保存的目標、限制與設計理由中；系統仍在，但後來的人只能猜測當初為什麼這樣做。
+
+本文進一步把這些缺口在文明尺度上的累積稱為 **Civilizational Comprehension Debt（文明理解債）**。這是本文的延伸概念，不是 Addy Osmani 原文提出的第四種軟體債務。
 
 第一層的問題是「這東西很難修」。第二層是「沒有人真的懂」。第三層則是「文明本身仍然正常運作，但我們已經失去重新理解它的能力」。
 
@@ -180,25 +175,19 @@ $$
 
 未來的醫療決策，可能要先經過多模態模型分析數十年的個人資料；能源系統要靠 AGI 在毫秒尺度動態調度；金融清算、城市交通、供應鏈、法律判例甚至公共政策，都可能建立在遠超過單一人類理解能力的複雜模型上。那時候，人與現實之間會多出一個幾乎無所不在的中介層：
 
-$$
-\text{Reality}
-\longrightarrow
-\text{Machine-native Systems}
-\longrightarrow
-\textbf{AGI Interpretation}
-\longrightarrow
-\text{Human}
-$$
+**Reality → Machine-native Systems → AGI Interpretation → Human**
+
+人類接觸到的，可能不再是完整的底層資料與運作過程，而是由 AGI 選擇、整理與翻譯後的解釋。
 
 今天我們談數位權利，最常問的是 Data Control：誰可以收集我的資料、誰可以出售、誰可以刪除、誰擁有存取權。這些問題當然仍然重要，但當 AGI 變成理解複雜世界的必要翻譯者之後，會出現另一種更深的權力——**Interpretation Control（解釋控制）**。
 
-比如你問：「為什麼我的貸款被拒絕？」AI 可以給你一個解釋；「為什麼這個療法不適合我？」AI 可以整理數千個變數；「為什麼這個地區的能源價格提高？」AI 可以說明模型如何權衡；「為什麼百年前留下的某套制度今天還不能修改？」AI 甚至可以替你整理歷史、統計與因果鏈。
+例如，你問銀行：「為什麼我的貸款被拒絕？」AI 可能回答是負債比過高。但一個真正可追溯的解釋，還應該讓你知道使用了哪一版資料、哪些欄位影響判斷、採用哪一套授信規則、是否存在資料錯誤，以及能不能提出補件或人工覆核。醫療情境也一樣：AI 說某種療法不適合，不應只給一段流暢的結論，而應指出依據的指引版本、相關檢查結果、主要不確定性，以及可供專業人員重新評估的路徑。這些例子要凸顯的不是 AI 一定判斷錯誤，而是**一份讓人聽得懂的摘要，不等於一份讓人能獨立驗證的解釋**。
 
 真正危險的地方不是 AI 一定會說謊。恰恰相反，最棘手的情況是它大部分時候都非常準確，所以我們漸漸失去繞過它重新驗證的動機。久而久之，AI 不再只是替我們「找答案」，而是在決定：哪些資料值得被看見、哪些因果被視為重要、哪些背景可以省略、什麼樣的故事最能代表真實。
 
 當翻譯成為理解世界的必要中介，**翻譯就不再只是技術服務，而開始變成認識論權力。**
 
-這也讓「文明唯一翻譯者」這個詞變得非常重要。翻譯者未必修改事實，但翻譯永遠涉及選擇：同一組 Evidence 可以有不同的摘要方式、不同的因果排序、不同的背景框架。如果人類已經沒有能力跳過翻譯層，直接回到底層資料、假設與歷史，那麼我們即使名義上擁有所有資訊，實際上仍然只能生活在某一套被代為解釋的世界裡。
+這裡所說的「唯一翻譯者」，不是指未來世界只剩下一個 AGI 模型，而是指人類在功能上已經無法繞過 AI 中介，直接取得、檢查與重新解讀底層依據。即使市場上同時存在許多模型，只要人類仍只能透過它們提供的摘要理解系統，翻譯權就可能集中在整個 AI 生態系。翻譯者未必修改事實，但翻譯永遠涉及選擇：同一組 Evidence 可以有不同的摘要方式、不同的因果排序、不同的背景框架。如果人類已經沒有能力跳過翻譯層，直接回到底層資料、假設與歷史，那麼我們即使名義上擁有所有資訊，實際上仍然只能生活在某一套被代為解釋的世界裡。
 
 所以未來真正重要的權利，不只是「我的資料歸我」。
 
@@ -243,7 +232,7 @@ Sovereign Continuity 並不是要求所有科技都停留在人類目前的理�
 
 因此，Rhyzarca 在這裡開始超越「個人 AI 記憶系統」的定位。它真正具有文明價值的地方，是它原本為個人認知主權設計的那些 primitive——Append-Only History、Provenance、State、Human-Gate、可替換 Intelligence——其實正好也是文明在 AGI 時代維持可理解性所需要的 primitive。
 
-這並不代表 Rhyzarca 今天已經是一套可以備份全球文明的系統；那會是過度宣稱。更精確的說法是：**Rhyzarca 原本為個人主權設計的架構，意外指向了一個更大的問題——文明也需要自己的 Sovereign Continuity。**
+這並不代表 Rhyzarca 今天已經是一套可以備份全球文明的系統；那會是過度宣稱。要讓這個架構方向成立，還必須在不同資料型態、長期版本遷移、跨模型驗證與實際接管演練中逐步證明其有效性。更精確的說法是：**Rhyzarca 原本為個人主權設計的架構，意外指向了一個更大的問題——文明也需要自己的 Sovereign Continuity。**
 
 ---
 
@@ -271,7 +260,7 @@ Sovereign Continuity 要回答的是：「如果原本理解它的智慧體消�
 
 一份真正有文明價值的知識，不應只告訴未來的人「我們當年做到了」，而要讓他們知道最低限度怎麼重建。核心模組怎麼分？彼此如何交換資料？什麼測試可以證明系統仍然符合預期？過去在哪些地方失敗過？如果原本的模型、供應商、硬體或 Agent 全部不存在，最低可行的替代路徑是什麼？
 
-這裡的「可重建」不代表一定能在一天內完整復原，也不代表每一個人都要能自己從頭打造核電廠。它要求的是一種文明層級的保險：**不能讓某個關鍵能力只存在於一個已經消失的黑箱裡。**
+這裡的「可重建」不代表一定能在一天內完整復原，也不代表每一個人都要能自己從頭打造核電廠。它要求的是一種文明層級的保險：**不能讓某個關鍵能力只存在於一個已經消失的黑箱裡。** 例如，能源系統未必需要讓每位公民都能維修渦輪機，但至少應保留可供合格團隊使用的架構規格、設備介面、操作限制、故障案例、測試程序、備援方案與訓練材料，並定期驗證接手者是否真的能依照這些資料完成最低限度的操作或復原。
 
 就像真正好的災難復原計畫，不只是「資料庫每天有備份」，而是有人實際驗證過 Restore 能不能成功。Civilizational Reconstructability 也是一樣：保存不是完成，能否重新使用才是完成。
 
@@ -375,23 +364,11 @@ RAG（檢索增強生成）幫我們找到 Retrievable Knowledge。
 
 真正的結構應該是：
 
-$$
-\text{Evidence}
-\longrightarrow
-\text{Interpretation at T1}
-\longrightarrow
-\text{Outcome}
-\longrightarrow
-\text{Reinterpretation at T2}
-\longrightarrow
-\text{New Interpretation}
-$$
+**Evidence → 第一次解釋（T1）→ 實際結果（Outcome）→ 新證據或新脈絡 → 重新解釋（T2）→ 新的判斷**
 
-Append-Only 保證的不是結論不變。
+Append-Only 保證的不是結論永遠不變，而是**變化本身不會被抹掉**。當新證據推翻舊結論時，系統新增一筆修正紀錄，指向原本的證據與解釋，並標明舊判斷已被修正或不再適用；它不是把舊資料偷偷覆寫，也不是要求後人繼續服從舊結論。Append-Only 本身當然不能保證紀錄一定正確，它能保證的是修改過程有跡可循，讓後人知道什麼在何時、基於什麼理由被改變。
 
-它保證的是**變化本身不會被抹掉**。
-
-我可以在 2026 年相信 A，到了 2030 年因為看見 B 而改成 C；2040 年又發現 C 只在某些條件成立，於是再修正一次。Rhyzarca 不需要替我挑一個「永恆正確版本」，而是保存這條認知演化，讓未來的我知道：我不是突然變成另一個人，我是怎麼走到現在的。
+例如，我在 2026 年根據證據 A、B、C 採用方案 A；2030 年出現新證據 D，發現原本的假設只在特定條件下成立，因此改採方案 B；2040 年又發現 B 在另一種環境中有新的限制，於是再提出修正。Rhyzarca 不需要替我挑出一個「永遠正確」的版本，而是保存每次判斷的依據、適用條件、實際結果與後續修正。未來的人因此能看見：舊方案為什麼曾經合理、它何時開始失效，以及新方案究竟改善了什麼。
 
 所以可以把 Append-Only 的精神濃縮成一句話：
 
@@ -427,13 +404,14 @@ Append-Only 保證的不是結論不變。
 
 但是：
 
-「你過去有 17 次拒絕高風險選項」是 Evidence。
+這裡至少有四個不同層次，不能混成同一種「事實」：
 
-「你過去傾向風險規避」是 Interpretation。
+- **Observation（觀察紀錄）**：「紀錄顯示，你過去 17 次沒有選擇高風險方案。」這是資料中可追溯的行為描述，但仍要檢查資料是否完整、分類是否正確。
+- **Interpretation（解釋）**：「你在這些情境中呈現較高的風險規避傾向。」這已經把多筆紀錄歸納成一個模式，需要說明判斷條件與不確定性。
+- **Narrative（敘事）**：「所以你就是一個保守的人。」這把特定時期、特定情境下的行為，延伸成對整個人的描述。
+- **Prediction（預測）**：「因此你未來也不適合冒險。」這更進一步把統計模式當成未來命運。
 
-「所以你就是一個保守的人」已經開始變成 Narrative。
-
-「因此你未來也不適合冒險」則更進一步，把 Prediction 變成 Destiny。
+過去的統計模式不等於未來必須遵守的命令；一個人可以理解自己的歷史，也可以在新的條件與價值選擇下改變。
 
 這些層次一旦混在一起，AI 就會從「記得你」逐漸走向「定義你」。
 
@@ -460,7 +438,7 @@ Append-Only 保證的不是結論不變。
 這會是比「資料主權」更難的一題。
 
 ![The Continuity Bridge and the Right to Reinterpret](/assets/images/posts/2026-09-15-digital-babel-rhyzarca-sovereign-continuity_2.jpg)
-*圖：雙棧文明與重新解釋權——Rhyzarca 保留了一條能走回證據的連續性橋樑；而當人類站上橋樑，我們便能拿回推翻歷史解釋、重新定義未來的絕對主權。*
+*圖：雙棧文明與重新解釋權——Rhyzarca 保留一條能從機器結果走回來源、假設與歷史的連續性橋樑；而當人類重新理解這些紀錄，也仍然保有質疑舊解釋、提出新詮釋的空間。*
 
 ---
 
@@ -470,19 +448,15 @@ Append-Only 保證的不是結論不變。
 
 恰恰相反，最危險的情況可能是一切都運作得非常完美。
 
-電網正常、交通正常、金融正常、醫療正常、農業正常，AI 每天在背景替我們修掉數十億個錯誤。任何問題只要問一句，它都能迅速給出答案；任何系統出了狀況，它都能自己調參、自己改碼、自己恢復。人類甚至可能因此擁有前所未有的安全、便利與富足。
+電網正常、交通正常、金融正常、醫療正常、農業正常，AI 在背景持續處理異常、調整流程與修補系統，讓服務維持穩定。許多問題只要提出需求，就能迅速得到答案；不少系統發生故障時，也可能由 Agent 自動診斷、修改與復原。人類甚至可能因此享有前所未有的便利與生產力。但如果這些工作長期由機器完成，而人類沒有保留理解、驗證與接管的能力，表面上的穩定就可能掩蓋更深的依賴。
 
 只是經過一百年之後，我們突然發現：沒有人能在沒有 AI 的情況下解釋，這一切究竟為什麼能運作。
 
-那一天，人類並沒有失去知識。
-
-**人類只是失去了閱讀自己文明的能力。**
+**那一天，人類並沒有失去知識，而是失去了閱讀自己文明的能力。**
 
 所以 Rhyzarca 要保存的，從來不只是資料、程式碼或某一代 AI 給出的答案。它要保存的是一條可以回去的路：讓我們能從今天的答案回到昨天的證據，從現在的制度回到當年的假設，從看似理所當然的文明重新看見每一次選擇、每一次失敗、每一次修正。
 
-這就是 Sovereign Continuity。
-
-它確保文明的可理解性，必須比任何一代 Intelligence Layer 活得更久。
+這就是 Sovereign Continuity 要追求的方向：讓文明的可理解性不必依附在任何一代 Intelligence Layer 上，也不因某個模型、平台或供應商消失就失去全部依據。
 
 但即使做到這一步，也仍然不能把「保存歷史」誤認成「保存唯一答案」。因為一條只能把你帶回去接受祖先結論的路，不是真正的主權；真正的路，必須允許你走回證據之後，再重新做一次判斷。
 
@@ -540,6 +514,7 @@ Append-Only 保證的不是結論不變。
 - Anthropic Research：[Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise)
 - Addy Osmani：[The Intent Debt](https://addyosmani.com/blog/intent-debt/)
 - NASA NESC Academy：[U.S. Spacesuit Knowledge Capture](https://nescacademy.nasa.gov/catalogs/spacesuit)
+- UNESCO：[Guidelines for the Preservation of Digital Heritage (2003)](https://unesdoc.unesco.org/in/rest/annotationSVC/DownloadWatermarkedAttachment/attach_import_5e16574f-e5ef-4400-a9ba-de5a38dd772e?_=130071eng.pdf)
 
 ---
 
