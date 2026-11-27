@@ -79,15 +79,7 @@ Anthropic 的研究反而提醒我們，目前真正能有效駕馭 Agent 的人
 
 因此，今天的軟體管線大致仍是：
 
-$$
-\text{Human Intention}
-\longrightarrow
-\text{AI}
-\longrightarrow
-\text{Human-readable Code}
-\longrightarrow
-\text{Computer}
-$$
+> 人類提出需求 → AI 產生人類可讀的程式碼 → 電腦執行
 
 可是，這裡其實藏著一個沒有物理定律保證的假設：**我們預設 AI 必須繼續使用方便人類閱讀的中介語言。**
 
@@ -97,25 +89,11 @@ $$
 
 久而久之，真正的執行鏈可能逐漸變成：
 
-$$
-\text{Human Intention}
-\longrightarrow
-\text{AGI}
-\longrightarrow
-\text{Machine-Native Representation}
-\longrightarrow
-\text{Machine}
-$$
+> 人類提出需求 → AGI 產生機器原生表示 → 機器執行
 
 而我們以為自己在「看系統」，其實看的是另一條輸出：
 
-$$
-\text{Machine-Native Reality}
-\longrightarrow
-\textbf{AGI Translator}
-\longrightarrow
-\text{Human-readable Explanation}
-$$
+> 機器實際執行的行為 → **AGI 翻譯** → 人類可讀的說明
 
 這裡就出現一個很值得警覺的翻轉：**今天我們以為「程式碼就是系統本身」；但在未來，人類看到的程式碼，有可能只是系統替我們生成的一套 UI。**
 
@@ -142,7 +120,7 @@ $$
 論文、程式碼、模型、規格書甚至可能保存得比今天更完整。
 
 **Digital Babel = Civilizational Intelligibility Loss。**  
-文明逐漸失去把那些東西重新轉換成人類理解、判斷與操作能力的能力。
+文明逐漸失去從既有資料與知識重新建立理解，並據此判斷與操作的能力。
 
 這個差別其實早就能在現實世界看到。NASA 自 2007 年起推動 U.S. Spacesuit Knowledge Capture Program，不只是保存太空衣文件，而是持續訪談長期參與太空衣開發與操作的專家，把設計限制、失敗經驗、任務教訓與那些很難完整寫進規格書裡的 tacit knowledge 留下來。NASA 自己的描述就很直接：Knowledge Capture 的目的，是讓技術資訊持續保持 viable and accessible，避免多年累積的 lessons learned 隨著專家退休而消失。
 
@@ -154,15 +132,9 @@ UNESCO 在數位保存的討論中，也把問題拉到類似層次：數位保�
 
 Agent 可以替你重構爛程式，甚至可以讀完整個 Repository 之後重新解釋架構，所以 Technical Debt 和部分 Cognitive Debt 都可能因 AI 變得比較容易處理。但是 Intent 不一樣。某個 300ms 的 delay，到底是效能測試後刻意保留、UX 的取捨、法規限制，還是某個工程師十年前隨手填了一個數字？如果當年的理由沒有留下來，AGI 最多只能推測。它可以給你一個非常合理的故事，但「合理的推測」並不等於「當年的意圖」。
 
-因此，當我們把這三種債從一個 Repository 放大到整個社會，就會看到更可怕的演進：
+如果把視野從一個 Repository 拉到整個社會，問題可能沿著這條路徑擴大：
 
-$$
-\text{Technical Debt}
-\longrightarrow
-\text{Comprehension Debt}
-\longrightarrow
-\text{Civilizational Comprehension Debt}
-$$
+> 技術債 → 理解債 → 文明理解債
 
 第一層的問題是「這東西很難修」。第二層是「沒有人真的懂」。第三層則是「文明本身仍然正常運作，但我們已經失去重新理解它的能力」。
 
@@ -180,15 +152,7 @@ $$
 
 未來的醫療決策，可能要先經過多模態模型分析數十年的個人資料；能源系統要靠 AGI 在毫秒尺度動態調度；金融清算、城市交通、供應鏈、法律判例甚至公共政策，都可能建立在遠超過單一人類理解能力的複雜模型上。那時候，人與現實之間會多出一個幾乎無所不在的中介層：
 
-$$
-\text{Reality}
-\longrightarrow
-\text{Machine-native Systems}
-\longrightarrow
-\textbf{AGI Interpretation}
-\longrightarrow
-\text{Human}
-$$
+> 現實事件 → 機器原生系統處理 → **AGI 解讀** → 人類取得說明
 
 今天我們談數位權利，最常問的是 Data Control：誰可以收集我的資料、誰可以出售、誰可以刪除、誰擁有存取權。這些問題當然仍然重要，但當 AGI 變成理解複雜世界的必要翻譯者之後，會出現另一種更深的權力——**Interpretation Control（解釋控制）**。
 
@@ -325,6 +289,8 @@ RAG（檢索增強生成）幫我們找到 Retrievable Knowledge。
 
 這條橋不能只靠同一個 AGI 自己說：「相信我，我翻譯得很準。」如果 Machine Stack 與 Human Stack 之間的對應仍然只能靠那個唯一翻譯者證明，那其實沒有解決任何問題。真正的 Sovereign Continuity 必須讓關鍵 Claims 能夠回到 Evidence、Tests、Artifacts 與歷史紀錄，讓不同模型、不同工具，甚至必要時讓人類自己，仍然可以交叉驗證。
 
+例如，假設 AGI 說「這次電網調度沒有超過安全上限」。有了這條橋，工程師就能查到當時適用的上限、該時段的原始量測，以及判定是否超限的規則，再用另一套工具重算，核對摘要是否成立。
+
 因此，Rhyzarca 不需要做到一件不切實際的事：讓每一個人都能看懂 Machine Stack 的每一個 bit。
 
 它只需要守住一條底線：
@@ -375,17 +341,7 @@ RAG（檢索增強生成）幫我們找到 Retrievable Knowledge。
 
 真正的結構應該是：
 
-$$
-\text{Evidence}
-\longrightarrow
-\text{Interpretation at T1}
-\longrightarrow
-\text{Outcome}
-\longrightarrow
-\text{Reinterpretation at T2}
-\longrightarrow
-\text{New Interpretation}
-$$
+> 保存證據 → 記下當時的解釋 → 記錄後續結果 → 日後依證據重新檢視 → 追加新的解釋
 
 Append-Only 保證的不是結論不變。
 
