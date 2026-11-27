@@ -264,7 +264,7 @@ Dream-RSI 將流程分成兩個階段：
 
 **1. Alexandr Wang：超級智慧正在到來，剩下的瓶頸可能已經改變**
 
-你提供的 Alexandr Wang 影片，與他在 2026 年 11 月 22 日公開發表的〈Superintelligence is Arriving〉，提出了一個很值得討論的觀點。
+Alexandr Wang 近期的公開談話，以及他在 2026 年 11 月 22 日發表的〈Superintelligence is Arriving〉，提出了一個很值得討論的觀點。
 
 Wang 認為，模型的原始智力可能已不再是主要瓶頸；剩下的差距包括領域專業知識（domain-specific know-how）、工程串接與基礎設施（plumbing），以及實驗能力（experimentation）。他進一步主張，模型可能具備自動化 AI 研究的能力，讓 AI 研究本身成為加速 AI 發展的來源。
 
@@ -311,7 +311,7 @@ AI Futures Project 在 2026 年 11 月 10 日發布 Q3.5 Timelines Update，根�
 - 團隊估計 TED-AI 在 2028 年以前出現的機率約為 35%～65%。
 - 各成員的 TED-AI 中位日期並不一致：Daniel Kokotajlo 約為 2027 年 9 月；Eli Lifland 約為 2028 年 9 月；Brendan Halstead 與 Thomas Larsen 約為 2028 年 4 月；Romeo Dean 約為 2028 年 9 月。
 
-這裡的 TED-AI 是指在幾乎所有認知任務上，至少與人類頂尖專家一樣好的 AI。它是該團隊用來描述 AGI 的一種操作性定義，不等於每一種身體勞動、社會互動與現實世界工作都已經自動化。
+這裡的 TED-AI 是指在幾乎所有認知任務上，至少與人類頂尖專家一樣好的 AI。它是該團隊用來描述 AGI 的一種操作性定義，不等於每一種身體勞動、社會互動與現實世界工作都已經自動化。也要注意，原始〈AI 2027〉的快速發展結局是一條情境路徑：它曾將超人類程式設計師、超人類 AI 研究員與超級智慧分別放在 2027 年的不同月份；那不是所有作者共同承諾的單一日期。2026 年 11 月的 Q3.5 更新，才是後續根據新證據重新調整的預測。
 
 這些預測還有一個共同前提：沒有出現重大、刻意的前沿開發放慢。政策、能源、算力、硬體、實驗資源與安全限制，都可能改變實際時間。
 
@@ -554,7 +554,9 @@ AI 人腦化，代表 AI 系統開始具備更完整的記憶、經驗累積、�
 
 **2027～2028 AGI、AI 研究自動化與治理**
 
+- [Alexandr Wang 觀點影片（使用者提供）](https://www.youtube.com/watch?v=_9MXea8z2ps)
 - [Alexandr Wang — Superintelligence is Arriving（X 原文）](https://x.com/alexandr_wang/status/2124636606959345776)
+- [AI 2027 — Original scenario and timelines](https://ai-2027.com/)
 - [Fortune — Meta AI chief Alexandr Wang warns “superintelligence is arriving”](https://fortune.com/2026/11/23/alexandr-wang-meta-superintelligence-arriving-riemann-hypothesis-nasdaq-ai-selloff/)
 - [TheWrap — Meta AI Chief Warns Against Handing Over Society to Artificial Superintelligence](https://www.thewrap.com/industry-news/tech/meta-ai-officer-superintelligence-warning/)
 - [Anthropic — Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
