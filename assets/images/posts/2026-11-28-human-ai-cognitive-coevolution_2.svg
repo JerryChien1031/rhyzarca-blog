@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#091726"/>
+      <stop offset="1" stop-color="#18263b"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe3aa"/>
+      <stop offset="1" stop-color="#e9a35d"/>
+    </linearGradient>
+    <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b6f4ff"/>
+      <stop offset="1" stop-color="#5babe8"/>
+    </linearGradient>
+    <linearGradient id="shared" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f3c27d"/>
+      <stop offset="1" stop-color="#7dd9f4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg2)"/>
+  <g opacity=".12" stroke="#a6c0da" stroke-width="1">
+    <path d="M0 110H1200M0 220H1200M0 330H1200M0 440H1200M0 550H1200"/>
+    <path d="M100 0V675M300 0V675M500 0V675M700 0V675M900 0V675M1100 0V675"/>
+  </g>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">
+    <text x="600" y="76" text-anchor="middle" fill="#f4f7fb" font-size="34" font-weight="700">兩條學習循環，一個共同的認知環境</text>
+    <text x="600" y="111" text-anchor="middle" fill="#b8c9dc" font-size="18">不是單向委派，而是理解、行動、回饋與修正</text>
+  </g>
+  <rect x="68" y="172" width="425" height="340" rx="24" fill="#1b2a3e" stroke="#e6b979" stroke-width="2"/>
+  <rect x="707" y="172" width="425" height="340" rx="24" fill="#1b2a3e" stroke="#75c9ec" stroke-width="2"/>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" text-anchor="middle">
+    <text x="280" y="218" fill="#ffdda6" font-size="27" font-weight="700">人類學習循環</text>
+    <text x="920" y="218" fill="#b7efff" font-size="27" font-weight="700">AI 改進循環</text>
+  </g>
+  <g fill="#283a51" stroke="url(#warm)" stroke-width="2">
+    <rect x="105" y="258" width="150" height="72" rx="14"/>
+    <rect x="306" y="258" width="150" height="72" rx="14"/>
+    <rect x="306" y="392" width="150" height="72" rx="14"/>
+    <rect x="105" y="392" width="150" height="72" rx="14"/>
+  </g>
+  <g fill="#283a51" stroke="url(#cool)" stroke-width="2">
+    <rect x="744" y="258" width="150" height="72" rx="14"/>
+    <rect x="945" y="258" width="150" height="72" rx="14"/>
+    <rect x="945" y="392" width="150" height="72" rx="14"/>
+    <rect x="744" y="392" width="150" height="72" rx="14"/>
+  </g>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" fill="#f5f7fb" text-anchor="middle" font-size="21" font-weight="600">
+    <text x="180" y="302">理解問題</text><text x="381" y="302">做出選擇</text>
+    <text x="381" y="436">觀察結果</text><text x="180" y="436">修正認知</text>
+    <text x="819" y="302">取得任務</text><text x="1020" y="302">提出方案</text>
+    <text x="1020" y="436">評估結果</text><text x="819" y="436">修正方法</text>
+  </g>
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M255 294H294" stroke="#f3c27d"/><path d="M381 330V377" stroke="#f3c27d"/>
+    <path d="M306 428H267" stroke="#f3c27d"/><path d="M180 392V344" stroke="#f3c27d"/>
+    <path d="M894 294H933" stroke="#7dd9f4"/><path d="M1020 330V377" stroke="#7dd9f4"/>
+    <path d="M945 428H906" stroke="#7dd9f4"/><path d="M819 392V344" stroke="#7dd9f4"/>
+  </g>
+  <g fill="#f5f7fb">
+    <path d="M288 286l12 8-12 8z"/><path d="M373 370l8 12 8-12z"/>
+    <path d="M273 420l-12 8 12 8z"/><path d="M811 352l8-12 8 12z"/>
+    <path d="M927 286l12 8-12 8z"/><path d="M1012 370l8 12 8-12z"/>
+    <path d="M912 420l-12 8 12 8z"/><path d="M811 352l8-12 8 12z"/>
+  </g>
+  <rect x="467" y="270" width="266" height="156" rx="22" fill="#101f32" stroke="url(#shared)" stroke-width="3"/>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" text-anchor="middle">
+    <text x="600" y="315" fill="#f4f8fc" font-size="26" font-weight="700">共同證據</text>
+    <text x="600" y="350" fill="#c8d8e7" font-size="18">來源・回饋・實際結果</text>
+    <text x="600" y="385" fill="#c8d8e7" font-size="18">可核對・可修正・可重用</text>
+  </g>
+  <g fill="none" stroke="url(#shared)" stroke-width="4" stroke-linecap="round">
+    <path d="M456 294C474 294 470 318 490 318"/>
+    <path d="M744 294C726 294 730 318 710 318"/>
+    <path d="M490 382C470 382 474 406 456 406"/>
+    <path d="M710 382C730 382 726 406 744 406"/>
+  </g>
+  <g fill="#e9f8ff">
+    <path d="M482 310l12 8-12 8z"/><path d="M718 310l-12 8 12 8z"/>
+    <path d="M482 398l-12 8 12 8z"/><path d="M718 398l12 8-12 8z"/>
+  </g>
+  <path d="M120 553H1080" stroke="#829bb5" stroke-width="1" opacity=".4"/>
+  <g font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif" text-anchor="middle">
+    <text x="600" y="590" fill="#f4f7fb" font-size="29" font-weight="700">人類保留理解與選擇，AI 累積經驗與方法</text>
+    <text x="600" y="624" fill="#b8c9dc" font-size="18">共同進步的前提，是回饋能被驗證，而不是只被記住</text>
+  </g>
+</svg>
