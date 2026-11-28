@@ -1,22 +1,24 @@
 ---
-layout: post
-title: "人腦 AI 化 × AI 人腦化：從 Google RSI 到 Rhyzarca 的認知共演化"
-date: 2026-11-28 03:59:00 +0800
-categories:
-  - insights
-tags:
-  - Human-AI-Collaboration
-  - Recursive-Self-Improvement
-  - Cognitive-Offloading
-  - Extended-Cognition
-  - Agent-Memory
-  - Human-Learning
-  - AGI-Timelines
-  - AI-Governance
-description: "從延伸心智、Google RSI 與 2027～2028 AGI 預測出發，探討人類如何擴充認知、AI 如何累積經驗，以及人機如何在超級智慧時代共同演化並保留人的決策權。"
 blogger_permalink_slug: human-ai-cognitive-coevolution
+blogger_post_id: '4935268400292180031'
+blogger_post_url: https://blog.rhyzarca.com/2026/11/human-ai-cognitive-coevolution.html
+categories:
+- insights
+date: 2026-11-28 03:59:00 +0800
+description: 從延伸心智、Google RSI 與 2027～2028 AGI 預測出發，探討人類如何擴充認知、AI 如何累積經驗，以及人機如何在超級智慧時代共同演化並保留人的決策權。
 image: /assets/images/posts/2026-11-28-human-ai-cognitive-coevolution_1.webp
-permalink: "/insights/2026/11/28/human-ai-cognitive-coevolution/"
+layout: post
+permalink: /insights/2026/11/28/human-ai-cognitive-coevolution/
+tags:
+- Human-AI-Collaboration
+- Recursive-Self-Improvement
+- Cognitive-Offloading
+- Extended-Cognition
+- Agent-Memory
+- Human-Learning
+- AGI-Timelines
+- AI-Governance
+title: 人腦 AI 化 × AI 人腦化：從 Google RSI 到 Rhyzarca 的認知共演化
 ---
 
 ![人與 AI 隔橋對望，金色與藍色光帶把記憶、分析與回饋串成循環](/assets/images/posts/2026-11-28-human-ai-cognitive-coevolution_1.webp)
